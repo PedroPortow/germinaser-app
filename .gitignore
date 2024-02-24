@@ -1,0 +1,78 @@
+# Node dependencies
+/node_modules
+
+# Expo asset cache
+/.expo/*
+
+# Production build directory
+/web-build/
+/ios/build/
+/android/build/
+
+# Environment variables
+*.env
+
+# Keystore files for Android
+*.jks
+*.keystore
+
+# Private keys and certificates for iOS
+**/*.p12
+**/*.mobileprovision
+
+# Xcode workspace and user data
+ios/*.xcworkspace
+ios/*.xcodeproj/project.xcworkspace
+ios/*.xcodeproj/xcuserdata
+ios/*.xcodeproj/xcshareddata
+
+# Android local properties and user-specific configurations
+android/local.properties
+android/.idea
+android/.gradle
+android/captures/
+*.iml
+
+# macOS files
+.DS_Store
+
+# JetBrains IDEs (IntelliJ, WebStorm, etc.)
+.idea/
+
+# VSCode settings
+.vscode/
+
+# History files
+*.history
+
+# Yarn
+yarn-error.log
+.pnp/
+.pnp.js
+
+# npm
+package-lock.json
+npm-debug.log*
+
+# expo publish history
+/.expo-shared/
+
+# Ignore all log files and the npm-debug log
+*.log
+npm-debug.log*
+
+# Ignore Metro bundler cache
+/metro-cache/
+
+# Ignore Storybook generated static files
+/storybook-static/
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+
+# Misc
+**/.DS_Store
+**/Thumbs.db
