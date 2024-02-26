@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button, View, StyleSheet, ScrollView } from 'react-native';
 import RoundCard from './components/RoundCard';
-import ReservationCard from './components/ReservationCard';
+import BookingCard from './components/BookingCard';
 import Text from '../../components/Text/Text';
+import BookingModal from '../../components/BookingModal/BookingModal';
 
 function Home({ navigation }) {
 
-  const weeklyReservations = [
+  const weeklyBookings = [
     {
       house: "Casa 1",
       room: "Sala 3",
@@ -120,15 +121,15 @@ function Home({ navigation }) {
       </View>
     </View>
     <View style={styles.bottomContainer}>
-      <View style={styles.nextReservationsCol}>
+      <View style={styles.nextBookingsCol}>
         <View style={styles.textRow}>
           <Text style={styles.mainText}>
             Próximas reservas
           </Text>
         </View>
         <ScrollView>
-          {weeklyReservations.map((reservation, index) => (
-            <ReservationCard key={index} icon="storefront-outline" reservation={reservation} />
+          {weeklyBookings.map((booking, index) => (
+            <BookingCard key={index} icon="storefront-outline" booking={booking} />
           ))}
         </ScrollView>
       </View>
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     marginBottom: 10,
   },
-  nextReservationsCol: {
+  nextBookingsCol: {
     flexDirection: "column",
     marginTop: "16px",
   },

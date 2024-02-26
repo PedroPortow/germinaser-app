@@ -1,7 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../screens/Home/Home";
+import Schedule from "../screens/Schedule/Schedule";
 import { Ionicons } from '@expo/vector-icons';
+import BookingModal from "../components/BookingModal/BookingModal";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -35,7 +37,7 @@ export function Routes() {
         />
         <Screen
           name="Horários"
-          component={Home}
+          component={Schedule}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (

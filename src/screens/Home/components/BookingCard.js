@@ -3,17 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Garanta que você tenha @expo/vector-icons instalado
 import Text from '../../../components/Text/Text';
 
-function ReservationCard({ reservation, icon }) {
+function BookingCard({ booking, icon }) {
   return (
     <View style={styles.container}>
       {icon && <Ionicons name={icon} size={24} style={styles.icon} />}
       <View style={styles.textContent}>
-        <Text style={styles.text}>{reservation.room}</Text>
-        <Text style={styles.subtext}>{reservation.house}</Text>
+        <Text style={styles.text}>{booking.room}</Text>
+        <Text style={styles.subtext}>{booking.house}</Text>
       </View>
       <View style={styles.rightTextContext}>
-        <Text style={styles.text}>{reservation.week_day}, {reservation.date} </Text>
-        <Text style={styles.text}> {reservation.starting_time} - {reservation.ending_time} </Text>
+        <Text style={styles.text}>{booking.week_day}, {booking.date} </Text>
+        <Text style={styles.text}> {booking.starting_time} - {booking.ending_time} </Text>
       </View>
     </View>
   );
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ReservationCard;
+export default BookingCard;
