@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, View, Text, Button } from 'react-native';
 
 const BookingModal = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
 
   return (
     <View style={{ marginTop: 22 }}>

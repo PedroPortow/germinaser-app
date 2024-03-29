@@ -4,7 +4,7 @@ import { Text as DefaultText } from 'react-native';
 const Text = ({ children, style }) => {
   let fontFamily;
 
-  switch (style.fontWeight) {
+  switch (style?.fontWeight) {
     case 'bold':
       fontFamily = 'Nunito-Bold';
       break;

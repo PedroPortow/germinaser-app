@@ -4,6 +4,8 @@ import Home from "../screens/Home/Home";
 import Schedule from "../screens/Schedule/Schedule";
 import { Ionicons } from '@expo/vector-icons';
 import BookingModal from "../components/BookingModal/BookingModal";
+import Bookings from "../screens/Bookings/Bookings";
+import { TouchableOpacity, View } from "react-native";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -46,12 +48,32 @@ export function Routes() {
           }}
         />
         <Screen
+            name="ActionButton"
+            component={BookingModal} 
+            options={{
+              tabBarButton: (props) => <CustomTabBarButton {...props} onPress={() => {/* Sua ação aqui, como abrir uma modal */}} />,
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="add" size={size} color={color} />
+              ),
+            }}
+          />
+        <Screen
           name="Minhas Reservas"
-          component={Home}
+          component={Bookings}
           options={{
             headerShown: false,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="albums-outline" size={size} color={color} />
+            ),
+          }}
+        />
+        <Screen
+          name="Perfil"
+          component={Bookings}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name="person-outline" size={size} color={color} />
             ),
           }}
         />
@@ -67,16 +89,17 @@ const CustomTabBarButton = ({ onPress }) => (
       top: -30,
       justifyContent: 'center',
       alignItems: 'center',
-      ...styles.shadow
     }}
   >
     <View style={{
-      width: 60,
-      height: 60,
+      width: 50,
+      height: 50,
       borderRadius: 30,
       backgroundColor: '#479BA7',
+      justifyContent: 'center',
+      alignItems: 'center',
     }}>
-      <Ionicons name="add" size={30} color="#fff" style={{ lineHeight: 60, textAlign: 'center' }} />
+      <Ionicons name="add" size={30} color="#fff"  />
     </View>
   </TouchableOpacity>
 );
