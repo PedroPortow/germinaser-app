@@ -2,8 +2,7 @@ import React from 'react';
 import { Button, View, StyleSheet, ScrollView } from 'react-native';
 import RoundCard from './components/RoundCard';
 import BookingCard from './components/BookingCard';
-import Text from '../../components/Text/Text';
-import BookingModal from '../../components/BookingModal/BookingModal';
+import Text from '../../../components/Text/Text';
 
 function Home({ navigation }) {
 

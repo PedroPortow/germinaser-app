@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Garanta que você tenha @expo/vector-icons instalado
-import Text from '../../../components/Text/Text';
+import { Ionicons } from '@expo/vector-icons'; 
+import { Text } from '@components';
 
 function BookingCard({ booking, icon }) {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet,  View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
-import Text from '../../../components/Text/Text';
+import Text from '../../../../components/Text/Text';
 
 function RoundCard({ text, icon, subtext }) {
   return (

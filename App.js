@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Routes } from './src/routes';
-import Login from './src/screens/Login/Login';
+import { NavigationContainer } from '@react-navigation/native'
 import * as Font from 'expo-font';
 import { Text, View } from 'react-native'; 
+import RootNavigator from './src/screens/RootNavigator';
 
 async function loadFonts() {
   await Font.loadAsync({
@@ -30,7 +28,9 @@ function App() {
   }
 
   return ( 
-    <Routes />
+    <NavigationContainer>
+      <RootNavigator />
+    </NavigationContainer>
   );
 }
 
