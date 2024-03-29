@@ -1,10 +1,10 @@
-import React from 'react';
-import { Button, View, StyleSheet, ScrollView } from 'react-native';
+import React, { Fragment } from 'react';
+import {  View, StyleSheet, ScrollView } from 'react-native';
 import RoundCard from './components/RoundCard';
 import BookingCard from './components/BookingCard';
 import Text from '../../../components/Text/Text';
 
-function Home({ navigation }) {
+function Home() {
 
   const weeklyBookings = [
     {
@@ -106,38 +106,34 @@ function Home({ navigation }) {
   ]
 
   return (
-    <>
-    <View style={styles.topContainer}>
-      <View style={styles.topRow}>
-        <RoundCard 
-          text="Créditos de Reserva: 3" 
-          icon="storefront-outline" 
-        />
-        <RoundCard 
-          text="Horários Reservados: 5" 
-          icon="today-outline" 
-        />
-      </View>
-    </View>
-    <View style={styles.bottomContainer}>
-      <View style={styles.nextBookingsCol}>
-        <View style={styles.textRow}>
-          <Text style={styles.mainText}>
-            Próximas reservas
-          </Text>
+    <Fragment>
+      <View style={styles.topContainer}>
+        <View style={styles.topRow}>
+          <RoundCard 
+            text="Créditos de Reserva: 3" 
+            icon="storefront-outline" 
+          />
+          <RoundCard 
+            text="Horários Reservados: 5" 
+            icon="today-outline" 
+          />
         </View>
-        <ScrollView>
-          {weeklyBookings.map((booking, index) => (
-            <BookingCard key={index} icon="storefront-outline" booking={booking} />
-          ))}
-        </ScrollView>
       </View>
-      <Button
-        title="Ir para Detalhes"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-    </>
+      <View style={styles.bottomContainer}>
+        <View style={styles.nextBookingsCol}>
+          <View style={styles.textRow}>
+            <Text style={styles.mainText}>
+              Próximas reservas
+            </Text>
+          </View>
+          <ScrollView>
+            {weeklyBookings.map((booking, index) => (
+              <BookingCard key={index} icon="storefront-outline" booking={booking} />
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+    </Fragment>
   );
 }
 

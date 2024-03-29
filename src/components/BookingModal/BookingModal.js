@@ -1,33 +1,29 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, Button } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { Modal, Text } from "@components";
 
-const BookingModal = () => {
-  const [modalVisible, setModalVisible] = useState(true);
-
+const BookingModal = ({ visible, onClose }) => {
   return (
-    <View style={{ marginTop: 22 }}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={{ marginTop: 50, backgroundColor: 'white', padding: 100 }}>
-          <Text>Hello World!</Text>
-
-          <Button
-            title="Hide Modal"
-            onPress={() => {
-              setModalVisible(!modalVisible);
-            }}
-          />
-        </View>
-      </Modal>
-
-    </View>
+    <Modal
+      visible={visible}
+      onClose={onClose}
+      title="Nova Reserva"
+      subtitle="Você possui 2 créditos de reserva disponíveis"
+    >
+      <View>
+        <Text>Oi</Text>
+      </View>
+    </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  modalContent: {
+    flex: 1, // Faz a view se expandir para ocupar todo o espaço disponível
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default BookingModal;
