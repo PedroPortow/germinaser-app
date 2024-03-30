@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import * as Font from 'expo-font';
 import { Text, View } from 'react-native'; 
 import RootNavigator from './src/screens/RootNavigator';
+import { LocaleConfig } from 'react-native-calendars';
 
 async function loadFonts() {
   await Font.loadAsync({
@@ -15,6 +16,49 @@ async function loadFonts() {
   });
 }
 
+
+LocaleConfig.locales.fr = {
+  monthNames: [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro"
+  ],
+  monthNamesShort: [
+    "Jan.",
+    "Fev.",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul.",
+    "Ago",
+    "Set.",
+    "Out.",
+    "Nov.",
+    "Dez."
+  ],
+  dayNames: [
+    "Domingo",
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado"
+  ],
+  dayNamesShort: ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb."]
+};
+
+LocaleConfig.defaultLocale = "fr";
 
 function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
