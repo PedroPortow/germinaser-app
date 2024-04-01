@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import Text from '../../components/Text/Text';
+import { Text } from '@components';
 import BookingCard from '../Home/components/BookingCard';
 
 function Bookings() {

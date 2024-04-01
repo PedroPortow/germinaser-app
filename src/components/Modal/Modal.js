@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@components' 
 
-const CustomModal = ({ visible, children, onClose, title, subtitle  }) => {
+const CustomModal = ({ visible, children, onClose, title, subtitle, closeIcon = "close" }) => {
   return (
     <Modal
       animationType="slide"
@@ -23,7 +23,7 @@ const CustomModal = ({ visible, children, onClose, title, subtitle  }) => {
       <SafeAreaView style={styles.modalContent}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Ionicons name="close" size={26} color="black" />
+            <Ionicons name={closeIcon} size={26} color="black" />
           </TouchableOpacity>
           {title && <Text style={styles.title}>{title}</Text>}
         </View>

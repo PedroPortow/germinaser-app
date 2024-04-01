@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Home from './Home/Home'
+import Bookings from './Bookings/Bookings'
 import { useState } from 'react'
-import Modal from 'react-native-modal';
 import { Ionicons } from '@expo/vector-icons'
 import BookingModal from "../../components/BookingModal/BookingModal";
+
 const SettingsScreen = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <Text>Settings Screen</Text>
@@ -61,7 +62,16 @@ const MainNavigator = () => {
           )
         }}
       />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen 
+        name="Reservas" 
+        component={Bookings} 
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="calendar" size={size} color={color} />
+          )
+        }}
+      />
+      {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
     </Tab.Navigator>
     </>
   );
@@ -72,6 +82,7 @@ const CustomTabBarButton = ({ onPress }) => (
     onPress={onPress}
     style={{
       top: -30,
+      left: 180,
       justifyContent: 'center',
       alignItems: 'center',
     }}
