@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@components' 
 
-const CustomModal = ({ visible, children, onClose, title, subtitle, closeIcon = "close" }) => {
+const CustomModal = ({ visible, children, onClose, title, subtitle, closeIcon = "close", onConfirm }) => {
   return (
     <Modal
       animationType="slide"
@@ -26,9 +26,7 @@ const CustomModal = ({ visible, children, onClose, title, subtitle, closeIcon = 
             <Ionicons name={closeIcon} size={26} color="black" />
           </TouchableOpacity>
           {title && <Text style={styles.title}>{title}</Text>}
-        </View>
-        <View style={styles.titleSection}>
-         {/* {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>} */}
+          {onConfirm && <Text style={styles.confirmLabel}>Confirmar</Text>}
         </View>
         <View style={styles.childrenContent}>
           {children}
@@ -43,23 +41,24 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   closeButton: {
-    position: 'absolute', // Posiciona o botão de fechar absolutamente dentro da header
-    left: 10, // Espaço do lado esquerdo
-  },
-  titleSection: {
-    marginTop: 25,
-    flexDirection: "column",
-    gap: 4,
+    position: 'absolute', 
+    left: 10, 
   },
   header: {
     flexDirection: "row",
     justifyContent: 'center',
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 45,
   },
   title: {
     fontWeight: "bold",
-    fontSize: 26,
+    fontSize: 24,
+  },
+  confirmLabel: {
+    fontWeight: "semibold",
+    fontSize: 18,
+    position: 'absolute', 
+    right: 10, 
   },
   subtitle: {
     fontWeight: "semibold",
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   childrenContent: {
-    marginTop: 25,
+    marginTop: 0,
   }
 });
 

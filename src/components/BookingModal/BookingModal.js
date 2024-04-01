@@ -8,6 +8,7 @@ import ChooseDateModal from "./components/ChooseDateModal";
 const BookingModal = ({ visible, onClose }) => {
   const [room, setRoom] = useState()
   const [clinic, setClinic] = useState()
+  const [dateModalVisible, setDateModalVisible] = useState(false)
 
   return (
     <Modal
@@ -18,6 +19,7 @@ const BookingModal = ({ visible, onClose }) => {
     >
       <ChooseDateModal 
         room={"Sala Azul"}
+        visible={dateModalVisible}
       />
       <View style={styles.content}>
         <View style={styles.inputLabelWrapper}>
@@ -51,7 +53,7 @@ const BookingModal = ({ visible, onClose }) => {
           <Text style={styles.label}>Data</Text>
           <Pressable 
             style={styles.pressableInput}
-            onPress={() => console.log("eae")}
+            onPress={() => setDateModalVisible(true)}
           >
             <Text>Selecione a data...</Text>
           </Pressable>
