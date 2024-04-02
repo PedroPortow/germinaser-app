@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Alert, Image, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios'; 
 import { Text, Button } from '@components';
+import { auth } from '../../../services';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuthContext } from '@hooks';
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('pedrolportow@gmail.com');
+  const [password, setPassword] = useState('123456');
 
-  const handleLogin = () => {
-    Alert.alert("Login Attempt", `Username: ${username}, Password: ${password}`);
+  const { login } = useAuthContext();
+
+  const handleLogin = async () => {
+    try {
+      const response = await auth.login(username, password);
+      if(response?.data?.token){
+        await AsyncStorage.setItem('userToken', response.data.token);
+        console.log("ASYNC SYORAGE SETADO token aqui: ")
+        console.log(AsyncStorage.getItem('userToken'))
+      } else {
+        throw new Error('N recebeu token na resposta?')
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -19,18 +36,18 @@ function Login() {
           style={styles.input}
           placeholder="Nome de usuário"
           value={username}
-          onChangeText={setUsername} 
+          onChangeText={text => setUsername(text)} 
         />
         <TextInput
           style={styles.input}
           placeholder="Senha"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={text => setPassword(text)}
           secureTextEntry 
         />
       </View>
       <Button
-        onPress={() => console.log('Pressed')}
+        onPress={handleLogin}
         theme="primary"
         style={{ width: '100%', margin: 20 }}
       >
@@ -99,7 +116,7 @@ const styles = StyleSheet.create({
     width: '100%', 
     padding: 15, 
     borderWidth: 1, 
-    color: "#BDBDBD",
+    color: 'black',
     backgroundColor: "#F6F6F6",
     borderColor: '#ccc', 
     borderRadius: 8, 

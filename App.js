@@ -4,6 +4,7 @@ import * as Font from 'expo-font';
 import { Text, View } from 'react-native'; 
 import RootNavigator from './src/screens/RootNavigator';
 import { LocaleConfig } from 'react-native-calendars';
+import { AuthContextProvider } from './src/context/authContext';
 
 async function loadFonts() {
   await Font.loadAsync({
@@ -72,9 +73,12 @@ function App() {
   }
 
   return ( 
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <AuthContextProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </AuthContextProvider>
+ 
   );
 }
 
