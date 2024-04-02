@@ -1,26 +1,40 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import { Modal, Text } from "@components";
 import RNPickerSelect from "react-native-picker-select";
-import { Calendar, LocaleConfig } from "react-native-calendars";
 import ChooseDateModal from "./components/ChooseDateModal";
 
 const BookingModal = ({ visible, onClose }) => {
   const [room, setRoom] = useState();
   const [clinic, setClinic] = useState();
-  const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [dateModalVisible, setDateModalVisible] = useState(true);
+  const [selectedDay, setSelectedDay] = useState("");
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState();
+
+  const onChooseDate = (day, timeslot) => {
+    setSelectedDay(day);
+    setSelectedTimeSlot(timeslot);
+    setDateModalVisible(false);
+  };
+
+  const onSubmit = () => {};
+
+  console.log({ selectedDay });
+  console.log({ selectedTimeSlot });
 
   return (
     <Modal
       visible={visible}
       onClose={onClose}
       title="Nova Reserva"
-      subtitle="Você possui 2 créditos de reserva disponíveis"
+      confirmLabel="Reservar"
+      onConfirm={onSubmit}
     >
       <ChooseDateModal
         room={"Sala Azul"}
         onClose={() => setDateModalVisible(false)}
         visible={dateModalVisible}
+        onConfirm={onChooseDate}
       />
       <View style={styles.content}>
         <View style={styles.inputLabelWrapper}>
@@ -73,7 +87,8 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "column",
     gap: 26,
-    // backgroundColor: "red"
+    padding: 10,
+    marginTop: 40,
   },
   calendarSection: {
     marginTop: 20,

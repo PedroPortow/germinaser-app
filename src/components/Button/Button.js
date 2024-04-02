@@ -1,39 +1,36 @@
 import { useMemo } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import Text from '@components/Text'; // Assumindo que você tem um componente de Text personalizado
+import { Text } from "@components";
 
-const Button = ({ onPress, style, theme = 'primary', children, active = false, disabled = false }) => {
-  
-  const getButtonStyle = useMemo(() => {
-    const styleArray = [styles.button];
+const Button = ({
+  onPress,
+  style: customStyle,
+  theme = "primary",
+  children,
+  selected = false,
+  disabled = false,
+}) => {
+  const buttonStyle = StyleSheet.flatten([
+    styles.button,
+    styles[theme],
+    disabled && styles.disabled,
+    selected && styles[`${theme}Selected`],
+    customStyle,
+  ]);
 
-    const themes = {
-      'primary': styles.primary,
-      'secondary': styles.secondary
-    };
-
-    if (themes[theme]) {
-      styleArray.push(themes[theme]);
-    }
-
-    if (disabled) {
-      styleArray.push(styles.disabled);
-    }
-
-    if (style) {
-      styleArray.push(style);
-    }
-
-    return styleArray;
-  }, [theme, disabled, style]);
+  const textStyle = StyleSheet.flatten([
+    styles.text,
+    styles[`${theme}Text`],
+    selected && styles[`${theme}TextSelected`],
+  ]);
 
   return (
     <Pressable
-      onPress={disabled ? null : onPress}
-      style={getButtonStyle} 
+      onPress={!disabled ? onPress : undefined}
+      style={buttonStyle}
       disabled={disabled}
     >
-      <Text style={styles.text}>{children}</Text>
+      <Text style={textStyle}>{children}</Text>
     </Pressable>
   );
 };
@@ -42,27 +39,58 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 16,
     paddingHorizontal: 32,
-    margin: 5,
-    width: 'auto', 
+    width: "auto",
     borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   primary: {
     backgroundColor: "#479BA7",
   },
+  primaryText: {
+    fontSize: 17,
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
   secondary: {
-    backgroundColor: 'green',
+    backgroundColor: "green",
+  },
+  secondaryText: {
+    fontSize: 17,
+    color: "#479BA7",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  outline: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: "#479BA7",
+  },
+  outlineSelected: {
+    backgroundColor: "#479BA7",
+  },
+  outlineText: {
+    fontSize: 17,
+    color: "#479BA7",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  outlineTextSelected: {
+    fontSize: 17,
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   disabled: {
-    backgroundColor: '#ccc',
-    color: '#666',
+    backgroundColor: "#ccc",
+    color: "#666",
   },
   text: {
     fontSize: 17,
-    color: 'white',
-    fontWeight: 'bold',
-    textTransform: 'uppercase'
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
 });
 

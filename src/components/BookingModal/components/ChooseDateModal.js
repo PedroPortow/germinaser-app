@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, Pressable } from "react-native";
-import { Text, Modal } from "@components";
+import { Text, Modal, Button } from "@components";
 import { Calendar } from "react-native-calendars";
 
-function ChooseDateModal({ room, onClose }) {
+function ChooseDateModal({ room, onClose, visible, onConfirm }) {
   const [selectedDay, setSelectedDay] = useState("");
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
@@ -29,6 +29,8 @@ function ChooseDateModal({ room, onClose }) {
     setAvailableTimeSlots(timeSlots);
   };
 
+  console.log({ selectedTimeSlot });
+
   const onSelectDay = (day) => {
     setSelectedDay(day.dateString);
     fetchAvailableTimeSlots(day);
@@ -36,15 +38,17 @@ function ChooseDateModal({ room, onClose }) {
 
   return (
     <Modal
-      visible={true}
+      visible={visible}
       onClose={onClose}
+      onConfirm={onConfirm}
       title="Data da Reserva"
       closeIcon="chevron-back-outline"
-      onConfirm={() => console.log("oi")}
+      disableConfirm={!selectedTimeSlot}
+      animationOut="slideOutRight"
       subtitle="Você possui 2 créditos de reserva disponíveis"
     >
       <View style={styles.content}>
-        <Text style={styles.roomText}> {room} </Text>
+        {/* <Text style={styles.roomText}> {room} </Text> */}
         <Calendar
           style={styles.calendar}
           theme={{
@@ -69,17 +73,15 @@ function ChooseDateModal({ room, onClose }) {
             >
               {selectedDay &&
                 timeSlots.map((slot, index) => (
-                  <Pressable
+                  <Button
                     key={index}
-                    style={
-                      selectedTimeSlot == slot
-                        ? styles.selectedTimeSlotButton
-                        : styles.timeSlotButton
-                    }
+                    selected={selectedTimeSlot == slot}
+                    theme="outline"
+                    style={styles.timeSlotButton}
                     onPress={() => setSelectedTimeSlot(slot)}
                   >
-                    <Text style={styles.btnText}>{slot}</Text>
-                  </Pressable>
+                    {slot}
+                  </Button>
                 ))}
             </ScrollView>
           </View>
@@ -108,12 +110,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   timeSlotButton: {
-    backgroundColor: "#61b1bc",
     padding: 12,
-    width: "100%",
-    borderRadius: 10,
-    marginVertical: 5,
-    marginHorizontal: 2,
+    width: "32,5%",
   },
   btnText: {
     fontSize: 20,
@@ -129,7 +127,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     marginHorizontal: 2,
   },
-  timeSlotsContainer: {},
+  timeSlotsContainer: {
+    flexDirection: "row",
+    gap: 4,
+    marginTop: 4,
+    flexWrap: "wrap",
+  },
 });
 
 export default ChooseDateModal;
