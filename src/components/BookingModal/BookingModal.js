@@ -1,15 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { Modal, Text } from "@components";
 import RNPickerSelect from "react-native-picker-select";
 import ChooseDateModal from "./components/ChooseDateModal";
+import { apiGetClinicRooms, apiGetClinics } from "../../services/clinics";
 
 const BookingModal = ({ visible, onClose }) => {
   const [room, setRoom] = useState();
   const [clinic, setClinic] = useState();
-  const [dateModalVisible, setDateModalVisible] = useState(true);
+
+  const [roomOptions, setRoomOptions] = useState([]);
+  const [clinicOptions, setClinicOptions] = useState([]);
+
+  const [dateModalVisible, setDateModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
+
+  useEffect(() => {
+    getClinicOptions();
+  }, []);
+
+  const getClinicOptions = async () => {
+    try {
+      const response = await apiGetClinics();
+
+      const formattedResponse = response.data.map((clinic) => ({
+        label: clinic.name,
+        value: clinic.id,
+      }));
+
+      setClinicOptions(formattedResponse);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getRoomOptions = async (selectedClinic) => {
+    try {
+      const response = await apiGetClinicRooms(selectedClinic);
+
+      const formattedResponse = response.data.map((room) => ({
+        label: room.name,
+        value: room.id,
+      }));
+
+      setRoomOptions(formattedResponse);
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const onChooseDate = (day, timeslot) => {
     setSelectedDay(day);
@@ -17,10 +56,19 @@ const BookingModal = ({ visible, onClose }) => {
     setDateModalVisible(false);
   };
 
-  const onSubmit = () => {};
+  const onChooseClinic = (selectedClinic) => {
+    setClinic(selectedClinic);
 
-  console.log({ selectedDay });
-  console.log({ selectedTimeSlot });
+    getRoomOptions(selectedClinic);
+  };
+  const onChooseRoom = (selectedRoom) => {
+    console.log({ selectedRoom });
+    setRoom(selectedRoom);
+  };
+
+  console.log({ room });
+
+  const onSubmit = () => {};
 
   return (
     <Modal
@@ -31,7 +79,7 @@ const BookingModal = ({ visible, onClose }) => {
       onConfirm={onSubmit}
     >
       <ChooseDateModal
-        room={"Sala Azul"}
+        room={room}
         onClose={() => setDateModalVisible(false)}
         visible={dateModalVisible}
         onConfirm={onChooseDate}
@@ -40,28 +88,21 @@ const BookingModal = ({ visible, onClose }) => {
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Casa</Text>
           <RNPickerSelect
-            onValueChange={(value) => setClinic(value)}
+            onValueChange={onChooseClinic}
             darkTheme={true}
-            value={room}
+            value={clinic}
             style={pickerSelectStyles}
-            items={[
-              { label: "Casa 1", value: "Casa 1" },
-              { label: "Casa 2", value: "Casa 2" },
-            ]}
+            items={clinicOptions}
           />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Sala</Text>
           <RNPickerSelect
-            onValueChange={(value) => setRoom(value)}
+            onValueChange={onChooseRoom}
             value={room}
             darkTheme={true}
             style={pickerSelectStyles}
-            items={[
-              { label: "Sala Azul", value: "Sala Azul" },
-              { label: "Sala Azul", value: "Sala Azul" },
-              { label: "Sala Azul", value: "Sala Azul" },
-            ]}
+            items={roomOptions}
           />
         </View>
         <View style={styles.calendarSection}>
@@ -70,7 +111,11 @@ const BookingModal = ({ visible, onClose }) => {
             style={styles.pressableInput}
             onPress={() => setDateModalVisible(true)}
           >
-            <Text>Selecione a data...</Text>
+            <Text>
+              {selectedTimeSlot
+                ? `${selectedDay} - ${selectedTimeSlot} `
+                : "Selecione a data..."}
+            </Text>
           </Pressable>
           {/* <Calendar
             onDayPress={day => {

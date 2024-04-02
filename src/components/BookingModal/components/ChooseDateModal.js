@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { Text, Modal, Button } from "@components";
 import { Calendar } from "react-native-calendars";
+import { apiGetDayAvailableBookings } from "../../../services/bookings";
 
 function ChooseDateModal({ room, onClose, visible, onConfirm }) {
   const [selectedDay, setSelectedDay] = useState("");
@@ -24,14 +25,32 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
     "21:00",
   ];
 
-  const fetchAvailableTimeSlots = (day) => {
-    console.log({ day });
-    setAvailableTimeSlots(timeSlots);
+  const fetchAvailableTimeSlots = async (day) => {
+    const date = day.dateString;
+
+    console.log("CAIU AQUI");
+
+    console.log({ room });
+
+    try {
+      const response = await apiGetDayAvailableBookings(date, room);
+
+      // TODO: Arrumar isso aqui também deus me perdoe
+      const formattedResponse = response.data.map((slot, index) => ({
+        label: slot,
+        id: index + 1,
+      }));
+
+      setAvailableTimeSlots(formattedResponse);
+    } catch (err) {
+      console.log("deu bosta");
+    }
   };
 
   console.log({ selectedTimeSlot });
 
   const onSelectDay = (day) => {
+    console.log("BOSTA");
     setSelectedDay(day.dateString);
     fetchAvailableTimeSlots(day);
   };
