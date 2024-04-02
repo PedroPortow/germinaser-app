@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native'
-import * as Font from 'expo-font';
-import { Text, View } from 'react-native'; 
-import RootNavigator from './src/screens/RootNavigator';
-import { LocaleConfig } from 'react-native-calendars';
-import { AuthContextProvider } from './src/context/authContext';
+import React, { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import * as Font from "expo-font";
+import { Text, View } from "react-native";
+import RootNavigator from "./src/screens/RootNavigator";
+import { LocaleConfig } from "react-native-calendars";
+import { UserContextProvider } from "./src/context/UserContext";
 
 async function loadFonts() {
   await Font.loadAsync({
-    'Nunito-Regular': require('./src/assets/fonts/Nunito-Regular.ttf'),
-    'Nunito-Bold': require('./src/assets/fonts/Nunito-Bold.ttf'),
-    'Nunito-SemiBold': require('./src/assets/fonts/Nunito-SemiBold.ttf'),
-    'Nunito-ExtraLight': require('./src/assets/fonts/Nunito-ExtraLight.ttf'),
-    'Nunito-Light': require('./src/assets/fonts/Nunito-Light.ttf'),
-    'Nunito-Medium': require('./src/assets/fonts/Nunito-Medium.ttf'),
+    "Nunito-Regular": require("./src/assets/fonts/Nunito-Regular.ttf"),
+    "Nunito-Bold": require("./src/assets/fonts/Nunito-Bold.ttf"),
+    "Nunito-SemiBold": require("./src/assets/fonts/Nunito-SemiBold.ttf"),
+    "Nunito-ExtraLight": require("./src/assets/fonts/Nunito-ExtraLight.ttf"),
+    "Nunito-Light": require("./src/assets/fonts/Nunito-Light.ttf"),
+    "Nunito-Medium": require("./src/assets/fonts/Nunito-Medium.ttf"),
   });
 }
-
 
 LocaleConfig.locales.fr = {
   monthNames: [
@@ -31,7 +30,7 @@ LocaleConfig.locales.fr = {
     "Setembro",
     "Outubro",
     "Novembro",
-    "Dezembro"
+    "Dezembro",
   ],
   monthNamesShort: [
     "Jan.",
@@ -45,7 +44,7 @@ LocaleConfig.locales.fr = {
     "Set.",
     "Out.",
     "Nov.",
-    "Dez."
+    "Dez.",
   ],
   dayNames: [
     "Domingo",
@@ -54,9 +53,9 @@ LocaleConfig.locales.fr = {
     "Quarta",
     "Quinta",
     "Sexta",
-    "Sábado"
+    "Sábado",
   ],
-  dayNamesShort: ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb."]
+  dayNamesShort: ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb."],
 };
 
 LocaleConfig.defaultLocale = "fr";
@@ -69,16 +68,19 @@ function App() {
   }, []);
 
   if (!fontsLoaded) {
-    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Loading...</Text></View>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
-  return ( 
-    <AuthContextProvider>
+  return (
+    <UserContextProvider>
       <NavigationContainer>
         <RootNavigator />
       </NavigationContainer>
-    </AuthContextProvider>
- 
+    </UserContextProvider>
   );
 }
 

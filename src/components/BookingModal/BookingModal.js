@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, Pressable } from "react-native";
 import { Modal, Text } from "@components";
-import RNPickerSelect from 'react-native-picker-select';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
+import RNPickerSelect from "react-native-picker-select";
+import { Calendar, LocaleConfig } from "react-native-calendars";
 import ChooseDateModal from "./components/ChooseDateModal";
 
 const BookingModal = ({ visible, onClose }) => {
-  const [room, setRoom] = useState()
-  const [clinic, setClinic] = useState()
-  const [dateModalVisible, setDateModalVisible] = useState(false)
+  const [room, setRoom] = useState();
+  const [clinic, setClinic] = useState();
+  const [dateModalVisible, setDateModalVisible] = useState(false);
 
   return (
     <Modal
@@ -17,8 +17,9 @@ const BookingModal = ({ visible, onClose }) => {
       title="Nova Reserva"
       subtitle="Você possui 2 créditos de reserva disponíveis"
     >
-      <ChooseDateModal 
+      <ChooseDateModal
         room={"Sala Azul"}
+        onClose={() => setDateModalVisible(false)}
         visible={dateModalVisible}
       />
       <View style={styles.content}>
@@ -30,8 +31,8 @@ const BookingModal = ({ visible, onClose }) => {
             value={room}
             style={pickerSelectStyles}
             items={[
-                { label: 'Casa 1', value: 'Casa 1' },
-                { label: 'Casa 2', value: 'Casa 2' },
+              { label: "Casa 1", value: "Casa 1" },
+              { label: "Casa 2", value: "Casa 2" },
             ]}
           />
         </View>
@@ -43,15 +44,15 @@ const BookingModal = ({ visible, onClose }) => {
             darkTheme={true}
             style={pickerSelectStyles}
             items={[
-                { label: 'Sala Azul', value: 'Sala Azul' },
-                { label: 'Sala Azul', value: 'Sala Azul' },
-                { label: 'Sala Azul', value: 'Sala Azul' },
+              { label: "Sala Azul", value: "Sala Azul" },
+              { label: "Sala Azul", value: "Sala Azul" },
+              { label: "Sala Azul", value: "Sala Azul" },
             ]}
           />
         </View>
         <View style={styles.calendarSection}>
           <Text style={styles.label}>Data</Text>
-          <Pressable 
+          <Pressable
             style={styles.pressableInput}
             onPress={() => setDateModalVisible(true)}
           >
@@ -68,39 +69,37 @@ const BookingModal = ({ visible, onClose }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   content: {
     flexDirection: "column",
     gap: 26,
     // backgroundColor: "red"
-  
   },
   calendarSection: {
-    marginTop: 20
+    marginTop: 20,
   },
   pressableInput: {
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 4,
     height: 45,
-    color: 'black',
+    color: "black",
     paddingRight: 30,
   },
   inputLabelWrapper: {
     flexDirection: "column",
-    gap: 4
+    gap: 4,
   },
   select: {
     backgroundColor: "red",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   label: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 
 const pickerSelectStyles = StyleSheet.create({
@@ -109,9 +108,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderRadius: 4,
-    color: 'black',
+    color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
@@ -119,9 +118,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 0.5,
-    borderColor: 'purple',
+    borderColor: "purple",
     borderRadius: 8,
-    color: 'black',
+    color: "black",
     paddingRight: 30, // to ensure the text is never behind the icon
   },
 });

@@ -3,10 +3,10 @@ import { StyleSheet, View, ScrollView, Pressable } from "react-native";
 import { Text, Modal } from "@components";
 import { Calendar } from "react-native-calendars";
 
-function ChooseDateModal({ room }) {
+function ChooseDateModal({ room, onClose }) {
   const [selectedDay, setSelectedDay] = useState("");
-  const [availableTimeSlots, setAvailableTimeSlots] = useState([])
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState()
+  const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState();
 
   const timeSlots = [
     "09:00",
@@ -23,21 +23,21 @@ function ChooseDateModal({ room }) {
     "20:00",
     "21:00",
   ];
-  
+
   const fetchAvailableTimeSlots = (day) => {
-    console.log({day})
-    setAvailableTimeSlots(timeSlots)
-  }
+    console.log({ day });
+    setAvailableTimeSlots(timeSlots);
+  };
 
   const onSelectDay = (day) => {
     setSelectedDay(day.dateString);
-    fetchAvailableTimeSlots(day)
+    fetchAvailableTimeSlots(day);
   };
 
   return (
     <Modal
       visible={true}
-      onClose={() => console.log("clicou")}
+      onClose={onClose}
       title="Data da Reserva"
       closeIcon="chevron-back-outline"
       onConfirm={() => console.log("oi")}
@@ -48,38 +48,44 @@ function ChooseDateModal({ room }) {
         <Calendar
           style={styles.calendar}
           theme={{
-            backgroundColor: '#ffffff',
-            calendarBackground: '#ffffff',
-            textSectionTitleColor: '#b6c1cd',
-            selectedDayBackgroundColor: '#479BA7',
-            selectedDayTextColor: '#ffffff',
-            todayTextColor: '#479BA7',
-            dayTextColor: '#2d4150',
-            arrowColor: '#479BA7'
+            backgroundColor: "#ffffff",
+            calendarBackground: "#ffffff",
+            textSectionTitleColor: "#b6c1cd",
+            selectedDayBackgroundColor: "#479BA7",
+            selectedDayTextColor: "#ffffff",
+            todayTextColor: "#479BA7",
+            dayTextColor: "#2d4150",
+            arrowColor: "#479BA7",
           }}
           onDayPress={onSelectDay}
           markedDates={{ [selectedDay]: { selected: true } }}
         />
-        {selectedDay  && availableTimeSlots.length
-          ? <View style={styles.timeSlotsWrapper}>
-              <Text style={styles.timeSlotsText}>Horários disponíveis:</Text>
-              <ScrollView contentContainerStyle={styles.timeSlotsContainer} style={{ maxHeight: 500 }}>
-                {selectedDay &&
-                  timeSlots.map((slot, index) => (
-                    <Pressable
-                      key={index}
-                      style={selectedTimeSlot == slot ? styles.selectedTimeSlotButton  :  styles.timeSlotButton }
-                      onPress={() => setSelectedTimeSlot(slot)}
-                    >
-                      <Text style={styles.btnText}>{slot}</Text>
-                    </Pressable>
-                  ))}
-              </ScrollView>
-            </View>
-          : null}
+        {selectedDay && availableTimeSlots.length ? (
+          <View style={styles.timeSlotsWrapper}>
+            <Text style={styles.timeSlotsText}>Horários disponíveis:</Text>
+            <ScrollView
+              contentContainerStyle={styles.timeSlotsContainer}
+              style={{ maxHeight: 500 }}
+            >
+              {selectedDay &&
+                timeSlots.map((slot, index) => (
+                  <Pressable
+                    key={index}
+                    style={
+                      selectedTimeSlot == slot
+                        ? styles.selectedTimeSlotButton
+                        : styles.timeSlotButton
+                    }
+                    onPress={() => setSelectedTimeSlot(slot)}
+                  >
+                    <Text style={styles.btnText}>{slot}</Text>
+                  </Pressable>
+                ))}
+            </ScrollView>
+          </View>
+        ) : null}
         {/* <Pressable styles={styles.pres} */}
       </View>
-    
     </Modal>
   );
 }
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   content: {
-    marginTop: 16
+    marginTop: 16,
   },
   timeSlotsText: {
     fontWeight: "semibold",
@@ -104,7 +110,7 @@ const styles = StyleSheet.create({
   timeSlotButton: {
     backgroundColor: "#61b1bc",
     padding: 12,
-    width: '100%', 
+    width: "100%",
     borderRadius: 10,
     marginVertical: 5,
     marginHorizontal: 2,
@@ -112,19 +118,18 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 20,
     color: "white",
-    textAlign: 'center',
-    fontWeight: 'bold'
+    textAlign: "center",
+    fontWeight: "bold",
   },
   selectedTimeSlotButton: {
     backgroundColor: "#61b1bc",
     padding: 12,
-    width: '100%', 
+    width: "100%",
     borderRadius: 10,
     marginVertical: 5,
     marginHorizontal: 2,
   },
-  timeSlotsContainer: {
-  },
+  timeSlotsContainer: {},
 });
 
 export default ChooseDateModal;
