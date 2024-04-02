@@ -7,12 +7,12 @@ import { LocaleConfig } from 'react-native-calendars';
 
 async function loadFonts() {
   await Font.loadAsync({
-    'Nunito-Regular': require('./assets/fonts/Nunito-Regular.ttf'),
-    'Nunito-Bold': require('./assets/fonts/Nunito-Bold.ttf'),
-    'Nunito-SemiBold': require('./assets/fonts/Nunito-SemiBold.ttf'),
-    'Nunito-ExtraLight': require('./assets/fonts/Nunito-ExtraLight.ttf'),
-    'Nunito-Light': require('./assets/fonts/Nunito-Light.ttf'),
-    'Nunito-Medium': require('./assets/fonts/Nunito-Medium.ttf'),
+    'Nunito-Regular': require('./src/assets/fonts/Nunito-Regular.ttf'),
+    'Nunito-Bold': require('./src/assets/fonts/Nunito-Bold.ttf'),
+    'Nunito-SemiBold': require('./src/assets/fonts/Nunito-SemiBold.ttf'),
+    'Nunito-ExtraLight': require('./src/assets/fonts/Nunito-ExtraLight.ttf'),
+    'Nunito-Light': require('./src/assets/fonts/Nunito-Light.ttf'),
+    'Nunito-Medium': require('./src/assets/fonts/Nunito-Medium.ttf'),
   });
 }
 

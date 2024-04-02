@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput, Button, Alert, Image, Pressable } from 'react-native';
+import { StyleSheet, View, TextInput, Alert, Image, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Text from '../../components/Text/Text';
+import { Text, Button } from '@components';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -13,7 +13,7 @@ function Login() {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../../assets/logo.png')} style={styles.logo}  />
+      <Image source={require('@assets/logo.png')} style={styles.logo}  />
       <View style={styles.inputsContainer}>
         <TextInput
           style={styles.input}
@@ -21,7 +21,6 @@ function Login() {
           value={username}
           onChangeText={setUsername} 
         />
-        
         <TextInput
           style={styles.input}
           placeholder="Senha"
@@ -30,9 +29,17 @@ function Login() {
           secureTextEntry 
         />
       </View>
-      <Pressable style={styles.button} onPress={handleLogin}>
+      <Button
+        onPress={() => console.log('Pressed')}
+        theme="primary"
+        style={{ width: '100%', margin: 20 }}
+      >
+        Entrar
+      </Button>
+      <Text style={styles.passwordLabel}>Esqueceu a senha?</Text>
+      {/* <Pressable style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>ENTRAR</Text>
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 }
@@ -41,6 +48,11 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: "#479BA7",
     flex: 1
+  },
+  passwordLabel: {
+    fontWeight: 'bold',
+    color: '#AAAAAA',
+    marginTop: 240,
   },
   container: {
     alignItems: 'center', 
@@ -71,11 +83,12 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 300,
-    height: 200
+    height: 200,
   },
   inputsContainer: {
     gap: 12,
-    width: "100%"
+    width: "100%",
+    marginTop: 24
   },
   title: {
     fontSize: 24,
@@ -86,9 +99,10 @@ const styles = StyleSheet.create({
     width: '100%', 
     padding: 15, 
     borderWidth: 1, 
-    backgroundColor: "white",
+    color: "#BDBDBD",
+    backgroundColor: "#F6F6F6",
     borderColor: '#ccc', 
-    borderRadius: 50, 
+    borderRadius: 8, 
   },
 });
 
