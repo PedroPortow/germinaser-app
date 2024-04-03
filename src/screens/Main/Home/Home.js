@@ -5,6 +5,7 @@ import BookingCard from './components/BookingCard';
 import Text from '../../../components/Text/Text';
 
 function Home() {
+  
 
   const weeklyBookings = [
     {
@@ -107,6 +108,7 @@ function Home() {
 
   return (
     <Fragment>
+
       <View style={styles.topContainer}>
         <View style={styles.topRow}>
           <RoundCard 

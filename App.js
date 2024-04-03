@@ -6,6 +6,11 @@ import RootNavigator from "./src/screens/RootNavigator";
 import { LocaleConfig } from "react-native-calendars";
 import { UserContextProvider } from "./src/context/UserContext";
 
+// PAPER
+import { AppRegistry } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import { name as appName } from './app.json';
+
 async function loadFonts() {
   await Font.loadAsync({
     "Nunito-Regular": require("./src/assets/fonts/Nunito-Regular.ttf"),
@@ -76,12 +81,16 @@ function App() {
   }
 
   return (
-    <UserContextProvider>
+    <PaperProvider>
+        <UserContextProvider>
       <NavigationContainer>
         <RootNavigator />
       </NavigationContainer>
     </UserContextProvider>
+    </PaperProvider>
+
   );
 }
 
+AppRegistry.registerComponent(appName, () => Main);
 export default App;
