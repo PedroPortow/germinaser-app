@@ -4,6 +4,8 @@ import { Modal, Text } from "@components";
 import RNPickerSelect from "react-native-picker-select";
 import ChooseDateModal from "./components/ChooseDateModal";
 import { apiGetClinicRooms, apiGetClinics } from "../../services/clinics";
+import { formatDate } from "../../helpers/date";
+import { apiCreateBooking } from "../../services/bookings";
 
 const BookingModal = ({ visible, onClose }) => {
   const [room, setRoom] = useState();
@@ -51,6 +53,8 @@ const BookingModal = ({ visible, onClose }) => {
   };
 
   const onChooseDate = (day, timeslot) => {
+    console.log({ day });
+    console.log({ timeslot });
     setSelectedDay(day);
     setSelectedTimeSlot(timeslot);
     setDateModalVisible(false);
@@ -66,9 +70,24 @@ const BookingModal = ({ visible, onClose }) => {
     setRoom(selectedRoom);
   };
 
-  console.log({ room });
+  const handleCreateBooking = async () => {
+    try {
+      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`;
+      const response = await apiCreateBooking({
+        start_time: startTime,
+        room_id: room,
+      });
 
-  const onSubmit = () => {};
+      onClose();
+
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
+  console.log({ selectedTimeSlot });
 
   return (
     <Modal
@@ -76,7 +95,7 @@ const BookingModal = ({ visible, onClose }) => {
       onClose={onClose}
       title="Nova Reserva"
       confirmLabel="Reservar"
-      onConfirm={onSubmit}
+      onConfirm={handleCreateBooking}
     >
       <ChooseDateModal
         room={room}
@@ -113,7 +132,7 @@ const BookingModal = ({ visible, onClose }) => {
           >
             <Text>
               {selectedTimeSlot
-                ? `${selectedDay} - ${selectedTimeSlot} `
+                ? `${formatDate(selectedDay)} - ${selectedTimeSlot} `
                 : "Selecione a data..."}
             </Text>
           </Pressable>

@@ -32,8 +32,13 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
 
     console.log({ room });
 
+    const params = {
+      date: date,
+      room_id: room,
+    };
+
     try {
-      const response = await apiGetDayAvailableBookings(date, room);
+      const response = await apiGetDayAvailableBookings(params);
 
       // TODO: Arrumar isso aqui também deus me perdoe
       const formattedResponse = response.data.map((slot, index) => ({
@@ -47,8 +52,6 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
     }
   };
 
-  console.log({ selectedTimeSlot });
-
   const onSelectDay = (day) => {
     console.log("BOSTA");
     setSelectedDay(day.dateString);
@@ -59,7 +62,7 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
     <Modal
       visible={visible}
       onClose={onClose}
-      onConfirm={onConfirm}
+      onConfirm={() => onConfirm(selectedDay, selectedTimeSlot)}
       title="Data da Reserva"
       closeIcon="chevron-back-outline"
       disableConfirm={!selectedTimeSlot}
