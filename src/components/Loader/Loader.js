@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 
+
+// TODO: Arrumar o loader
 function Loader({ loading, size="large" }) {
 
   if(!loading){
