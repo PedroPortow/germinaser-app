@@ -30,9 +30,10 @@ export const UserContextProvider = ({ children }) => {
   const getUserData = async() => {
     try {
       const response = await apiGetUserData()
+
       setUser(response.data)
     } catch (error) {
-      console.log(error)
+      console.log(error.response)
     } finally {
       setIsLoading(false)
     }
@@ -43,15 +44,14 @@ export const UserContextProvider = ({ children }) => {
       const response = await apiPostLogin(email, password);
 
       const token = response.headers.authorization; 
-      const { data } = response.data
 
-      setUser(data)
+      setUser(response.data)
       await SecureStore.setItemAsync("userToken", token);
       
       setToken(token);
       setIsAuthenticated(true);
     } catch (error) {
-      console.error("Login falhou:", error);
+      console.error("Login falhou:", error.response);
       throw error;
     }
   };

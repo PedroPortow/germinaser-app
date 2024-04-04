@@ -3,6 +3,11 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
 function Loader({ loading, size="large" }) {
+
+  if(!loading){
+    return null 
+  }
+  
   return (
     <View style={styles.container}>
       <ActivityIndicator animating={loading} size={size} color="#479BA7" />

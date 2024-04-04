@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, ScrollView, Pressable } from "react-native";
-import { Text, Modal, Button } from "@components";
+import { Text, Modal, Button, Loader } from "@components";
 import { Calendar } from "react-native-calendars";
 import { apiGetDayAvailableBookings } from "../../../services/bookings";
 
@@ -8,29 +8,13 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
   const [selectedDay, setSelectedDay] = useState("");
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
-
-  const timeSlots = [
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
-    "19:00",
-    "20:00",
-    "21:00",
-  ];
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchAvailableTimeSlots = async (day) => {
+    setIsLoading(true);
+    setAvailableTimeSlots([])
+
     const date = day.dateString;
-
-    console.log("CAIU AQUI");
-
-    console.log({ room });
 
     const params = {
       date: date,
@@ -40,20 +24,17 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
     try {
       const response = await apiGetDayAvailableBookings(params);
 
-      // TODO: Arrumar isso aqui também deus me perdoe
-      const formattedResponse = response.data.map((slot, index) => ({
-        label: slot,
-        id: index + 1,
-      }));
+      setAvailableTimeSlots(response.data.available_slots);
 
-      setAvailableTimeSlots(formattedResponse);
+      console.log({ availableTimeSlots });
     } catch (err) {
       console.log("deu bosta");
+    } finally {
+      setIsLoading(false)
     }
   };
 
   const onSelectDay = (day) => {
-    console.log("BOSTA");
     setSelectedDay(day.dateString);
     fetchAvailableTimeSlots(day);
   };
@@ -70,7 +51,7 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
       subtitle="Você possui 2 créditos de reserva disponíveis"
     >
       <View style={styles.content}>
-        {/* <Text style={styles.roomText}> {room} </Text> */}
+        <Loader loading={isLoading} />
         <Calendar
           style={styles.calendar}
           theme={{
@@ -94,7 +75,7 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
               style={{ maxHeight: 500 }}
             >
               {selectedDay &&
-                timeSlots.map((slot, index) => (
+                availableTimeSlots.map((slot, index) => (
                   <Button
                     key={index}
                     selected={selectedTimeSlot == slot}

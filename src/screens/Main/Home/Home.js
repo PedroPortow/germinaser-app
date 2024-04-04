@@ -4,34 +4,36 @@ import RoundCard from "./components/RoundCard";
 import BookingCard from "./components/BookingCard";
 import { useUserContext } from "../../../context/UserContext";
 import { apiGetUpcomingBookings } from "../../../services/bookings";
-import { Text, Loader, Card, Button } from '@components'
+import { Text, Loader, Card, Button } from "@components";
 
 function Home() {
   const { logout, user } = useUserContext();
-  const [upcomingBookings, setUpcomingBookings] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [upcomingBookings, setUpcomingBookings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const getUpcomingBookings = async() => {
+  const getUpcomingBookings = async () => {
     try {
       const response = await apiGetUpcomingBookings();
-      console.log(response.data)
-      setUpcomingBookings(upcomingBookings)
+      setUpcomingBookings(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    getUpcomingBookings()
-  }, [])
+    getUpcomingBookings();
+  }, []);
 
   return (
     <Fragment>
       <View style={styles.topContainer}>
         <View style={styles.topRow}>
-          <RoundCard text={`Créditos de Reserva: ${user.credits}`} icon="storefront-outline" />
+          <RoundCard
+            text={`Créditos de Reserva: ${user.credits}`}
+            icon="storefront-outline"
+          />
           <RoundCard text="Horários Reservados: 5" icon="today-outline" />
         </View>
       </View>
@@ -42,29 +44,27 @@ function Home() {
             <Text style={styles.mainText}>Próximas reservas</Text>
           </View>
           <ScrollView>
-            {!isLoading && upcomingBookings.length
-              ? upcomingBookings.map((booking, index) => (
+            {!isLoading && upcomingBookings.length ? (
+              upcomingBookings.map((booking, index) => (
                 <BookingCard
                   key={index}
                   icon="storefront-outline"
                   booking={booking}
                 />
               ))
-              : <Card style={styles.emptyCardContent}>
-                  <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
+            ) : (
+              <Card style={styles.emptyCardContent}>
+                <Text style={styles.emptyCardText}>
+                  Você não possui nenhuma reserva
+                </Text>
               </Card>
-            }
+            )}
           </ScrollView>
         </View>
       </View>
-      <Button icon="camera" mode="contained" onPress={() => logout()}>
- LOGOUT!
- </Button>
-
     </Fragment>
   );
 }
-
 
 const styles = StyleSheet.create({
   bottomContainer: {
@@ -72,17 +72,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   emptyCardContent: {
-    flexDirection: 'column',
-    alignContent: 'center',
-    justifyContent: 'center'
+    flexDirection: "column",
+    alignContent: "center",
+    justifyContent: "center",
   },
   emptyCardText: {
-    textAlign: 'center',
-    fontWeight: 'semibold'
+    textAlign: "center",
+    fontWeight: "semibold",
   },
   topContainer: {
     backgroundColor: "#479BA7",
-    paddingTop: 100,
+    paddingTop: 80,
     paddingHorizontal: 20,
   },
   topRow: {
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-
 
 // const weeklyBookings = [
 //   {

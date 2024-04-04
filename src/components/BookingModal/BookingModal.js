@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
-import { Modal, Text } from "@components";
 import RNPickerSelect from "react-native-picker-select";
 import ChooseDateModal from "./components/ChooseDateModal";
 import { apiGetClinicRooms, apiGetClinics } from "../../services/clinics";
 import { formatDate } from "../../helpers/date";
 import { apiCreateBooking } from "../../services/bookings";
+import { Modal, Text, Loader } from "@components";
 
 const BookingModal = ({ visible, onClose }) => {
   const [room, setRoom] = useState();
@@ -17,6 +17,8 @@ const BookingModal = ({ visible, onClose }) => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
+
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getClinicOptions();
@@ -31,13 +33,18 @@ const BookingModal = ({ visible, onClose }) => {
         value: clinic.id,
       }));
 
+      
       setClinicOptions(formattedResponse);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
   const getRoomOptions = async (selectedClinic) => {
+    setIsLoading(true)
+
     try {
       const response = await apiGetClinicRooms(selectedClinic);
 
@@ -49,6 +56,8 @@ const BookingModal = ({ visible, onClose }) => {
       setRoomOptions(formattedResponse);
     } catch (error) {
       throw error;
+    }  finally {
+      setIsLoading(false)
     }
   };
 
@@ -97,6 +106,7 @@ const BookingModal = ({ visible, onClose }) => {
       confirmLabel="Reservar"
       onConfirm={handleCreateBooking}
     >
+      <Loader loading={isLoading} />
       <ChooseDateModal
         room={room}
         onClose={() => setDateModalVisible(false)}
@@ -122,6 +132,7 @@ const BookingModal = ({ visible, onClose }) => {
             darkTheme={true}
             style={pickerSelectStyles}
             items={roomOptions}
+            disabled={!clinic}
           />
         </View>
         <View style={styles.calendarSection}>
@@ -136,11 +147,6 @@ const BookingModal = ({ visible, onClose }) => {
                 : "Selecione a data..."}
             </Text>
           </Pressable>
-          {/* <Calendar
-            onDayPress={day => {
-              console.log('selected day', day);
-            }}
-          /> */}
         </View>
       </View>
     </Modal>
