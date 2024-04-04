@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import { Text } from "@components";
+import Text  from "../Text/Text"
 
 const Button = ({
   onPress,

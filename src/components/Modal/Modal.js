@@ -9,7 +9,8 @@ import {
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text, Button } from "@components"; // Certifique-se de que o caminho para Text está correto
+import Text from "../Text/Text";
+import Button from "../Button/Button";
 import { LinearGradient } from "expo-linear-gradient";
 
 const CustomModal = ({
