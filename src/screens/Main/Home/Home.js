@@ -11,19 +11,21 @@ import BookingCard from "./components/BookingCard";
 import { useUserContext } from "../../../context/UserContext";
 import { apiGetBookings } from "../../../services/bookings";
 import { Text, Loader, Card, Button } from "@components";
+import BookingModal from "../../../components/BookingModal/BookingModal";
 
 function Home() {
   const { logout, user } = useUserContext();
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [metadata, setMetadata] = useState({});
-
+  const [bookingModalVisible, setBookingModalVisible] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState({})
+ 
   const getBookings = async (page) => {
     setIsLoading(true);
     try {
       const perPage = 7;
 
-      console.log({ page });
       const response = await apiGetBookings({ page, perPage });
 
       if (page === 1) {
@@ -51,13 +53,26 @@ function Home() {
     }
   };
 
+  const handleViewBooking = (booking) => {
+    setSelectedBooking(booking)
+    setBookingModalVisible(true)
+
+  }
+
   const renderBooking = ({ item }) => (
-    <BookingCard icon="storefront-outline" booking={item} />
+    <BookingCard icon="storefront-outline" booking={item} onPress={() => handleViewBooking(item)} />
   );
+
+  const closeBookingModal = () => {
+    setBookingModalVisible(false);
+  };
+
+  console.log({selectedBooking})
 
   return (
     <Fragment>
       <View style={styles.topContainer}>
+        <BookingModal visible={bookingModalVisible} onClose={closeBookingModal} selectedBooking={selectedBooking} />
         <View style={styles.topRow}>
           <RoundCard
             text={`Créditos de Reserva: ${user.credits}`}

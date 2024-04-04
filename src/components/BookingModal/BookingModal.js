@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import ChooseDateModal from "./components/ChooseDateModal";
@@ -7,7 +7,8 @@ import { formatDate } from "../../helpers/date";
 import { apiCreateBooking } from "../../services/bookings";
 import { Modal, Text, Loader } from "@components";
 
-const BookingModal = ({ visible, onClose }) => {
+const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
+
   const [room, setRoom] = useState();
   const [clinic, setClinic] = useState();
 
@@ -15,10 +16,16 @@ const BookingModal = ({ visible, onClose }) => {
   const [clinicOptions, setClinicOptions] = useState([]);
 
   const [dateModalVisible, setDateModalVisible] = useState(false);
-  const [selectedDay, setSelectedDay] = useState("");
+  const [selectedDay, setSelectedDay] = useState("20");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
-
+  const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  const hasSelectedBooking = useMemo(() => {
+    return !!Object.keys(selectedBooking).length
+  }, [selectedBooking])
+
+  console.log({selectedBooking})
 
   useEffect(() => {
     getClinicOptions();
@@ -41,6 +48,28 @@ const BookingModal = ({ visible, onClose }) => {
       setIsLoading(false)
     }
   };
+  
+  const resetStates = () => {
+    setRoom(null)
+    setClinic(null)
+    setSelectedDay(null)
+    setSelectedTimeSlot(null)
+  }
+  
+  useEffect(() => {
+    if(!visible) {
+      resetStates()
+      return
+    }
+
+    if(hasSelectedBooking){
+      setClinic(selectedBooking?.clinic_id)
+      setRoom(selectedBooking?.room_id)
+      setSelectedDay(selectedBooking.date)
+      setSelectedTimeSlot(selectedBooking.start_time)
+    }
+
+  }, [visible])
 
   const getRoomOptions = async (selectedClinic) => {
     setIsLoading(true)
@@ -92,11 +121,13 @@ const BookingModal = ({ visible, onClose }) => {
     }
   };
 
+  console.log({clinic})
+
   return (
     <Modal
       visible={visible}
       onClose={onClose}
-      title="Nova Reserva"
+      title={`${hasSelectedBooking ? "Visualizar Reserva" : "Nova Reserva"}`}
       confirmLabel="Reservar"
       onConfirm={handleCreateBooking}
     >
@@ -116,6 +147,7 @@ const BookingModal = ({ visible, onClose }) => {
             value={clinic}
             style={pickerSelectStyles}
             items={clinicOptions}
+            disabled={hasSelectedBooking}
           />
         </View>
         <View style={styles.inputLabelWrapper}>
@@ -126,7 +158,7 @@ const BookingModal = ({ visible, onClose }) => {
             darkTheme={true}
             style={pickerSelectStyles}
             items={roomOptions}
-            disabled={!clinic}
+            disabled={!clinic || hasSelectedBooking}
           />
         </View>
         <View style={styles.calendarSection}>
@@ -134,6 +166,7 @@ const BookingModal = ({ visible, onClose }) => {
           <Pressable
             style={styles.pressableInput}
             onPress={() => setDateModalVisible(true)}
+            disabled={hasSelectedBooking || !!room}
           >
             <Text>
               {selectedTimeSlot

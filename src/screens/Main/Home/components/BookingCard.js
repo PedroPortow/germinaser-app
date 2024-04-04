@@ -1,14 +1,14 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Text } from '@components';
 import { formatDate, getWeekDay } from '../../../../helpers';
 import moment from 'moment'
 import { getBookingEndtimeFormatted } from '../helpers';
 
-function BookingCard({ booking, icon }) {
+function BookingCard({ booking, icon, onPress }) {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={onPress}>
       {icon && <Ionicons name={icon} size={24} style={styles.icon} />}
       <View style={styles.textContent}>
         <Text style={styles.text}>{booking.room_name}</Text>
@@ -18,7 +18,7 @@ function BookingCard({ booking, icon }) {
         <Text style={styles.weekAndDateText}>{getWeekDay(booking.date)}, {formatDate(booking.date)} </Text>
         <Text style={styles.text}> {booking.start_time} - {getBookingEndtimeFormatted(booking.start_time)} </Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
