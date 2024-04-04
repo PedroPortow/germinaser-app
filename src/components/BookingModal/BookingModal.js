@@ -33,7 +33,7 @@ const BookingModal = ({ visible, onClose }) => {
 
       setClinicOptions(formattedResponse);
     } catch (error) {
-      throw error;
+      console.error(error);
     }
   };
 

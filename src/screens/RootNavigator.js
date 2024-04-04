@@ -11,7 +11,7 @@ function RootNavigator() {
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated || true ? (
+      {isAuthenticated ? (
         <RootStack.Screen component={MainNavigator} name="Main" />
       ) : (
         <RootStack.Screen component={AuthNavigator} name="Auth" />

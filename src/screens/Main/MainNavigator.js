@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, TouchableOpacity } from "react-native";
-import Home from './Home/Home'
-import Bookings from './Bookings/Bookings'
-import { useState } from 'react'
-import { Ionicons } from '@expo/vector-icons'
+import Home from "./Home/Home";
+import Bookings from "./Bookings/Bookings";
+import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import BookingModal from "../../components/BookingModal/BookingModal";
 
 const SettingsScreen = () => (
@@ -23,56 +23,57 @@ const MainNavigator = () => {
 
   return (
     <>
-      <BookingModal 
-        visible={isModalVisible} 
-        onClose={toggleModal}
-      />
+      <BookingModal visible={isModalVisible} onClose={toggleModal} />
       <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: "#479BA7",
-        tabBarInactiveTintColor: "gray",
-        tabBarHideOnKeyboard: true,
-        headerShown: false,
-        tabBarStyle: {
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          left: 0,
-          elevation: 0,
-          background: "#fff"
-        }
-      }}
-    >
-       <Tab.Screen
-        name="ActionButton"
-        component={EmptyView} 
-        options={{
-          tabBarButton: (props) => <CustomTabBarButton {...props} onPress={toggleModal} />,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="add" size={size} color={color} />
-          ),
+        screenOptions={{
+          tabBarActiveTintColor: "#479BA7",
+          tabBarInactiveTintColor: "gray",
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+          tabBarStyle: {
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            left: 0,
+            elevation: 0,
+            background: "#fff",
+          },
         }}
-      />
-      <Tab.Screen 
-        name="Home" 
-        component={Home} 
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="home" size={size} color={color} />
-          )
-        }}
-      />
-      <Tab.Screen 
-        name="Reservas" 
-        component={Bookings} 
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <Ionicons name="calendar" size={size} color={color} />
-          )
-        }}
-      />
-      {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
-    </Tab.Navigator>
+        initialRouteName="Home"
+        backBehavior="history"
+      >
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="ActionButton"
+          component={EmptyView}
+          options={{
+            tabBarButton: (props) => (
+              <CustomTabBarButton {...props} onPress={toggleModal} />
+            ),
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="add" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Reservas"
+          component={Bookings}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name="calendar" size={size} color={color} />
+            ),
+          }}
+        />
+        {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
+      </Tab.Navigator>
     </>
   );
 };
@@ -82,26 +83,27 @@ const CustomTabBarButton = ({ onPress }) => (
     onPress={onPress}
     style={{
       top: -30,
-      left: 180,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     }}
   >
-    <View style={{
-      width: 50,
-      height: 50,
-      borderRadius: 30,
-      backgroundColor: '#479BA7',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-      <Ionicons name="add" size={30} color="#fff"  />
+    <View
+      style={{
+        width: 50,
+        height: 50,
+        borderRadius: 30,
+        backgroundColor: "#479BA7",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Ionicons name="add" size={30} color="#fff" />
     </View>
   </TouchableOpacity>
 );
 
 const EmptyView = () => {
-  return null
-}
+  return null;
+};
 
 export default MainNavigator;

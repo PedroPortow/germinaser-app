@@ -7,9 +7,9 @@ import { LocaleConfig } from "react-native-calendars";
 import { UserContextProvider } from "./src/context/UserContext";
 
 // PAPER
-import { AppRegistry } from 'react-native';
-import { PaperProvider } from 'react-native-paper';
-import { name as appName } from './app.json';
+import { AppRegistry } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { name as appName } from "./app.json";
 
 async function loadFonts() {
   await Font.loadAsync({
@@ -82,13 +82,12 @@ function App() {
 
   return (
     <PaperProvider>
-        <UserContextProvider>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </UserContextProvider>
+      <UserContextProvider>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </UserContextProvider>
     </PaperProvider>
-
   );
 }
 
