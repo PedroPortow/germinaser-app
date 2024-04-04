@@ -4,8 +4,13 @@ export const apiGetDayAvailableBookings = (params) => {
   return api.get("/bookings/day_available_slots", { params });
 };
 
-export const apiGetUpcomingBookings = () => {
-  return api.get("/bookings/upcoming");
+export const apiGetBookings = ({ page = 1, perPage = 10 }) => {
+  return api.get("/bookings", {
+    params: {
+      page,
+      per_page: perPage
+    }
+  });
 };
 
 export const apiCreateBooking = (params) => {

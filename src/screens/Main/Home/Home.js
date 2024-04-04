@@ -3,18 +3,21 @@ import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import RoundCard from "./components/RoundCard";
 import BookingCard from "./components/BookingCard";
 import { useUserContext } from "../../../context/UserContext";
-import { apiGetUpcomingBookings } from "../../../services/bookings";
+import { apiGetBookings } from "../../../services/bookings";
 import { Text, Loader, Card, Button } from "@components";
 
 function Home() {
   const { logout, user } = useUserContext();
-  const [upcomingBookings, setUpcomingBookings] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getUpcomingBookings = async () => {
-    try {
-      const response = await apiGetUpcomingBookings();
-      setUpcomingBookings(response.data);
+
+  const getBookings = async () => {
+    try {      const page = 1;
+      const perPage = 10;
+  
+      const response = await apiGetBookings({ page, perPage });
+      setBookings(response.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -23,7 +26,7 @@ function Home() {
   };
 
   useEffect(() => {
-    getUpcomingBookings();
+    getBookings();
   }, []);
 
   return (
@@ -44,8 +47,8 @@ function Home() {
             <Text style={styles.mainText}>Próximas reservas</Text>
           </View>
           <ScrollView>
-            {!isLoading && upcomingBookings.length ? (
-              upcomingBookings.map((booking, index) => (
+            {!isLoading && bookings.length ? (
+              bookings.map((booking, index) => (
                 <BookingCard
                   key={index}
                   icon="storefront-outline"

@@ -15,12 +15,14 @@ export const UserContextProvider = ({ children }) => {
       const storedToken = await SecureStore.getItemAsync("userToken");
 
       if (storedToken) {
-        setToken(storedToken);
-        setIsAuthenticated(true);
 
         if(!Object.keys(user).length){
           getUserData()
         }
+        setIsAuthenticated(true);
+        setToken(storedToken);
+      } else {
+        setIsAuthenticated(false)
       }
     };
 
