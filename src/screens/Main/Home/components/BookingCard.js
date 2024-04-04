@@ -7,9 +7,6 @@ import moment from 'moment'
 import { getBookingEndtimeFormatted } from '../helpers';
 
 function BookingCard({ booking, icon }) {
-  console.log({booking})
-
-
   return (
     <View style={styles.container}>
       {icon && <Ionicons name={icon} size={24} style={styles.icon} />}

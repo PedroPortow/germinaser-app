@@ -33,6 +33,9 @@ function Home() {
       setIsLoading(false);
     }
   };
+  
+  console.log({metadata})
+
 
   useEffect(() => {
     getBookings(1); 
@@ -40,8 +43,8 @@ function Home() {
 
   const handleLoadMore = () => {
     console.log("CAIU")
-    if (!isLoading && metadata.currentPage < metadata.total_pages) {
-      getBookings(metadata.currentPage + 1);
+    if (!isLoading && metadata.current_page < metadata.total_pages) {
+      getBookings(metadata.current_page + 1);
     }
   };
 
