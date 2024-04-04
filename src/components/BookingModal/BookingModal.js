@@ -62,8 +62,6 @@ const BookingModal = ({ visible, onClose }) => {
   };
 
   const onChooseDate = (day, timeslot) => {
-    console.log({ day });
-    console.log({ timeslot });
     setSelectedDay(day);
     setSelectedTimeSlot(timeslot);
     setDateModalVisible(false);
@@ -75,7 +73,6 @@ const BookingModal = ({ visible, onClose }) => {
     getRoomOptions(selectedClinic);
   };
   const onChooseRoom = (selectedRoom) => {
-    console.log({ selectedRoom });
     setRoom(selectedRoom);
   };
 
@@ -89,14 +86,11 @@ const BookingModal = ({ visible, onClose }) => {
 
       onClose();
 
-      console.log(response.data);
     } catch (error) {
       console.error(error);
       throw error;
     }
   };
-
-  console.log({ selectedTimeSlot });
 
   return (
     <Modal

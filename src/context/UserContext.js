@@ -36,9 +36,7 @@ export const UserContextProvider = ({ children }) => {
       setUser(response.data)
     } catch (error) {
       console.log(error.response)
-    } finally {
-      setIsLoading(false)
-    }
+    } 
   }
 
   const login = async (email, password) => {

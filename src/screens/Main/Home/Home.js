@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ScrollView, ActivityIndicator , FlatList} from "react-native";
 import RoundCard from "./components/RoundCard";
 import BookingCard from "./components/BookingCard";
 import { useUserContext } from "../../../context/UserContext";
@@ -10,14 +10,23 @@ function Home() {
   const { logout, user } = useUserContext();
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [metadata, setMetadata] = useState({});
 
 
-  const getBookings = async () => {
-    try {      const page = 1;
-      const perPage = 10;
-  
+  const getBookings = async (page) => {
+    setIsLoading(true);
+    try {
+      const perPage = 10; 
+
+      console.log({page})
       const response = await apiGetBookings({ page, perPage });
-      setBookings(response.data);
+
+      if (page === 1) {
+        setBookings(response.data.bookings);
+      } else {
+        setBookings(prev => [...prev, ...response.data.bookings]);
+      }
+      setMetadata(response.data.meta);
     } catch (error) {
       console.log(error);
     } finally {
@@ -26,8 +35,26 @@ function Home() {
   };
 
   useEffect(() => {
-    getBookings();
+    getBookings(1); 
   }, []);
+
+  const handleLoadMore = () => {
+    console.log("CAIU")
+    if (!isLoading && metadata.currentPage < metadata.total_pages) {
+      getBookings(metadata.currentPage + 1);
+    }
+  };
+
+  const renderBooking = ({ item }) => (
+    <BookingCard
+      icon="storefront-outline"
+      booking={item}
+    />
+  );
+
+  const renderFooter = () => {
+    return <Loader />;
+  };
 
   return (
     <Fragment>
@@ -46,7 +73,14 @@ function Home() {
           <View style={styles.textRow}>
             <Text style={styles.mainText}>Próximas reservas</Text>
           </View>
-          <ScrollView>
+            <FlatList
+              data={bookings}
+              renderItem={renderBooking}
+              keyExtractor={booking => String(booking.id)}
+              onEndReached={handleLoadMore}
+              onEndReachedThreshold={0.5}
+            />
+          {/* <ScrollView>
             {!isLoading && bookings.length ? (
               bookings.map((booking, index) => (
                 <BookingCard
@@ -62,7 +96,7 @@ function Home() {
                 </Text>
               </Card>
             )}
-          </ScrollView>
+          </ScrollView> */}
         </View>
       </View>
     </Fragment>

@@ -6,10 +6,8 @@ export const apiGetDayAvailableBookings = (params) => {
 
 export const apiGetBookings = ({ page = 1, perPage = 10 }) => {
   return api.get("/bookings", {
-    params: {
-      page,
-      per_page: perPage
-    }
+    page,
+    per_page: perPage
   });
 };
 

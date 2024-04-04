@@ -26,7 +26,6 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
 
       setAvailableTimeSlots(response.data.available_slots);
 
-      console.log({ availableTimeSlots });
     } catch (err) {
       console.log("deu bosta");
     } finally {
