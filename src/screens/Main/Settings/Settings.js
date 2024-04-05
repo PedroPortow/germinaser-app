@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 
-function Profile() {
+function Settings() {
 
   return (
     <SafeAreaView>
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Profile;
+export default Settings;

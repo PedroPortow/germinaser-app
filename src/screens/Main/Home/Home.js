@@ -12,15 +12,16 @@ import { useUserContext } from "../../../context/UserContext";
 import { apiGetBookings } from "../../../services/bookings";
 import { Text, Loader, Card, Button } from "@components";
 import BookingModal from "../../../components/BookingModal/BookingModal";
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 function Home() {
   const { logout, user } = useUserContext();
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [metadata, setMetadata] = useState({});
-  const [bookingModalVisible, setBookingModalVisible] = useState(false)
-  const [selectedBooking, setSelectedBooking] = useState({})
- 
+  const [bookingModalVisible, setBookingModalVisible] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState({});
+
   const getBookings = async (page) => {
     setIsLoading(true);
     try {
@@ -54,32 +55,43 @@ function Home() {
   };
 
   const handleViewBooking = (booking) => {
-    setSelectedBooking(booking)
-    setBookingModalVisible(true)
-
-  }
+    setSelectedBooking(booking);
+    setBookingModalVisible(true);
+  };
 
   const renderBooking = ({ item }) => (
-    <BookingCard icon="storefront-outline" booking={item} onPress={() => handleViewBooking(item)} />
+    <BookingCard
+      icon="storefront-outline"
+      booking={item}
+      onPress={() => handleViewBooking(item)}
+    />
   );
 
   const closeBookingModal = () => {
     setBookingModalVisible(false);
   };
 
-  console.log({selectedBooking})
+  console.log({ selectedBooking });
 
   return (
     <Fragment>
       <View style={styles.topContainer}>
-        <BookingModal visible={bookingModalVisible} onClose={closeBookingModal} selectedBooking={selectedBooking} />
+        <BookingModal
+          visible={bookingModalVisible}
+          onClose={closeBookingModal}
+          selectedBooking={selectedBooking}
+        />
         <View style={styles.topRow}>
           <RoundCard
             text={`Créditos`}
             value={user.credits}
-            icon="storefront-outline"
+            icon={<FontAwesome5 name="coins" size={24} color="black" style={styles.icon} />}
           />
-          <RoundCard text="Reservas agendadas"      value={user.credits} icon="today-outline" />
+          <RoundCard
+            text="Reservas atuais"
+            value={user.credits}
+            icon={<Ionicons name="calendar-number-outline" size={24} style={styles.icon} />}
+          />
         </View>
       </View>
       <Loader loading={isLoading} />
@@ -128,6 +140,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#479BA7",
     paddingTop: 80,
     paddingHorizontal: 20,
+  },
+  icon: {
+    marginRight: 10,
+    color: '#333', 
   },
   topRow: {
     flexDirection: "row",

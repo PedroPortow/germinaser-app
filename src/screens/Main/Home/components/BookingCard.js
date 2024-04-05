@@ -15,8 +15,8 @@ function BookingCard({ booking, icon, onPress }) {
         <Text style={styles.subtext}>{booking.clinic_name}</Text>
       </View>
       <View style={styles.rightTextContext}>
-        <Text style={styles.weekAndDateText}>{getWeekDay(booking.date)}, {formatDate(booking.date)} </Text>
-        <Text style={styles.text}> {booking.start_time} - {getBookingEndtimeFormatted(booking.start_time)} </Text>
+        <Text style={styles.weekText}>{getWeekDay(booking.date)}, {formatDate(booking.date)} </Text>
+        <Text style={styles.timeText}> {booking.start_time} - {getBookingEndtimeFormatted(booking.start_time)} </Text>
       </View>
     </Pressable>
   );
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginVertical: 8, 
   },
-  weekAndDateText: {
-    fontSize: 14, 
+  weekText: {
+    fontSize: 12, 
     fontWeight: 'bold', 
     color: '#333',
   },
@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   text: {
+    fontSize: 16, 
+    fontWeight: 'bold', 
+    color: '#333',
+  }, 
+  timeText:{
     fontSize: 16, 
     fontWeight: 'bold', 
     color: '#333',

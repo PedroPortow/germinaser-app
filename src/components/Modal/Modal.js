@@ -20,9 +20,10 @@ const CustomModal = ({
   title,
   closeIcon = "close",
   onConfirm,
-  confirmLabel = "confirmar",
+  buttonLabel = "confirmar",
   disableConfirm,
   animationOut = "slideOutDown",
+  theme="primary",
 }) => {
   return (
     <Modal
@@ -49,9 +50,10 @@ const CustomModal = ({
             <Button
               style={styles.confirmButton}
               onPress={onConfirm}
+              theme={theme == "primary" ? "primary" : "destructiveOutline"}
               disabled={disableConfirm}
             >
-              {confirmLabel}
+              {buttonLabel}
             </Button>
           </LinearGradient>
         )}
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 24,
   },
-  confirmLabel: {
+  buttonLabel: {
     fontWeight: "semibold",
     fontSize: 18,
     position: "absolute",

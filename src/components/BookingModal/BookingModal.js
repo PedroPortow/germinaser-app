@@ -129,6 +129,8 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       onClose={onClose}
       title={`${hasSelectedBooking ? "Visualizar Reserva" : "Nova Reserva"}`}
       confirmLabel="Reservar"
+      theme={hasSelectedBooking ? "destructive" : "primary"}
+      buttonLabel={hasSelectedBooking && "Cancelar Reserva"}
       onConfirm={handleCreateBooking}
     >
       <Loader loading={isLoading} />

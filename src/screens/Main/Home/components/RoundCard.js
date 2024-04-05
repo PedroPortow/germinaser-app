@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet,  View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; 
 import Text from '../../../../components/Text/Text';
 
 function RoundCard({ text, icon, value }) {
   return (
     <View style={styles.container}>
-      {icon && <Ionicons name={icon} size={22} style={styles.icon} />}
+      {icon}
       <View style={styles.textContent}>
-        <Text style={styles.value}>{value}</Text>
         <Text style={styles.text}>{text}</Text>
+        <Text style={styles.value}>{value}</Text>
       </View>
     </View>
   );
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     padding: 8, 
-    paddingVertical: 22,
+    paddingVertical: 14,
     flexDirection: 'row', 
     alignItems: 'center', 
     borderRadius: 10, 
@@ -33,20 +32,18 @@ const styles = StyleSheet.create({
   },
   textContent: {
     flex: 1, 
-    // backgroundColor: "red"
+    justifyContent: 'space-between',
   },
   text: {
-    fontSize: 12, 
+    fontSize: 14, 
     fontWeight: 'bold', 
-    color: '#666', 
+    color: '#333',
+  
   },
   value: {
-    fontSize: 16, 
-    color: '#333',
+    fontSize: 14, 
+    color: '#666', 
     fontWeight: 'bold', 
-  },
-  icon: {
-    marginRight: 10, 
   },
 });
 

@@ -53,6 +53,29 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textTransform: "uppercase",
   },
+  destructive: {
+    backgroundColor: "red",
+  },
+  destructiveOutline: {
+    backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: "red"
+  },
+  destructiveOutlineSelected: {
+    backgroundColor: "#479BA7",
+  },
+  destructiveOutlineText: {
+    fontSize: 17,
+    color: "red",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  destructiveOutlineTextSelected: {
+    fontSize: 17,
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
   secondary: {
     backgroundColor: "green",
   },
