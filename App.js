@@ -4,11 +4,10 @@ import * as Font from "expo-font";
 import { Text, View } from "react-native";
 import RootNavigator from "./src/screens/RootNavigator";
 import { LocaleConfig } from "react-native-calendars";
+import * as eva from '@eva-design/eva';
 import { UserContextProvider } from "./src/context/UserContext";
 
-// PAPER
-import { AppRegistry } from "react-native";
-import { name as appName } from "./app.json";
+import { ApplicationProvider } from '@ui-kitten/components';
 
 async function loadFonts() {
   await Font.loadAsync({
@@ -80,13 +79,15 @@ function App() {
   }
 
   return (
-    <UserContextProvider>
+    <ApplicationProvider {...eva} theme={eva.light}>
+        <UserContextProvider>
       <NavigationContainer>
         <RootNavigator />
       </NavigationContainer>
     </UserContextProvider>
+    </ApplicationProvider>
+   
   );
 }
 
-AppRegistry.registerComponent(appName, () => Main);
 export default App;
