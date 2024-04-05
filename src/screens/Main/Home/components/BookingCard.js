@@ -4,7 +4,7 @@ import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { Text } from '@components';
 import { formatDate, getWeekDay } from '../../../../helpers';
 import moment from 'moment'
-import { getBookingEndtimeFormatted } from '../helpers';
+import { getBookingEndtimeFormatted } from '../../../../helpers';
 
 function BookingCard({ booking, icon, onPress }) {
   return (

@@ -13,6 +13,7 @@ import { apiGetBookings } from "../../../services/bookings";
 import { Text, Loader, Card, Button } from "@components";
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import CreateBookingModal from "../../../components/CreateBookingModal/CreateBookingModal";
+import BookingModal from "../../../components/BookingModal/BookingModal";
 
 function Home() {
   const { logout, user } = useUserContext();
@@ -72,11 +73,10 @@ function Home() {
   return (
     <Fragment>
       <View style={styles.topContainer}>
-        <CreateBookingModal
+        <BookingModal
           visible={bookingModalVisible}
           onClose={closeBookingModal}
-          selectedBooking={selectedBooking}
-          onCreate={() => getBookings(1)}
+          booking={selectedBooking}
         />
         <View style={styles.topRow}>
           <RoundCard

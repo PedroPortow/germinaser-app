@@ -1,15 +1,71 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View,  TouchableOpacity, StyleSheet } from "react-native";
 import Home from "./Home/Home";
 import Bookings from "./Bookings/Bookings";
 import { useState } from "react";
-import {  Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import CreateBookingModal from "../../components/CreateBookingModal/CreateBookingModal";
 import Account from "./Account/Account";
+import { Text } from '@ui-kitten/components';
 
 const SettingsScreen = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
     <Text>Settings Screen</Text>
+  </View>
+);
+
+const TextsViewer = () => (
+  <View style={{padding: 50 }}>
+    <View style={textsViewerStyles.row}>
+      <Text style={textsViewerStyles.text} category="h1">
+        H1
+      </Text>
+      <Text style={textsViewerStyles.text} category="h2">
+        H2
+      </Text>
+      <Text style={textsViewerStyles.text} category="h3">
+        H3
+      </Text>
+      <Text style={textsViewerStyles.text} category="h4">
+        H4
+      </Text>
+      <Text style={textsViewerStyles.text} category="h5">
+        H5
+      </Text>
+      <Text style={textsViewerStyles.text} category="h6">
+        H6
+      </Text>
+    </View>
+
+    <View style={textsViewerStyles.row}>
+      <Text style={textsViewerStyles.text} category="s1">
+        S1
+      </Text>
+      <Text style={textsViewerStyles.text} category="s2">
+        S2
+      </Text>
+    </View>
+
+    <View style={textsViewerStyles.row}>
+      <Text style={textsViewerStyles.text} category="p1">
+        P1
+      </Text>
+      <Text style={textsViewerStyles.text} category="p2">
+        P2
+      </Text>
+    </View>
+
+    <View style={textsViewerStyles.row}>
+      <Text style={textsViewerStyles.text} category="c1">
+        C1
+      </Text>
+      <Text style={textsViewerStyles.text} category="c2">
+        C2
+      </Text>
+      <Text style={textsViewerStyles.text} category="label">
+        LABEL
+      </Text>
+    </View>
   </View>
 );
 
@@ -46,6 +102,15 @@ const MainNavigator = () => {
         <Tab.Screen
           name="Home"
           component={Home}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Feather name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="text"
+          component={TextsViewer}
           options={{
             tabBarIcon: ({ size, color }) => (
               <Feather name="home" size={size} color={color} />
@@ -99,6 +164,16 @@ const MainNavigator = () => {
     </>
   );
 };
+
+const textsViewerStyles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  text: {
+    margin: 2,
+  },
+});
 
 const CustomTabBarButton = ({ onPress }) => (
   <TouchableOpacity

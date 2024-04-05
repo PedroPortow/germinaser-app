@@ -9,7 +9,7 @@ function Account() {
 
   console.log({user})
 
-
+  logout()
 
   console.log("aeaeaea")
   return (

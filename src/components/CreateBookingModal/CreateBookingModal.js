@@ -117,20 +117,7 @@ const CreateBookingModal = ({ visible, onClose, onCreate }) => {
       throw error;
     }
   };
-  const handleDeleteBooking = async () => {
-    try {
-      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`;
-      const response = await apiCreateBooking({
-        start_time: startTime,
-        room_id: room,
-      });
-
-      onClose();
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+ 
 
   return (
     <Modal

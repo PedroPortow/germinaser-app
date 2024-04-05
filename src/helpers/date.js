@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function formatDate(dateString) {
   const date = new Date(dateString);
   const day = date.getDate().toString().padStart(2, "0");
@@ -13,3 +15,14 @@ export function getWeekDay(dateString) {
   return weekDays[date.getDay()];
 }
 
+
+export const getBookingEndtimeFormatted = (startHour) => {
+  const startTime = moment().set({
+    hour: moment(startHour,"HH:mm").get('hour'),
+    minute: moment(startHour, "HH:mm").get('minute')
+  });
+
+  const endTime = moment(startTime).add(1, 'hours');
+  const formattedEndTime = endTime.format('HH:mm');
+  return formattedEndTime
+}
