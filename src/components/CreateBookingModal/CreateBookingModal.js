@@ -8,7 +8,7 @@ import { Modal, Text, Loader, Card } from "@components";
 import { Select, SelectItem, IndexPath } from "@ui-kitten/components";
 import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-const CreateBookingModal = ({ visible, onClose }) => {
+const CreateBookingModal = ({ visible, onClose, onCreate }) => {
   const [clinic, setClinic] = useState();
   const [room, setRoom] = useState();
 
@@ -110,6 +110,7 @@ const CreateBookingModal = ({ visible, onClose }) => {
         room_id: room,
       });
 
+      onCreate()
       onClose();
     } catch (error) {
       console.error(error);
@@ -175,18 +176,18 @@ const CreateBookingModal = ({ visible, onClose }) => {
               ))}
             </Select>
         </View>
-        <View style={styles.calendarSection}>
+        <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Data</Text>
           <Pressable
             style={styles.pressableInput}
             onPress={() => setDateModalVisible(true)}
-            disabled={!!room}
+            disabled={!room}
           >
-            <Text>
-              {selectedTimeSlot
-                ? `${formatDate(selectedDay)} - ${selectedTimeSlot} `
-                : "Selecione a data..."}
-            </Text>
+            {selectedTimeSlot 
+              ?  <Text style={styles.selectedTimeText}>{formatDate(selectedDay)} - {selectedTimeSlot}</Text>
+              :   <Text style={styles.placeholder}>Selecione a data</Text>
+            }
+          
           </Pressable>
         </View>
       </View>
@@ -201,18 +202,25 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 40,
   },
-  calendarSection: {
-    marginTop: 20,
+  selectedTimeText: {
+    color: '#222B45',
+    fontWeight: 'bold',
+    fontSize: 15
+  },
+  placeholder: {
+    color: '#C5CCD9',
+    fontWeight: 'semibold',
+    fontSize: 15
   },
   pressableInput: {
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    paddingVertical: 9,
+    paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "#E4E9F2",
     borderRadius: 4,
-    height: 45,
     color: "black",
     paddingRight: 30,
+    backgroundColor: "#F7F9FC"
   },
   iconTextWrapper: {
     flexDirection: 'row',

@@ -38,7 +38,7 @@ const Button = ({
 const styles = StyleSheet.create({
   button: {
     paddingVertical: 16,
-    paddingHorizontal: 32,
+    paddingHorizontal: 8,
     width: "auto",
     borderRadius: 12,
     justifyContent: "center",

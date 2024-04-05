@@ -76,6 +76,7 @@ function Home() {
           visible={bookingModalVisible}
           onClose={closeBookingModal}
           selectedBooking={selectedBooking}
+          onCreate={() => getBookings(1)}
         />
         <View style={styles.topRow}>
           <RoundCard

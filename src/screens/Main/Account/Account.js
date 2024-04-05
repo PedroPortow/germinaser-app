@@ -21,7 +21,6 @@ function Account() {
 
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     // backgroundColor: "red",
