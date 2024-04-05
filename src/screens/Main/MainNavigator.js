@@ -5,6 +5,7 @@ import Bookings from "./Bookings/Bookings";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import BookingModal from "../../components/BookingModal/BookingModal";
+import Profile from "./Profile/Profile";
 
 const SettingsScreen = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -51,7 +52,17 @@ const MainNavigator = () => {
             ),
           }}
         />
+     
         <Tab.Screen
+          name="Reservas"
+          component={Bookings}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name="calendar" size={size} color={color} />
+            ),
+          }}
+        />
+           <Tab.Screen
           name="ActionButton"
           component={EmptyView}
           options={{
@@ -64,11 +75,20 @@ const MainNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="Reservas"
-          component={Bookings}
+          name="Horários"
+          component={SettingsScreen}
           options={{
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="calendar" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Perfil"
+          component={Profile}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name="person" size={size} color={color} />
             ),
           }}
         />

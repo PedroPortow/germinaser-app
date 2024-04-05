@@ -75,10 +75,11 @@ function Home() {
         <BookingModal visible={bookingModalVisible} onClose={closeBookingModal} selectedBooking={selectedBooking} />
         <View style={styles.topRow}>
           <RoundCard
-            text={`Créditos de Reserva: ${user.credits}`}
+            text={`Créditos`}
+            value={user.credits}
             icon="storefront-outline"
           />
-          <RoundCard text="Horários Reservados: 5" icon="today-outline" />
+          <RoundCard text="Reservas agendadas"      value={user.credits} icon="today-outline" />
         </View>
       </View>
       <Loader loading={isLoading} />
