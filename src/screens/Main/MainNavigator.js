@@ -5,8 +5,7 @@ import Bookings from "./Bookings/Bookings";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import BookingModal from "../../components/BookingModal/BookingModal";
-import Profile from "./Settings/Settings";
-import Settings from "./Settings/Settings";
+import Account from "./Account/Account";
 
 const SettingsScreen = () => (
   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -49,7 +48,7 @@ const MainNavigator = () => {
           component={Home}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="home" size={size} color={color} />
+              <Ionicons name="home-outline" size={size} color={color} />
             ),
           }}
         />
@@ -59,7 +58,7 @@ const MainNavigator = () => {
           component={SettingsScreen}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="calendar" size={size} color={color} />
+              <Ionicons name="calendar-outline" size={size} color={color} />
             ),
           }}
         />
@@ -87,11 +86,11 @@ const MainNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="Configurações"
-          component={Settings}
+          name="Conta"
+          component={Account}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="settings" size={size} color={color} />
+              <Ionicons name="person-outline" size={size} color={color} />
             ),
           }}
         />

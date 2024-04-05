@@ -26,7 +26,6 @@ function Home() {
     setIsLoading(true);
     try {
       const perPage = 7;
-
       const response = await apiGetBookings({ page, perPage });
 
       if (page === 1) {
@@ -41,8 +40,6 @@ function Home() {
       setIsLoading(false);
     }
   };
-
-  console.log({ metadata });
 
   useEffect(() => {
     getBookings(1);

@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import ChooseDateModal from "./components/ChooseDateModal";
 import { apiGetClinicRooms, apiGetClinics } from "../../services/clinics";
 import { formatDate } from "../../helpers/date";
 import { apiCreateBooking } from "../../services/bookings";
 import { Modal, Text, Loader } from "@components";
-
 const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
 
   const [room, setRoom] = useState();
@@ -24,6 +23,7 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
   const hasSelectedBooking = useMemo(() => {
     return !!Object.keys(selectedBooking).length
   }, [selectedBooking])
+  
 
   console.log({selectedBooking})
 
@@ -120,8 +120,21 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       throw error;
     }
   };
+  const handleDeleteBooking = async () => {
+    try {
+      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`;
+      const response = await apiCreateBooking({
+        start_time: startTime,
+        room_id: room,
+      });
 
-  console.log({clinic})
+      onClose();
+
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
 
   return (
     <Modal
@@ -130,8 +143,8 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       title={`${hasSelectedBooking ? "Visualizar Reserva" : "Nova Reserva"}`}
       confirmLabel="Reservar"
       theme={hasSelectedBooking ? "destructive" : "primary"}
-      buttonLabel={hasSelectedBooking && "Cancelar Reserva"}
-      onConfirm={handleCreateBooking}
+      buttonLabel={hasSelectedBooking ? "Cancelar Reserva" : "Reservar"}
+      onConfirm={hasSelectedBooking ? handleDeleteBooking : handleCreateBooking}
     >
       <Loader loading={isLoading} />
       <ChooseDateModal
