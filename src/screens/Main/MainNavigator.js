@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import Home from "./Home/Home";
 import Bookings from "./Bookings/Bookings";
 import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import BookingModal from "../../components/BookingModal/BookingModal";
+import {  Feather } from "@expo/vector-icons";
+import CreateBookingModal from "../../components/CreateBookingModal/CreateBookingModal";
 import Account from "./Account/Account";
 
 const SettingsScreen = () => (
@@ -24,7 +24,7 @@ const MainNavigator = () => {
 
   return (
     <>
-      <BookingModal visible={isModalVisible} onClose={toggleModal} />
+      <CreateBookingModal visible={isModalVisible} onClose={toggleModal} />
       <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: "#479BA7",
@@ -48,7 +48,7 @@ const MainNavigator = () => {
           component={Home}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="home-outline" size={size} color={color} />
+              <Feather name="home" size={size} color={color} />
             ),
           }}
         />
@@ -58,7 +58,7 @@ const MainNavigator = () => {
           component={SettingsScreen}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="calendar-outline" size={size} color={color} />
+              <Feather name="calendar" size={size} color={color} />
             ),
           }}
         />
@@ -71,7 +71,7 @@ const MainNavigator = () => {
               <CustomTabBarButton {...props} onPress={toggleModal} />
             ),
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="add" size={size} color={color} />
+              <Feather name="add" size={size} color={color} />
             ),
           }}
         />
@@ -81,7 +81,7 @@ const MainNavigator = () => {
           component={Bookings}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="albums-outline" size={size} color={color} />
+              <Feather name="archive" size={size} color={color} />
             ),
           }}
         />
@@ -90,7 +90,7 @@ const MainNavigator = () => {
           component={Account}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Ionicons name="person-outline" size={size} color={color} />
+              <Feather name="user" size={size} color={color} />
             ),
           }}
         />
@@ -119,7 +119,7 @@ const CustomTabBarButton = ({ onPress }) => (
         alignItems: "center",
       }}
     >
-      <Ionicons name="add" size={30} color="#fff" />
+      <Feather name="plus" size={30} color="#fff" />
     </View>
   </TouchableOpacity>
 );

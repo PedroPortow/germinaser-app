@@ -11,8 +11,8 @@ import BookingCard from "./components/BookingCard";
 import { useUserContext } from "../../../context/UserContext";
 import { apiGetBookings } from "../../../services/bookings";
 import { Text, Loader, Card, Button } from "@components";
-import BookingModal from "../../../components/BookingModal/BookingModal";
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import CreateBookingModal from "../../../components/CreateBookingModal/CreateBookingModal";
 
 function Home() {
   const { logout, user } = useUserContext();
@@ -58,7 +58,6 @@ function Home() {
 
   const renderBooking = ({ item }) => (
     <BookingCard
-      icon="storefront-outline"
       booking={item}
       onPress={() => handleViewBooking(item)}
     />
@@ -73,7 +72,7 @@ function Home() {
   return (
     <Fragment>
       <View style={styles.topContainer}>
-        <BookingModal
+        <CreateBookingModal
           visible={bookingModalVisible}
           onClose={closeBookingModal}
           selectedBooking={selectedBooking}
@@ -118,6 +117,7 @@ function Home() {
     </Fragment>
   );
 }
+
 
 const styles = StyleSheet.create({
   bottomContainer: {

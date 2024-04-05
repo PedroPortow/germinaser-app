@@ -1,31 +1,29 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
 import ChooseDateModal from "./components/ChooseDateModal";
 import { apiGetClinicRooms, apiGetClinics } from "../../services/clinics";
 import { formatDate } from "../../helpers/date";
 import { apiCreateBooking } from "../../services/bookings";
-import { Modal, Text, Loader } from "@components";
-const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
+import { Modal, Text, Loader, Card } from "@components";
+import { Select, SelectItem, IndexPath } from "@ui-kitten/components";
+import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-  const [room, setRoom] = useState();
+const CreateBookingModal = ({ visible, onClose }) => {
   const [clinic, setClinic] = useState();
+  const [room, setRoom] = useState();
+
+  // ui-kitten
+  const [selectedRoomIndex, setSelectedRoomIndex] = useState(null);
+  const [selectedClinicIndex, setSelectedClinicIndex] = useState(null);
 
   const [roomOptions, setRoomOptions] = useState([]);
   const [clinicOptions, setClinicOptions] = useState([]);
 
   const [dateModalVisible, setDateModalVisible] = useState(false);
+
   const [selectedDay, setSelectedDay] = useState("20");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState();
-  const [isEditing, setIsEditing] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-
-  const hasSelectedBooking = useMemo(() => {
-    return !!Object.keys(selectedBooking).length
-  }, [selectedBooking])
-  
-
-  console.log({selectedBooking})
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getClinicOptions();
@@ -40,39 +38,34 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
         value: clinic.id,
       }));
 
-      
       setClinicOptions(formattedResponse);
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
-  
+
   const resetStates = () => {
-    setRoom(null)
-    setClinic(null)
-    setSelectedDay(null)
-    setSelectedTimeSlot(null)
-  }
-  
+    setRoom(null);
+    setClinic(null);
+    setSelectedDay(null);
+    setSelectedTimeSlot(null);
+
+    // ui-kitten
+    setSelectedClinicIndex(null);
+    setSelectedRoomIndex(null);
+  };
+
   useEffect(() => {
-    if(!visible) {
-      resetStates()
-      return
+    if (!visible) {
+      resetStates();
+      return;
     }
-
-    if(hasSelectedBooking){
-      setClinic(selectedBooking?.clinic_id)
-      setRoom(selectedBooking?.room_id)
-      setSelectedDay(selectedBooking.date)
-      setSelectedTimeSlot(selectedBooking.start_time)
-    }
-
-  }, [visible])
+  }, [visible]);
 
   const getRoomOptions = async (selectedClinic) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const response = await apiGetClinicRooms(selectedClinic);
@@ -85,8 +78,8 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       setRoomOptions(formattedResponse);
     } catch (error) {
       throw error;
-    }  finally {
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,12 +90,16 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
   };
 
   const onChooseClinic = (selectedClinic) => {
-    setClinic(selectedClinic);
+    const selectedClinicId = clinicOptions[selectedClinic.row].value;
+    setClinic(selectedClinicId);
+    setSelectedClinicIndex(selectedClinic);
 
     getRoomOptions(selectedClinic);
   };
   const onChooseRoom = (selectedRoom) => {
-    setRoom(selectedRoom);
+    const selectedRoomId = roomOptions[selectedRoom.row].value;
+    setSelectedRoomIndex(selectedRoom);
+    setRoom(selectedRoomId);
   };
 
   const handleCreateBooking = async () => {
@@ -114,7 +111,6 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       });
 
       onClose();
-
     } catch (error) {
       console.error(error);
       throw error;
@@ -129,7 +125,6 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       });
 
       onClose();
-
     } catch (error) {
       console.error(error);
       throw error;
@@ -140,11 +135,11 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
     <Modal
       visible={visible}
       onClose={onClose}
-      title={`${hasSelectedBooking ? "Visualizar Reserva" : "Nova Reserva"}`}
+      title="Nova Reserva"
       confirmLabel="Reservar"
-      theme={hasSelectedBooking ? "destructive" : "primary"}
-      buttonLabel={hasSelectedBooking ? "Cancelar Reserva" : "Reservar"}
-      onConfirm={hasSelectedBooking ? handleDeleteBooking : handleCreateBooking}
+      theme="primary"
+      buttonLabel="Reservar"
+      onConfirm={handleCreateBooking}
     >
       <Loader loading={isLoading} />
       <ChooseDateModal
@@ -156,32 +151,36 @@ const BookingModal = ({ visible, onClose, selectedBooking={} }) => {
       <View style={styles.content}>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Casa</Text>
-          <RNPickerSelect
-            onValueChange={onChooseClinic}
-            darkTheme={true}
-            value={clinic}
-            style={pickerSelectStyles}
-            items={clinicOptions}
-            disabled={hasSelectedBooking}
-          />
+            <Select
+              onSelect={onChooseClinic}
+              value={clinicOptions[selectedClinicIndex?.row]?.label}
+              placeholder="Seleciona a casa"
+            >
+              {clinicOptions.map((clinic) => (
+                <SelectItem key={clinic.value} title={clinic.label} />
+              ))}
+            </Select>
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Sala</Text>
-          <RNPickerSelect
-            onValueChange={onChooseRoom}
-            value={room}
-            darkTheme={true}
-            style={pickerSelectStyles}
-            items={roomOptions}
-            disabled={!clinic || hasSelectedBooking}
-          />
+        
+            <Select
+              onSelect={onChooseRoom}
+              value={roomOptions[selectedRoomIndex?.row]?.label}
+              disabled={!clinic}
+              placeholder="Seleciona a sala"
+            >
+              {roomOptions.map((room) => (
+                <SelectItem key={room.value} title={room.label} />
+              ))}
+            </Select>
         </View>
         <View style={styles.calendarSection}>
           <Text style={styles.label}>Data</Text>
           <Pressable
             style={styles.pressableInput}
             onPress={() => setDateModalVisible(true)}
-            disabled={hasSelectedBooking || !!room}
+            disabled={!!room}
           >
             <Text>
               {selectedTimeSlot
@@ -215,6 +214,16 @@ const styles = StyleSheet.create({
     color: "black",
     paddingRight: 30,
   },
+  iconTextWrapper: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center'
+
+  },
+  selectedBookingText: {
+    fontWeight: 'semibold',
+    fontSize: 16
+  },
   inputLabelWrapper: {
     flexDirection: "column",
     gap: 4,
@@ -229,27 +238,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "purple",
-    borderRadius: 8,
-    color: "black",
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-});
-
-export default BookingModal;
+export default CreateBookingModal;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-function Card({ children, style }) {
+function Card({ children, style, border = false }) {
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style, border ? styles.border : null]}>
       {children}
     </View>
   );
@@ -22,7 +22,10 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginVertical: 8,
     width: "100%"
-  },
+  }, border: {
+    borderWidth: 0.5,
+    borderColor: '#333'
+  }
 });
 
 export default Card;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Ionicons, AntDesign } from '@expo/vector-icons'; 
 import { Text } from '@components';
 import { formatDate, getWeekDay } from '../../../../helpers';
 import moment from 'moment'
@@ -9,7 +9,7 @@ import { getBookingEndtimeFormatted } from '../helpers';
 function BookingCard({ booking, icon, onPress }) {
   return (
     <Pressable style={styles.container} onPress={onPress}>
-      {icon && <Ionicons name={icon} size={24} style={styles.icon} />}
+      {icon && <AntDesign name={icon} size={22} style={styles.icon} />}
       <View style={styles.textContent}>
         <Text style={styles.text}>{booking.room_name}</Text>
         <Text style={styles.subtext}>{booking.clinic_name}</Text>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginVertical: 8, 
   },
   weekText: {
-    fontSize: 12, 
+    fontSize: 14, 
     fontWeight: 'bold', 
     color: '#333',
   },
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     color: '#333',
   }, 
   timeText:{
-    fontSize: 16, 
+    fontSize: 14, 
     fontWeight: 'bold', 
     color: '#333',
   },
