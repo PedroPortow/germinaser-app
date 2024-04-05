@@ -6,6 +6,7 @@ import RootNavigator from "./src/screens/RootNavigator";
 import { LocaleConfig } from "react-native-calendars";
 import * as eva from '@eva-design/eva';
 import { UserContextProvider } from "./src/context/UserContext";
+import { default as mapping } from './mapping.json';
 
 import { ApplicationProvider } from '@ui-kitten/components';
 
@@ -79,7 +80,7 @@ function App() {
   }
 
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider {...eva} theme={eva.light} customMapping={mapping}>
         <UserContextProvider>
       <NavigationContainer>
         <RootNavigator />
