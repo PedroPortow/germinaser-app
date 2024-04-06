@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
   destructive: {
     backgroundColor: "red",
@@ -76,13 +75,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "red",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
   destructiveOutlineTextSelected: {
     fontSize: 17,
     color: "white",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
   secondary: {
     backgroundColor: "green",
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "#479BA7",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
   outline: {
     backgroundColor: "transparent",
@@ -105,13 +101,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "#479BA7",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
   outlineTextSelected: {
     fontSize: 17,
     color: "white",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
   disabled: {
     backgroundColor: "#ccc",
@@ -121,7 +115,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: "white",
     fontWeight: "bold",
-    textTransform: "uppercase",
   },
 });
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { Spinner } from '@ui-kitten/components';
 
-
-// TODO: Arrumar o loader
-function Loader({ loading, size="large" }) {
+function Loader({ loading=true, size="large" }) {
 
   if(!loading){
     return null 
@@ -11,7 +10,7 @@ function Loader({ loading, size="large" }) {
   
   return (
     <View style={styles.container}>
-      <ActivityIndicator animating={loading} size={size} color="#479BA7" />
+      <Spinner animating={true} size={size} />
     </View>
   );
 }
