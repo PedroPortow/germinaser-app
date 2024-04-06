@@ -6,14 +6,13 @@ import {
   ActivityIndicator,
   FlatList,
 } from "react-native";
-import RoundCard from "./components/RoundCard";
 import BookingCard from "./components/BookingCard";
 import { useUserContext } from "../../../context/UserContext";
 import { apiGetBookings } from "../../../services/bookings";
-import { Text, Loader, Card, Button } from "@components";
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import CreateBookingModal from "../../../components/CreateBookingModal/CreateBookingModal";
 import BookingModal from "../../../components/BookingModal/BookingModal";
+import { Text, Loader, Card, Button, RoundCard } from "@components";
 
 function Home() {
   const { logout, user } = useUserContext();

@@ -108,7 +108,7 @@ const MainNavigator = () => {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="text"
           component={TextsViewer}
           options={{
@@ -116,7 +116,7 @@ const MainNavigator = () => {
               <Feather name="home" size={size} color={color} />
             ),
           }}
-        />
+        /> */}
 
         <Tab.Screen
           name="Horários"

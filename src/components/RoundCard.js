@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet,  View } from 'react-native';
-import Text from '../../../../components/Text/Text';
+import Text from './Text/Text';
 
 function RoundCard({ text, icon, value }) {
   return (
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5, 
     marginVertical: 8,
-    width: "48%"
+    width: "48%",
   },
   textContent: {
     flex: 1, 

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import Text  from "../Text/Text"
+import {  Ionicons } from "@expo/vector-icons";
 
 const Button = ({
   onPress,
@@ -9,6 +10,7 @@ const Button = ({
   children,
   selected = false,
   disabled = false,
+  icon
 }) => {
   const buttonStyle = StyleSheet.flatten([
     styles.button,
@@ -30,6 +32,7 @@ const Button = ({
       style={buttonStyle}
       disabled={disabled}
     >
+      {icon && <Ionicons name={icon} size={22} style={styles.icon}/>}
       <Text style={textStyle}>{children}</Text>
     </Pressable>
   );
@@ -37,18 +40,23 @@ const Button = ({
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 16,
+    paddingVertical: 12,
     paddingHorizontal: 8,
     width: "auto",
+    gap: 4,
     borderRadius: 12,
     justifyContent: "center",
+    flexDirection: 'row',
     alignItems: "center",
   },
   primary: {
     backgroundColor: "#479BA7",
   },
+  icon: {
+    color: 'white'
+  },
   primaryText: {
-    fontSize: 17,
+    fontSize: 16,
     color: "white",
     fontWeight: "bold",
     textTransform: "uppercase",
