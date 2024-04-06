@@ -1,7 +1,9 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useEffect, useMemo } from "react";
 import * as SecureStore from "expo-secure-store";
 import { apiPostLogin } from "../services/auth";
 import { apiGetUserData } from "../services/user";
+import { ROLES } from "@constants";
+import { hasRole } from "@helpers";
 
 const UserContext = createContext();
 
@@ -29,6 +31,10 @@ export const UserContextProvider = ({ children }) => {
     loadToken();
   }, []);
 
+  const isAdminOrOwner = useMemo(() => {
+    return hasRole(user.role, [ROLES.ADMIN, ROLES.OWNER]);
+  }, [user.role]);
+
   const getUserData = async() => {
     try {
       const response = await apiGetUserData()
@@ -39,9 +45,12 @@ export const UserContextProvider = ({ children }) => {
     } 
   }
 
+  console.log({user})
+
   const login = async (email, password) => {
     try {
       const response = await apiPostLogin(email, password);
+
 
       const token = response.headers.authorization; 
 
@@ -68,6 +77,7 @@ export const UserContextProvider = ({ children }) => {
     login,
     logout,
     user,
+    isAdminOrOwner,
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;

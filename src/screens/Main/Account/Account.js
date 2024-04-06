@@ -3,15 +3,14 @@ import { StyleSheet, View } from "react-native";
 import { useUserContext } from "../../../context/UserContext";
 import { Text, RoundCard, Button, Card } from "@components";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 function Account() {
-  const { user, logout } = useUserContext();
+  const { user, logout, isAdminOrOwner } = useUserContext();
+  const navigation = useNavigation();
 
-  console.log({ user });
+  console.log({isAdminOrOwner})
 
-  // logout()
-
-  console.log("aeaeaea");
   return (
     <Fragment>
       <View style={styles.topContainer}>
@@ -46,7 +45,7 @@ function Account() {
         <Card>
           <Text>email: {user.email}</Text>
         </Card>
-        {user.isAdmin && <Button>Área Administrador</Button>}
+        {isAdminOrOwner && <Button style={styles.marginBottom} onPress={() => navigation.navigate('Admin')}>Área Administrador</Button>}
         <Button 
           onPress={logout} 
           style={styles.buttonBottomPos}
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#479BA7",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    height: 170,
+    height: 120,
   },
   topText: {
     fontWeight: "bold",
@@ -90,6 +89,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10,
   },
+  marginBottom: {
+    marginBottom: 8
+  }
 });
 
 export default Account;
