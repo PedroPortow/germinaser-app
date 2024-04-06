@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainNavigator from "./Main/MainNavigator";
 import AuthNavigator from "./Auth/AuthNavigator";
 import { useUserContext } from "../context/UserContext";
-import Admin from "./Admin/Admin";
+import AdminNavigator from "./Admin/AdminNavigator";
 
 const RootStack = createNativeStackNavigator();
 
@@ -15,7 +15,7 @@ function RootNavigator() {
       {isAuthenticated ? (
         <Fragment>
           <RootStack.Screen component={MainNavigator} name="Main" />
-          <RootStack.Screen component={Admin} name="Admin" />
+          <RootStack.Screen component={AdminNavigator} name="Admin" />
         </Fragment>
       ) : (
         <RootStack.Screen component={AuthNavigator} name="Auth" />

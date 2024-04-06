@@ -1,0 +1,65 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Feather } from "@expo/vector-icons";
+import Users from "./Users";
+import Clinics from "./Clinics";
+import Rooms from "./Rooms";
+
+const Tab = createBottomTabNavigator();
+
+const AdminNavigator = () => {
+
+  return (
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: "#479BA7",
+          tabBarInactiveTintColor: "gray",
+          tabBarHideOnKeyboard: true,
+          headerShown: false,
+          tabBarStyle: {
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            left: 0,
+            elevation: 0,
+            background: "#fff",
+          },
+        }}
+        initialRouteName="Home"
+        backBehavior="history"
+      >
+        <Tab.Screen
+          name="Usuários"
+          component={Users}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Feather name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Salas"
+          component={Rooms}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Feather name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Clínicas"
+          component={Clinics}
+          options={{
+            tabBarIcon: ({ size, color }) => (
+              <Feather name="home" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+  );
+};
+
+const EmptyView = () => {
+  return null;
+};
+
+export default AdminNavigator;

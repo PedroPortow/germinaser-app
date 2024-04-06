@@ -1,12 +1,13 @@
 import React from 'react'
 import { View } from 'react-native'
+import { Text } from '@components'
 
-function Admin() {
+function Rooms() {
   return (
     <View>
-      
+      <Text>Rooms</Text>
     </View>
   )
 }
 
-export default Admin
+export default Rooms
