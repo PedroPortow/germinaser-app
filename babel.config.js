@@ -15,7 +15,8 @@ module.exports = function(api) {
             "@assets": "./src/assets",
             "@context": "./src/context",
             "@services": "./src/services",
-            "@helpers": "./src/helpers"
+            "@helpers": "./src/helpers",
+            "@fonts": "./src/assets/fonts"
           },
         },
       ],
