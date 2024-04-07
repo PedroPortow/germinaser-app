@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Feather } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import Users from "./Users";
 import Clinics from "./Clinics";
 import Rooms from "./Rooms";
@@ -32,7 +32,7 @@ const AdminNavigator = () => {
           component={Users}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Feather name="home" size={size} color={color} />
+              <Feather name="user" size={size} color={color} />
             ),
           }}
         />
@@ -41,7 +41,7 @@ const AdminNavigator = () => {
           component={Rooms}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Feather name="home" size={size} color={color} />
+              <FontAwesome5 name="door-open" size={size} color={color} />
             ),
           }}
         />
@@ -50,7 +50,7 @@ const AdminNavigator = () => {
           component={Clinics}
           options={{
             tabBarIcon: ({ size, color }) => (
-              <Feather name="home" size={size} color={color} />
+              <FontAwesome5 name="clinic-medical" size={size} color={color} />
             ),
           }}
         />

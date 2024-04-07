@@ -110,7 +110,7 @@ const CreateBookingModal = ({ visible, onClose, onCreate }) => {
         room_id: room,
       });
 
-      onCreate()
+      // onCreate()
       onClose();
     } catch (error) {
       console.error(error);
