@@ -49,7 +49,10 @@
     "import/no-extraneous-dependencies": "off",
     "import/no-named-default": "off",
     "global-require": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-unstable-nested-components": "off", // TODO: Revisar
+    "no-console": "off"
   },
   "settings": {
     "react": {
