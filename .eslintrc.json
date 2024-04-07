@@ -52,7 +52,8 @@
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
     "react/no-unstable-nested-components": "off", // TODO: Revisar
-    "no-console": "off"
+    "no-console": "off",
+    "react-native/no-raw-text": "off"
   },
   "settings": {
     "react": {
