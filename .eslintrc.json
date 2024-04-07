@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 {
   "env": {
     "es2021": true,
@@ -10,7 +9,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-native/all",
-    "airbnb"
+    "airbnb",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -24,16 +24,36 @@
     "react-native"
   ],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/prop-types": 0,
-    "no-use-before-define": ["error", { "functions": false, "classes": false, "variables": false }],
-    "react-native/no-color-literals": 0,
-    "react-native/sort-styles": 0, 
-    "object-curly-newline": 0
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/prop-types": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": false
+      }
+    ],
+    "react-native/no-color-literals": "off",
+    "react-native/sort-styles": "off",
+    "object-curly-newline": "off",
+    "comma-dangle": "off",
+    "import/no-extraneous-dependencies": "off"
   },
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "babel-module": {}
     }
   }
 }
