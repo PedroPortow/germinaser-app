@@ -46,7 +46,10 @@
     "react-native/sort-styles": "off",
     "object-curly-newline": "off",
     "comma-dangle": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "import/no-named-default": "off",
+    "global-require": "off",
+    "react/jsx-props-no-spreading": "off"
   },
   "settings": {
     "react": {

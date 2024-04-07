@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginVertical: 8,
     width: "100%"
-  }, border: {
+  },
+  border: {
     borderWidth: 0.5,
     borderColor: '#333'
   }

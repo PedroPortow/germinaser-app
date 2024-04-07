@@ -15,7 +15,7 @@ function RootNavigator() {
       {isAuthenticated ? (
         <Fragment>
           <RootStack.Screen component={MainNavigator} name="Main" />
-          <RootStack.Screen component={AdminNavigator} name="Admin" />
+          {/* <RootStack.Screen component={AdminNavigator} name="Admin" /> */}
         </Fragment>
       ) : (
         <RootStack.Screen component={AuthNavigator} name="Auth" />
