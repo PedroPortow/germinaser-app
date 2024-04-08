@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IndexPath, Input, Select, SelectItem } from '@ui-kitten/components'
-import { ConfirmableModal, Loader } from '@components'
-import { apiGetRoles, apiUpdateUser } from '../../../../services/user'
+import { ConfirmableModal, Loader, NumberInput } from '@components'
+import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/user'
 
 function UserModal({ user, visible, close, onSubmit }) {
   const [rolesOptions, setRolesOptions] = useState([])
   // todo: arrumar o loader n ta pegando nessas modals
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [name, setName] = useState()
   const [email, setEmail] = useState()
   const [credits, setCredits] = useState()
-  // const [password, setPassword] = useState()
+  const [password, setPassword] = useState()
   const [role, setRole] = useState()
+
+  const creatingUser = useMemo(() => !Object.keys(user).length, [user])
 
   // kitten-ui
   const [selectedRoleIndex, setSelectedRoleIndex] = useState()
@@ -32,6 +34,12 @@ function UserModal({ user, visible, close, onSubmit }) {
       setSelectedUserInfo()
     }
   }, [visible])
+
+  useEffect(() => {
+    if (visible && creatingUser) {
+      setCredits(0)
+    }
+  }, [visible, creatingUser])
 
   const setSelectedUserInfo = () => {
     setName(user.name)
@@ -71,24 +79,43 @@ function UserModal({ user, visible, close, onSubmit }) {
     setSelectedRoleIndex(new IndexPath(roleIndex))
   }
 
-  const handleSubmit = async () => {
+  const handleCreateUser = async () => {
     try {
       const params = {
         name,
         email,
         credits,
-        // password,
+        password,
+        role,
+      }
+
+      const response = await apiCreateUser(params)
+      onSubmit()
+      console.log({ response })
+      close()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  const handleEditUser = async () => {
+    try {
+      const params = {
+        name,
+        email,
+        credits,
         role,
       }
 
       const response = await apiUpdateUser(user.id, params)
       onSubmit()
       console.log({ response })
+      close()
     } catch (error) {
       console.error(error)
     } finally {
       setIsLoading(false)
-      close()
     }
   }
 
@@ -99,10 +126,10 @@ function UserModal({ user, visible, close, onSubmit }) {
         visible={visible}
         backdropStyle={styles.backdrop}
         close={close}
-        cancelButtonLabel="Excluir Usuário"
-        confirmButtonLabel="Salvar alterações"
+        cancelButtonLabel={creatingUser ? 'Cancelar' : 'Excluir Usuário'}
+        confirmButtonLabel={creatingUser ? 'Criar Usuário' : 'Salvar alterações'}
         // confirmButtonDisabled
-        onConfirm={handleSubmit}
+        onConfirm={creatingUser ? handleCreateUser : handleEditUser}
         onCancel={handleDeleteUser}
       >
         <View style={styles.cardContainer}>
@@ -113,23 +140,29 @@ function UserModal({ user, visible, close, onSubmit }) {
             onChangeText={(value) => setName(value)}
           />
           <Input
-            placeholder="Email do Usuário"
+            placeholder="usuario@gmail.com"
             value={email}
             label="Email"
             onChangeText={(value) => setEmail(value)}
           />
-          <Input
-            placeholder="Créditos"
-            value={String(credits)}
+          {creatingUser && (
+            <Input
+              value={password}
+              label="Senha"
+              secureTextEntry
+              onChangeText={(value) => setPassword(value)}
+            />
+          )}
+          <NumberInput
+            initialValue={credits || 0}
             label="Créditos"
-            keyboardType="numeric"
-            onChangeText={(value) => setCredits(value)}
+            onChange={(value) => setCredits(value)}
           />
           <Select
             selectedIndex={selectedRoleIndex}
             onSelect={onChangeRole}
             label="Cargo"
-            value={rolesOptions[selectedRoleIndex?.row]?.label}
+            value={rolesOptions[selectedRoleIndex?.row]?.label || 'Selecione uma opção'}
             placeholder="Cargo"
           >
             {rolesOptions.map((role) => (

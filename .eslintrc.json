@@ -54,7 +54,9 @@
     "react/no-unstable-nested-components": "off", // TODO: Revisar
     "no-console": "off",
     "react-native/no-raw-text": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "react-native/no-inline-styles": "off",
+    "react/jsx-no-bind": "off"
   },
   "settings": {
     "react": {

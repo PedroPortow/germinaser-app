@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
 function StatusBadge({ status }) {
   const statusMapping = {
@@ -21,16 +21,16 @@ function StatusBadge({ status }) {
       textColor: '#FFFFFF',
       borderColor: '#17a2b8', // Azul original para borda e círculo
     },
-  };
+  }
 
-  const { text, backgroundColor, textColor, borderColor } = statusMapping[status] || {};
+  const { text, backgroundColor, textColor, borderColor } = statusMapping[status] || {}
 
   return (
     <View style={[styles.badge, { borderColor, backgroundColor }]}>
       <View style={[styles.circle, { backgroundColor: borderColor }]} />
       <Text style={[styles.text, { color: textColor }]}>{text}</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-});
+})
 
-export default StatusBadge;
+export default StatusBadge

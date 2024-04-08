@@ -6,17 +6,14 @@ import { Loader } from '@components'
 import Table from '../components/Table'
 import { apiGetAllUsers } from '../../../services/user'
 import UserModal from './components/UserModal'
+import CreditsModal from './components/CreditsModal'
 
 function Users() {
   const [users, setUsers] = useState([])
-  const [modalVisible, setModalVisible] = useState(false)
+  const [userModalVisible, setUserModalVisible] = useState(false)
+  const [creditsModalVisible, setCreditsModalVisible] = useState(false)
   const [selectedUser, setSelectedUser] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-
-  const handleSelectUser = (user) => {
-    setSelectedUser(user)
-    setModalVisible(true)
-  }
 
   const getUsers = async () => {
     setUsers([])
@@ -37,6 +34,11 @@ function Users() {
     getUsers()
   }, [])
 
+  const openCreateUserModal = () => {
+    setSelectedUser({})
+    setUserModalVisible(true)
+  }
+
   const renderItem = ({ item }) => (
     <ListItem
       title={`${item.name}`}
@@ -45,13 +47,24 @@ function Users() {
       accessoryRight={() => (
         <>
           <Button
-            onPress={() => console.log('alterar credétios')}
+            onPress={() => {
+              setSelectedUser(item)
+              setCreditsModalVisible(true)
+            }}
             appearance="ghost"
             status="primary"
           >
             Alterar créditos
           </Button>
-          <Feather name="edit" size={18} color="black" onPress={() => handleSelectUser(item)} />
+          <Feather
+            name="edit"
+            size={18}
+            color="black"
+            onPress={() => {
+              setSelectedUser(item)
+              setUserModalVisible(true)
+            }}
+          />
         </>
       )}
     />
@@ -60,20 +73,24 @@ function Users() {
   return (
     <View style={styles.container}>
       <Loader loading={isLoading} />
+
       <UserModal
         user={selectedUser}
-        visible={modalVisible}
-        close={() => setModalVisible(false)}
+        visible={userModalVisible}
+        close={() => setUserModalVisible(false)}
+        onSubmit={() => getUsers()}
+      />
+      <CreditsModal
+        user={selectedUser}
+        visible={creditsModalVisible}
+        close={() => setCreditsModalVisible(false)}
         onSubmit={() => getUsers()}
       />
 
-      <Table
-        headerText="Nome"
-        data={users}
-        listItem={renderItem}
-        modalVisible={modalVisible}
-        closeModal={() => setModalVisible(false)}
-      />
+      <Table data={users} listItem={renderItem} />
+      <Button appearance="ghost" onPress={openCreateUserModal}>
+        + Adicionar Usuário
+      </Button>
     </View>
   )
 }

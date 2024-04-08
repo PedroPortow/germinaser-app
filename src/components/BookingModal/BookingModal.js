@@ -1,29 +1,29 @@
 // Componente pra mostrar/cancelar (futuramente editar?) bookings
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Modal, Button, Card, Text } from '@components';
-import { Ionicons, Feather } from '@expo/vector-icons';
-import { Divider } from '@ui-kitten/components';
-import StatusBadge from '../StatusBadge/StatusBadge';
-import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Modal, Button, Card, Text } from '@components'
+import { Ionicons, Feather } from '@expo/vector-icons'
+import { Divider } from '@ui-kitten/components'
+import StatusBadge from '../StatusBadge/StatusBadge'
+import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
 
 function BookingModal({ booking, visible, onClose }) {
-  const oi = 2;
+  const oi = 2
 
   const handleDeleteBooking = async () => {
     try {
-      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`;
+      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
       const response = await apiCreateBooking({
         start_time: startTime,
         room_id: room,
-      });
+      })
 
-      onClose();
+      onClose()
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error(error)
+      throw error
     }
-  };
+  }
 
   return (
     <Modal
@@ -63,7 +63,7 @@ function BookingModal({ booking, visible, onClose }) {
         </Card>
       </View>
     </Modal>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
   badgeWrapper: {
     maxWidth: 120,
   },
-});
+})
 
-export default BookingModal;
+export default BookingModal
