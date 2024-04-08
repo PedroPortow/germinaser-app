@@ -13,7 +13,7 @@ function AdminNavigator() {
         tabBarActiveTintColor: '#479BA7',
         tabBarInactiveTintColor: 'gray',
         tabBarHideOnKeyboard: true,
-        headerShown: false,
+        // headerShown: false,
         tabBarStyle: {
           position: 'absolute',
           bottom: 0,
