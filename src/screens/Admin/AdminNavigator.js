@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Feather, FontAwesome5 } from '@expo/vector-icons'
-import Clinics from './Clinics'
-import Rooms from './Rooms'
+import Clinics from './Clinics/Clinics'
+import Rooms from './Rooms/Rooms'
 import Users from './Users/Users'
 
 const Tab = createBottomTabNavigator()
