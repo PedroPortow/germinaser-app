@@ -1,6 +1,6 @@
-import api from "./api";
+import api from './api'
 
 export const apiPostLogin = (email, password) =>
-  api.post("/login", {
+  api.post('/login', {
     user: { email, password },
-  });
+  })

@@ -1,12 +1,8 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 
 function Card({ children, style, border = false }) {
-  return (
-    <View style={[styles.container, style, border ? styles.border : null]}>
-      {children}
-    </View>
-  );
+  return <View style={[styles.container, style, border ? styles.border : null]}>{children}</View>
 }
 
 const styles = StyleSheet.create({
@@ -21,12 +17,12 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     marginVertical: 8,
-    width: "100%"
+    width: '100%',
   },
   border: {
     borderWidth: 0.5,
-    borderColor: '#333'
-  }
-});
+    borderColor: '#333',
+  },
+})
 
-export default Card;
+export default Card

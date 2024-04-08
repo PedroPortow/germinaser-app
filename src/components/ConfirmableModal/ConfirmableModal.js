@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Card } from '@components'
 import { Modal, Button } from '@ui-kitten/components'
+import Card from '../Cards/Card'
 
 function ConfirmableModal({
   visible,
