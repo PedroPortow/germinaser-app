@@ -1,123 +1,121 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
-import ChooseDateModal from "./components/ChooseDateModal";
-import { apiGetClinicRooms, apiGetClinics } from "../../services/clinics";
-import { formatDate } from "../../helpers/date";
-import { apiCreateBooking } from "../../services/bookings";
-import { Modal, Text, Loader, Card } from "@components";
-import { Select, SelectItem, IndexPath } from "@ui-kitten/components";
-import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useMemo, useState } from 'react'
+import { View, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { Modal, Text, Loader, Card } from '@components'
+import { Select, SelectItem, IndexPath } from '@ui-kitten/components'
+import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import ChooseDateModal from './components/ChooseDateModal'
+import { apiGetClinicRooms, apiGetClinics } from '../../services/clinics'
+import { formatDate } from '../../helpers/date'
+import { apiCreateBooking } from '../../services/bookings'
 
-const CreateBookingModal = ({ visible, onClose, onCreate }) => {
-  const [clinic, setClinic] = useState();
-  const [room, setRoom] = useState();
+function CreateBookingModal({ visible, onClose, onCreate }) {
+  const [clinic, setClinic] = useState()
+  const [room, setRoom] = useState()
 
   // ui-kitten
-  const [selectedRoomIndex, setSelectedRoomIndex] = useState(null);
-  const [selectedClinicIndex, setSelectedClinicIndex] = useState(null);
+  const [selectedRoomIndex, setSelectedRoomIndex] = useState(null)
+  const [selectedClinicIndex, setSelectedClinicIndex] = useState(null)
 
-  const [roomOptions, setRoomOptions] = useState([]);
-  const [clinicOptions, setClinicOptions] = useState([]);
+  const [roomOptions, setRoomOptions] = useState([])
+  const [clinicOptions, setClinicOptions] = useState([])
 
-  const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [dateModalVisible, setDateModalVisible] = useState(false)
 
-  const [selectedDay, setSelectedDay] = useState("20");
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedDay, setSelectedDay] = useState('20')
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    getClinicOptions();
-  }, []);
+    getClinicOptions()
+  }, [])
 
   const getClinicOptions = async () => {
     try {
-      const response = await apiGetClinics();
+      const response = await apiGetClinics()
 
       const formattedResponse = response.data.map((clinic) => ({
         label: clinic.name,
         value: clinic.id,
-      }));
+      }))
 
-      setClinicOptions(formattedResponse);
+      setClinicOptions(formattedResponse)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const resetStates = () => {
-    setRoom(null);
-    setClinic(null);
-    setSelectedDay(null);
-    setSelectedTimeSlot(null);
+    setRoom(null)
+    setClinic(null)
+    setSelectedDay(null)
+    setSelectedTimeSlot(null)
 
     // ui-kitten
-    setSelectedClinicIndex(null);
-    setSelectedRoomIndex(null);
-  };
+    setSelectedClinicIndex(null)
+    setSelectedRoomIndex(null)
+  }
 
   useEffect(() => {
     if (!visible) {
-      resetStates();
-      return;
+      resetStates()
     }
-  }, [visible]);
+  }, [visible])
 
   const getRoomOptions = async (selectedClinic) => {
-    setIsLoading(true);
+    setIsLoading(true)
 
     try {
-      const response = await apiGetClinicRooms(selectedClinic);
+      const response = await apiGetClinicRooms(selectedClinic)
 
       const formattedResponse = response.data.map((room) => ({
         label: room.name,
         value: room.id,
-      }));
+      }))
 
-      setRoomOptions(formattedResponse);
+      setRoomOptions(formattedResponse)
     } catch (error) {
-      throw error;
+      throw error
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const onChooseDate = (day, timeslot) => {
-    setSelectedDay(day);
-    setSelectedTimeSlot(timeslot);
-    setDateModalVisible(false);
-  };
+    setSelectedDay(day)
+    setSelectedTimeSlot(timeslot)
+    setDateModalVisible(false)
+  }
 
   const onChooseClinic = (selectedClinic) => {
-    const selectedClinicId = clinicOptions[selectedClinic.row].value;
-    setClinic(selectedClinicId);
-    setSelectedClinicIndex(selectedClinic);
+    const selectedClinicId = clinicOptions[selectedClinic.row].value
+    setClinic(selectedClinicId)
+    setSelectedClinicIndex(selectedClinic)
 
-    getRoomOptions(selectedClinic);
-  };
+    getRoomOptions(selectedClinic)
+  }
   const onChooseRoom = (selectedRoom) => {
-    const selectedRoomId = roomOptions[selectedRoom.row].value;
-    setSelectedRoomIndex(selectedRoom);
-    setRoom(selectedRoomId);
-  };
+    const selectedRoomId = roomOptions[selectedRoom.row].value
+    setSelectedRoomIndex(selectedRoom)
+    setRoom(selectedRoomId)
+  }
 
   const handleCreateBooking = async () => {
     try {
-      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`;
+      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
       const response = await apiCreateBooking({
         start_time: startTime,
         room_id: room,
-      });
+      })
 
       // onCreate()
-      onClose();
+      onClose()
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error(error)
+      throw error
     }
-  };
- 
+  }
 
   return (
     <Modal
@@ -139,29 +137,29 @@ const CreateBookingModal = ({ visible, onClose, onCreate }) => {
       <View style={styles.content}>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Casa</Text>
-            <Select
-              onSelect={onChooseClinic}
-              value={clinicOptions[selectedClinicIndex?.row]?.label}
-              placeholder="Seleciona a casa"
-            >
-              {clinicOptions.map((clinic) => (
-                <SelectItem key={clinic.value} title={clinic.label} />
-              ))}
-            </Select>
+          <Select
+            onSelect={onChooseClinic}
+            value={clinicOptions[selectedClinicIndex?.row]?.label}
+            placeholder="Seleciona a casa"
+          >
+            {clinicOptions.map((clinic) => (
+              <SelectItem key={clinic.value} title={clinic.label} />
+            ))}
+          </Select>
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Sala</Text>
-        
-            <Select
-              onSelect={onChooseRoom}
-              value={roomOptions[selectedRoomIndex?.row]?.label}
-              disabled={!clinic}
-              placeholder="Seleciona a sala"
-            >
-              {roomOptions.map((room) => (
-                <SelectItem key={room.value} title={room.label} />
-              ))}
-            </Select>
+
+          <Select
+            onSelect={onChooseRoom}
+            value={roomOptions[selectedRoomIndex?.row]?.label}
+            disabled={!clinic}
+            placeholder="Seleciona a sala"
+          >
+            {roomOptions.map((room) => (
+              <SelectItem key={room.value} title={room.label} />
+            ))}
+          </Select>
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Data</Text>
@@ -170,21 +168,23 @@ const CreateBookingModal = ({ visible, onClose, onCreate }) => {
             onPress={() => setDateModalVisible(true)}
             disabled={!room}
           >
-            {selectedTimeSlot 
-              ?  <Text style={styles.selectedTimeText}>{formatDate(selectedDay)} - {selectedTimeSlot}</Text>
-              :   <Text style={styles.placeholder}>Selecione a data</Text>
-            }
-          
+            {selectedTimeSlot ? (
+              <Text style={styles.selectedTimeText}>
+                {formatDate(selectedDay)} - {selectedTimeSlot}
+              </Text>
+            ) : (
+              <Text style={styles.placeholder}>Selecione a data</Text>
+            )}
           </Pressable>
         </View>
       </View>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   content: {
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: 26,
     padding: 10,
     marginTop: 40,
@@ -192,45 +192,44 @@ const styles = StyleSheet.create({
   selectedTimeText: {
     color: '#222B45',
     fontWeight: 'bold',
-    fontSize: 15
+    fontSize: 15,
   },
   placeholder: {
     color: '#C5CCD9',
     fontWeight: 'semibold',
-    fontSize: 15
+    fontSize: 15,
   },
   pressableInput: {
     paddingVertical: 9,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: "#E4E9F2",
+    borderColor: '#E4E9F2',
     borderRadius: 4,
-    color: "black",
+    color: 'black',
     paddingRight: 30,
-    backgroundColor: "#F7F9FC"
+    backgroundColor: '#F7F9FC',
   },
   iconTextWrapper: {
     flexDirection: 'row',
     gap: 8,
-    alignItems: 'center'
-
+    alignItems: 'center',
   },
   selectedBookingText: {
     fontWeight: 'semibold',
-    fontSize: 16
+    fontSize: 16,
   },
   inputLabelWrapper: {
-    flexDirection: "column",
+    flexDirection: 'column',
     gap: 4,
   },
   select: {
-    backgroundColor: "red",
-    width: "100%",
-    height: "100%",
+    backgroundColor: 'red',
+    width: '100%',
+    height: '100%',
   },
   label: {
     fontSize: 20,
   },
-});
+})
 
-export default CreateBookingModal;
+export default CreateBookingModal
