@@ -1,100 +1,60 @@
-import React from 'react';
-import { Button, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { Text } from '@components';
-import BookingCard from '../Home/components/BookingCard';
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
+import { Agenda } from 'react-native-calendars'
 
 function Bookings() {
+  const [items, setItems] = useState({})
+
+  const today = new Date()
+
+  const getBookingsByDay = (day) => {
+    setTimeout(() => {
+      setItems(newItems)
+    }, 1000)
+  }
+
+  useEffect(() => {}, [])
+
+  const renderItem = (item) => (
+    <View style={styles.item}>
+      <Text>{item.name}</Text>
+    </View>
+  )
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.previousReservationsColumn}>
-        <Text style={styles.mainText}>Proximas Reservas</Text>
-        <ScrollView nestedScrollEnabled={true}>
-          {weeklyBookings.map((booking, index) => (
-            <BookingCard key={index} icon="storefront-outline" booking={booking} />
-          ))}
-        </ScrollView>
-      </View>
-      <View style={styles.nextReservationsColumn} nestedScrollEnabled={true}>
-        <Text style={styles.mainText}>Histórico Reservas</Text>
-        <ScrollView>
-          {weeklyBookings.map((booking, index) => (
-            <BookingCard key={index} icon="storefront-outline" booking={booking} />
-          ))}
-        </ScrollView>
-      </View>
-    </ScrollView>
-  );
+    <Agenda
+      items={{
+        '2024-04-09': [{ name: 'item 1 - any js object' }],
+      }}
+      loadItemsForMonth={(month) => {
+        console.log('trigger items loading')
+      }}
+      selected={today}
+      minDate="2024-04-01"
+      renderItem={renderItem}
+      renderEmptyDate={() => (
+        <View>
+          <Text>oi</Text>
+        </View>
+      )}
+    />
+  )
+}
+
+function timeToString(time) {
+  const date = new Date(time)
+  return date.toISOString().split('T')[0]
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 100,
-    paddingHorizontal: 20
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
   },
-  previousReservationsColumn: {
-    flexDirection: "column"
-  },
-  nextReservationsColumn: {
-    flexDirection: "column",
-    marginTop: 20
-  },
-  mainText: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 10,
-  },
-});
+})
 
-const weeklyBookings = [
-  {
-    house: "Casa 1",
-    room: "Sala 3",
-    date: "23/05/12",
-    week_day: "Segunda",
-    starting_time: "14:10",
-    ending_time: "15:10"
-  },
-  {
-    house: "Casa 1",
-    room: "Sala 3",
-    date: "23/05/12",
-    week_day: "Segunda",
-    starting_time: "14:10",
-    ending_time: "15:10"
-  },
-  {
-    house: "Casa 1",
-    room: "Sala 3",
-    date: "23/05/12",
-    week_day: "Segunda",
-    starting_time: "14:10",
-    ending_time: "15:10"
-  },
-  {
-    house: "Casa 1",
-    room: "Sala 3",
-    date: "23/05/12",
-    week_day: "Segunda",
-    starting_time: "14:10",
-    ending_time: "15:10"
-  },
-  {
-    house: "Casa 1",
-    room: "Sala 3",
-    date: "23/05/12",
-    week_day: "Segunda",
-    starting_time: "14:10",
-    ending_time: "15:10"
-  },
-  {
-    house: "Casa 1",
-    room: "Sala 3",
-    date: "23/05/12",
-    week_day: "Segunda",
-    starting_time: "14:10",
-    ending_time: "15:10"
-  },
-
-]
-
-export default Bookings;
+export default Bookings
