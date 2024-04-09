@@ -43,6 +43,7 @@ function MainNavigator() {
             background: '#fff',
           },
         }}
+        detachInactiveScreens
         initialRouteName="Home"
         backBehavior="history"
       >
