@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, TextInput, Alert, Image, Pressable } from 'react-native'
+import { StyleSheet, View, TextInput, Image } from 'react-native'
 import { Text, Button } from '@components'
 import { useUserContext } from '../../../context/UserContext'
 

@@ -89,7 +89,7 @@ function Home() {
           />
           <RoundCard
             text="Reservas atuais"
-            value={user.credits}
+            value={user.bookings_count}
             icon={<Ionicons name="calendar-number-outline" size={24} style={styles.icon} />}
           />
         </View>
