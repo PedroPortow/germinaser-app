@@ -14,7 +14,7 @@ function CustomModal({
   title,
   closeIcon = 'close',
   onConfirm,
-  buttonLabel = 'confirmar',
+  buttonLabel = 'Confirmar',
   disableConfirm,
   animationOut = 'slideOutDown',
   theme = 'primary',
