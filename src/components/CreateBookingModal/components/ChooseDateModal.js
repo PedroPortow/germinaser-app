@@ -1,42 +1,41 @@
-import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, Pressable } from "react-native";
-import { Text, Modal, Button, Loader } from "@components";
-import { Calendar } from "react-native-calendars";
-import { apiGetDayAvailableBookings } from "../../../services/bookings";
+import React, { useState } from 'react'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Text, Modal, Button, Loader } from '@components'
+import { Calendar } from 'react-native-calendars'
+import { apiGetDayAvailableBookings } from '../../../services/bookings'
 
 function ChooseDateModal({ room, onClose, visible, onConfirm }) {
-  const [selectedDay, setSelectedDay] = useState("");
-  const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedDay, setSelectedDay] = useState('')
+  const [availableTimeSlots, setAvailableTimeSlots] = useState([])
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   const fetchAvailableTimeSlots = async (day) => {
-    setIsLoading(true);
+    setIsLoading(true)
     setAvailableTimeSlots([])
 
-    const date = day.dateString;
+    const date = day.dateString
 
     const params = {
-      date: date,
+      date,
       room_id: room,
-    };
+    }
 
     try {
-      const response = await apiGetDayAvailableBookings(params);
+      const response = await apiGetDayAvailableBookings(params)
 
-      setAvailableTimeSlots(response.data.available_slots);
-
+      setAvailableTimeSlots(response.data.available_slots)
     } catch (err) {
-      console.log("deu bosta");
+      console.log('deu bosta')
     } finally {
       setIsLoading(false)
     }
-  };
+  }
 
   const onSelectDay = (day) => {
-    setSelectedDay(day.dateString);
-    fetchAvailableTimeSlots(day);
-  };
+    setSelectedDay(day.dateString)
+    fetchAvailableTimeSlots(day)
+  }
 
   return (
     <Modal
@@ -54,14 +53,14 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
         <Calendar
           style={styles.calendar}
           theme={{
-            backgroundColor: "#ffffff",
-            calendarBackground: "#ffffff",
-            textSectionTitleColor: "#b6c1cd",
-            selectedDayBackgroundColor: "#479BA7",
-            selectedDayTextColor: "#ffffff",
-            todayTextColor: "#479BA7",
-            dayTextColor: "#2d4150",
-            arrowColor: "#479BA7",
+            backgroundColor: '#ffffff',
+            calendarBackground: '#ffffff',
+            textSectionTitleColor: '#b6c1cd',
+            selectedDayBackgroundColor: '#479BA7',
+            selectedDayTextColor: '#ffffff',
+            todayTextColor: '#479BA7',
+            dayTextColor: '#2d4150',
+            arrowColor: '#479BA7',
           }}
           onDayPress={onSelectDay}
           markedDates={{ [selectedDay]: { selected: true } }}
@@ -77,7 +76,7 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
                 availableTimeSlots.map((slot, index) => (
                   <Button
                     key={index}
-                    selected={selectedTimeSlot == slot}
+                    selected={selectedTimeSlot === slot}
                     theme="outline"
                     style={styles.timeSlotButton}
                     onPress={() => setSelectedTimeSlot(slot)}
@@ -91,12 +90,12 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
         {/* <Pressable styles={styles.pres} */}
       </View>
     </Modal>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   timeSlotsWrapper: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     marginTop: 22,
   },
@@ -104,37 +103,19 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   timeSlotsText: {
-    fontWeight: "semibold",
+    fontWeight: 'semibold',
     fontSize: 22,
-  },
-  roomText: {
-    fontSize: 22,
-    textAlign: "center",
   },
   timeSlotButton: {
     padding: 12,
-    width: "32,5%",
-  },
-  btnText: {
-    fontSize: 20,
-    color: "white",
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  selectedTimeSlotButton: {
-    backgroundColor: "#61b1bc",
-    padding: 12,
-    width: "100%",
-    borderRadius: 10,
-    marginVertical: 5,
-    marginHorizontal: 2,
+    width: '32,5%',
   },
   timeSlotsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 4,
     marginTop: 4,
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
   },
-});
+})
 
-export default ChooseDateModal;
+export default ChooseDateModal
