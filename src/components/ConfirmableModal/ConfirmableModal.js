@@ -40,15 +40,17 @@ function ConfirmableModal({
               {cancelButtonLabel}
             </Button>
           ) : null}
-          <Button
-            onPress={onConfirm}
-            appearance={confirmButtonAppearence}
-            status={confirmButtonTheme}
-            disabled={confirmButtonDisabled}
-            style={styles.modalButton}
-          >
-            {confirmButtonLabel}
-          </Button>
+          {confirmButtonLabel ? (
+            <Button
+              onPress={onConfirm}
+              appearance={confirmButtonAppearence}
+              status={confirmButtonTheme}
+              disabled={confirmButtonDisabled}
+              style={styles.modalButton}
+            >
+              {confirmButtonLabel}
+            </Button>
+          ) : null}
         </View>
       </Card>
     </Modal>
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalButton: {
-    maxWidth: 600,
+    flex: 1,
   },
 })
 
