@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { View, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
-import { Modal, Text, Loader, Card } from '@components'
-import { Select, SelectItem, IndexPath } from '@ui-kitten/components'
-import { FontAwesome5, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, Pressable } from 'react-native'
+import { Modal, Text, Loader } from '@components'
+import { Select, SelectItem } from '@ui-kitten/components'
 import ChooseDateModal from './components/ChooseDateModal'
 import { apiGetClinicRooms, apiGetClinics } from '../../services/clinics'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
+import events from '../../events'
 
-function CreateBookingModal({ visible, onClose, onCreate }) {
+function CreateBookingModal({ visible, onClose }) {
   const [clinic, setClinic] = useState()
   const [room, setRoom] = useState()
 
@@ -75,8 +75,6 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
       }))
 
       setRoomOptions(formattedResponse)
-    } catch (error) {
-      throw error
     } finally {
       setIsLoading(false)
     }
@@ -109,7 +107,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
         room_id: room,
       })
 
-      // onCreate()
+      events.emit('bookingCreated')
       onClose()
     } catch (error) {
       console.error(error)
@@ -209,23 +207,9 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     backgroundColor: '#F7F9FC',
   },
-  iconTextWrapper: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-  selectedBookingText: {
-    fontWeight: 'semibold',
-    fontSize: 16,
-  },
   inputLabelWrapper: {
     flexDirection: 'column',
     gap: 4,
-  },
-  select: {
-    backgroundColor: 'red',
-    width: '100%',
-    height: '100%',
   },
   label: {
     fontSize: 20,

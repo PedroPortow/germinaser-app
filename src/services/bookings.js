@@ -15,3 +15,5 @@ export const apiCreateBooking = (params) =>
   api.post('/bookings', {
     booking: params,
   })
+
+export const apiDeleteBooking = (bookingId) => api.delete(`/bookings/${bookingId}`)

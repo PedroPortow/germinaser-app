@@ -6,6 +6,7 @@ import BookingCard from './components/BookingCard'
 import { useUserContext } from '../../../context/UserContext'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingModal from '../../../components/BookingModal/BookingModal'
+import events from '../../../events'
 
 function Home() {
   const { user } = useUserContext()
@@ -33,6 +34,18 @@ function Home() {
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    const fetchBookingsOnCreate = () => {
+      getBookings(1)
+    }
+
+    events.on('bookingCreated', fetchBookingsOnCreate)
+
+    return () => {
+      events.off('bookingCreated', fetchBookingsOnCreate)
+    }
+  }, [])
 
   useEffect(() => {
     getBookings(1)
@@ -65,6 +78,7 @@ function Home() {
         <BookingModal
           visible={bookingModalVisible}
           onClose={closeBookingModal}
+          onCancelBooking={() => getBookings()}
           booking={selectedBooking}
         />
         <View style={styles.topRow}>

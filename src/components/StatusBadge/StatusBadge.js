@@ -1,54 +1,43 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-function StatusBadge({ status }) {
-  const statusMapping = {
-    active: {
-      text: 'Reservado',
-      backgroundColor: '#1a6b2c', // Verde um pouco mais escuro
-      textColor: '#FFFFFF',
-      borderColor: '#28a745', // Verde original para borda e círculo
-    },
-    canceled: {
-      text: 'Cancelado',
-      backgroundColor: '#951a26', // Vermelho um pouco mais escuro
-      textColor: '#FFFFFF',
-      borderColor: '#dc3545', // Vermelho original para borda e círculo
-    },
-    realized: {
-      text: 'Realizado',
-      backgroundColor: '#0f6876', // Azul um pouco mais escuro
-      textColor: '#FFFFFF',
-      borderColor: '#17a2b8', // Azul original para borda e círculo
-    },
-  }
+const themes = {
+  success: {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+  },
+  warning: {
+    backgroundColor: '#FFC107',
+    color: 'black',
+  },
+  error: {
+    backgroundColor: '#F44336',
+    color: 'white',
+  },
+  info: {
+    backgroundColor: '#2196F3',
+    color: 'white',
+  },
+}
 
-  const { text, backgroundColor, textColor, borderColor } = statusMapping[status] || {}
+function StatusBadge({ status, children }) {
+  const theme = themes[status] || themes.info // Default para 'info' se nenhum status compatível for encontrado
 
   return (
-    <View style={[styles.badge, { borderColor, backgroundColor }]}>
-      <View style={[styles.circle, { backgroundColor: borderColor }]} />
-      <Text style={[styles.text, { color: textColor }]}>{text}</Text>
+    <View style={[styles.badge, { backgroundColor: theme.backgroundColor }]}>
+      <Text style={[styles.text, { color: theme.color }]}>{children}</Text>
     </View>
   )
 }
 
+// Estilos
 const styles = StyleSheet.create({
   badge: {
-    flexDirection: 'row',
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 50,
+    borderRadius: 14,
     alignItems: 'center',
-    borderWidth: 1,
     justifyContent: 'center',
-    backgroundColor: 'transparent',
-  },
-  circle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 5,
   },
   text: {
     fontSize: 14,

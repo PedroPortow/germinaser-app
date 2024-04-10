@@ -1,23 +1,22 @@
 // Componente pra mostrar/cancelar (futuramente editar?) bookings
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Modal, Button, Card, Text } from '@components'
-import { Ionicons, Feather } from '@expo/vector-icons'
+import { Text } from '@components'
+import { Ionicons } from '@expo/vector-icons'
 import { Divider } from '@ui-kitten/components'
 import StatusBadge from '../StatusBadge/StatusBadge'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
+import ConfirmableModal from '../ConfirmableModal/ConfirmableModal'
+import { apiDeleteBooking } from '../../services/bookings'
 
-function BookingModal({ booking, visible, onClose }) {
-  const oi = 2
-
+function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const handleDeleteBooking = async () => {
     try {
-      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
-      const response = await apiCreateBooking({
-        start_time: startTime,
-        room_id: room,
-      })
+      console.log({ booking })
+      console.log(booking.id)
+      await apiDeleteBooking(booking.id)
 
+      onCancelBooking()
       onClose()
     } catch (error) {
       console.error(error)
@@ -26,18 +25,17 @@ function BookingModal({ booking, visible, onClose }) {
   }
 
   return (
-    <Modal
+    <ConfirmableModal
       visible={visible}
       onClose={onClose}
-      confirmLabel="Excluir reserva"
-      theme="destructiveOutline"
-      buttonLabel="Cancelar reserva"
-      title="Dados da Reserva"
-      closeIcon="chevron-back-outline"
-      onConfirm={handleDeleteBooking}
+      onCancel={handleDeleteBooking}
+      close={onClose}
+      cancelButtonLabel="Cancelar Reserva"
+      cancelButtonAppearence="outline"
     >
       <View style={styles.content}>
-        <Card style={styles.cardContent}>
+        <Text style={styles.cardTitle}>Dados da Reserva</Text>
+        <View style={styles.cardContent}>
           <View style={styles.row}>
             <Ionicons name="home-outline" size={20} color="black" />
             <Text style={styles.text}>
@@ -57,12 +55,12 @@ function BookingModal({ booking, visible, onClose }) {
             </Text>
           </View>
           <Divider />
-          <View style={styles.badgeWrapper}>
-            <StatusBadge status="active" />
-          </View>
-        </Card>
+          {/* <View style={styles.badgeWrapper}>
+            <StatusBadge status="info">{booking.status || 'Reservado'}</StatusBadge>
+          </View> */}
+        </View>
       </View>
-    </Modal>
+    </ConfirmableModal>
   )
 }
 
@@ -74,21 +72,19 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 10,
-    paddingTop: 10,
-    paddingLeft: 10,
+    paddingVertical: 10,
   },
   cardTitle: {
     fontWeight: 'bold',
-    fontSize: 24,
+    fontSize: 20,
   },
   cardContent: {
     flexDirection: 'column',
     gap: 24,
-    paddingLeft: 16,
-    paddingTop: 20,
+    marginTop: 18,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'semibold',
   },
   badgeWrapper: {
