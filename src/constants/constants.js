@@ -3,3 +3,9 @@ export const ROLES = {
   ADMIN: 'admin',
   OWNER: 'owner',
 }
+
+export const ROLES_LABEL = {
+  user: 'Usuário',
+  admin: 'Administrador',
+  owner: 'Dono',
+}
