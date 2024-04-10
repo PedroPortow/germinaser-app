@@ -1,22 +1,33 @@
-import axios from "axios";
-import * as SecureStore from 'expo-secure-store';
+import axios from 'axios'
+import * as SecureStore from 'expo-secure-store'
+import events from '../events'
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: 'http://localhost:3000/',
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
-});
+})
 
 api.interceptors.request.use(async (config) => {
-  const token = await SecureStore.getItemAsync("userToken");
+  const token = await SecureStore.getItemAsync('userToken')
 
   if (token) {
-    config.headers.Authorization = token;
+    config.headers.Authorization = token
   }
 
-  return config;
-});
+  return config
+})
 
-export default api;
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      events.emit('logout')
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default api

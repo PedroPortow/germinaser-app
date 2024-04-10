@@ -4,6 +4,7 @@ import { ROLES } from '@constants'
 import { hasRole } from '@helpers'
 import { apiPostLogin } from '../services/auth'
 import { apiGetUserData } from '../services/user'
+import events from '../events'
 
 const UserContext = createContext()
 
@@ -13,13 +14,19 @@ export function UserContextProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
+    events.on('logout', logout)
+
+    return () => {
+      events.off('logout', logout)
+    }
+  }, [])
+
+  useEffect(() => {
     const loadToken = async () => {
       const storedToken = await SecureStore.getItemAsync('userToken')
 
       if (storedToken) {
-        if (!Object.keys(user).length) {
-          getUserData()
-        }
+        getUserData()
         setIsAuthenticated(true)
         setToken(storedToken)
       } else {
@@ -69,20 +76,19 @@ export function UserContextProvider({ children }) {
 
   console.log({ user })
 
-  return (
-    <UserContext.Provider
-      value={{
-        token,
-        isAuthenticated,
-        login,
-        logout,
-        user,
-        isAdminOrOwner,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const values = useMemo(
+    () => ({
+      token,
+      isAuthenticated,
+      login,
+      logout,
+      user,
+      isAdminOrOwner,
+    }),
+    [token, isAuthenticated, login, logout, user, isAdminOrOwner]
   )
+
+  return <UserContext.Provider value={values}>{children}</UserContext.Provider>
 }
 
 export function useUserContext() {

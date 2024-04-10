@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Agenda } from 'react-native-calendars'
 
 function Bookings() {

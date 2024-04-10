@@ -56,7 +56,8 @@
     "react-native/no-raw-text": "off",
     "no-shadow": "off",
     "react-native/no-inline-styles": "off",
-    "react/jsx-no-bind": "off"
+    "react/jsx-no-bind": "off",
+    "no-param-reassign": "off"
   },
   "settings": {
     "react": {
