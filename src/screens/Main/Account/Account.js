@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native'
-import { Text, RoundCard, Button, Card } from '@components'
-import { FontAwesome5, Ionicons } from '@expo/vector-icons'
+import { Text, Button, Card } from '@components'
 import { useNavigation } from '@react-navigation/native'
 import { Divider } from '@ui-kitten/components'
 import { ROLES_LABEL } from '@constants'
@@ -19,22 +18,16 @@ function Account() {
         <Card style={styles.userInfo}>
           <Section label="Nome">{user.name}</Section>
           <Section label="Email">{user.email}</Section>
-          <Section label="Cargo">{ROLES_LABEL[user.role]}</Section>
+          <View style={styles.contentRow}>
+            <Section label="Cargo">{ROLES_LABEL[user.role]}</Section>
+            <Section label="Créditos de Reserva">{user.credits}</Section>
+          </View>
           <Divider />
           <View style={styles.contentRow}>
-            <View style={styles.labelContentColumn}>
-              <Text style={styles.label}>Reservas Ativas</Text>
-              <Text style={styles.userDataText}>{user.active_bookings_count}</Text>
-            </View>
-            <View style={styles.labelContentColumn}>
-              <Text style={styles.label}>Total de reservas</Text>
-              <Text style={styles.userDataText}>{user.active_bookings_count}</Text>
-            </View>
+            <Section label="Reservas Ativas">{user.active_bookings_count}</Section>
+            <Section label="Total de Reservas">{user.total_bookings_count}</Section>
           </View>
-          <View style={styles.labelContentColumn}>
-            <Text style={styles.label}>Reservas Canceladas</Text>
-            <Text style={styles.userDataText}>{user.canceled_bookings_count}</Text>
-          </View>
+          <Section label="Reservas Canceladas">{user.canceled_bookings_count}</Section>
         </Card>
         {isAdminOrOwner && (
           <Button style={styles.marginBottom} onPress={() => navigation.navigate('Admin')}>
