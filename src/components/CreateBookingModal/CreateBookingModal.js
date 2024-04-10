@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
 import { Modal, Text, Loader } from '@components'
-import { Select, SelectItem } from '@ui-kitten/components'
+import { Select, SelectItem, Input } from '@ui-kitten/components'
 import ChooseDateModal from './components/ChooseDateModal'
 import { apiGetClinicRooms, apiGetClinics } from '../../services/clinics'
 import { formatDate } from '../../helpers/date'
@@ -11,6 +11,7 @@ import events from '../../events'
 function CreateBookingModal({ visible, onClose }) {
   const [clinic, setClinic] = useState()
   const [room, setRoom] = useState()
+  const [name, setName] = useState()
 
   // ui-kitten
   const [selectedRoomIndex, setSelectedRoomIndex] = useState(null)
@@ -134,6 +135,15 @@ function CreateBookingModal({ visible, onClose }) {
       />
       <View style={styles.content}>
         <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Nome da Reserva</Text>
+          <Input
+            value={name}
+            placeholder="Reserva"
+            caption="Usado para identificar a reserva"
+            onChangeText={(nextValue) => setName(nextValue)}
+          />
+        </View>
+        <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Casa</Text>
           <Select
             onSelect={onChooseClinic}
@@ -212,7 +222,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   label: {
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: 'semibold',
   },
 })
 

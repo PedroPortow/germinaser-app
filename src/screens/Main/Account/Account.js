@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
   contentRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: 24,
   },
   buttonBottomPos: {
     marginTop: 'auto',

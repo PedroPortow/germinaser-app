@@ -1,4 +1,3 @@
-// Componente pra mostrar/cancelar (futuramente editar?) bookings
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Text } from '@components'
@@ -34,7 +33,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
       cancelButtonAppearence="outline"
     >
       <View style={styles.content}>
-        <Text style={styles.cardTitle}>Dados da Reserva</Text>
+        <Text style={styles.cardTitle}>{booking.name}</Text>
         <View style={styles.cardContent}>
           <View style={styles.row}>
             <Ionicons name="home-outline" size={20} color="black" />
@@ -86,9 +85,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: 'semibold',
-  },
-  badgeWrapper: {
-    maxWidth: 120,
   },
 })
 
