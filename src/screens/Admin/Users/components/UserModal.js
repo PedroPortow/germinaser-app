@@ -29,7 +29,7 @@ function UserModal({ user, visible, close, onSubmit }) {
   const handleDeleteUser = () => {}
 
   useEffect(() => {
-    if (visible) {
+    if (visible && !creatingUser) {
       getRoles()
       setSelectedUserInfo()
     }
@@ -44,8 +44,11 @@ function UserModal({ user, visible, close, onSubmit }) {
   const setSelectedUserInfo = () => {
     setName(user.name)
     setEmail(user.email)
+    console.log({ user })
     setCredits(user.credits)
   }
+
+  console.log({ user })
 
   const getRoles = async () => {
     setIsLoading(true)
@@ -62,8 +65,6 @@ function UserModal({ user, visible, close, onSubmit }) {
         label: ROLES_LABEL[role],
         value: role,
       }))
-
-      console.log({ formattedResponse })
 
       setRolesOptions(formattedResponse)
       setUserRole()
@@ -128,7 +129,6 @@ function UserModal({ user, visible, close, onSubmit }) {
         close={close}
         cancelButtonLabel={creatingUser ? 'Cancelar' : 'Excluir Usuário'}
         confirmButtonLabel={creatingUser ? 'Criar Usuário' : 'Salvar alterações'}
-        // confirmButtonDisabled
         onConfirm={creatingUser ? handleCreateUser : handleEditUser}
         onCancel={handleDeleteUser}
       >
@@ -154,7 +154,7 @@ function UserModal({ user, visible, close, onSubmit }) {
             />
           )}
           <NumberInput
-            initialValue={credits || 0}
+            initialValue={user.credits}
             label="Créditos"
             onChange={(value) => setCredits(value)}
           />

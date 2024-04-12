@@ -11,8 +11,6 @@ import { apiDeleteBooking } from '../../services/bookings'
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const handleDeleteBooking = async () => {
     try {
-      console.log({ booking })
-      console.log(booking.id)
       await apiDeleteBooking(booking.id)
 
       onCancelBooking()

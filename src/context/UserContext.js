@@ -49,8 +49,6 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  console.log({ user })
-
   const login = async (email, password) => {
     try {
       const response = await apiPostLogin(email, password)
@@ -73,8 +71,6 @@ export function UserContextProvider({ children }) {
     setToken(null)
     setIsAuthenticated(false)
   }
-
-  console.log({ user })
 
   const values = useMemo(
     () => ({

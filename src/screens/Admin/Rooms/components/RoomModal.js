@@ -49,7 +49,6 @@ function RoomModal({ room, visible, close, onSubmit }) {
 
       const response = await apiCreateRoom(params)
       onSubmit()
-      console.log({ response })
       close()
     } catch (error) {
       console.error(error)
@@ -65,7 +64,6 @@ function RoomModal({ room, visible, close, onSubmit }) {
 
       const response = await apiUpdateRoom(room.id, params)
       onSubmit()
-      console.log({ response })
       close()
     } catch (error) {
       console.error(error)

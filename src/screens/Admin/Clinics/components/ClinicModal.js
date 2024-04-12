@@ -32,7 +32,6 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
 
       const response = await apiCreateClinic(params)
       onSubmit()
-      console.log({ response })
       close()
     } catch (error) {
       console.error(error)
@@ -49,7 +48,6 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
 
       const response = await apiUpdateClinic(clinic.id, params)
       onSubmit()
-      console.log({ response })
       close()
     } catch (error) {
       console.error(error)

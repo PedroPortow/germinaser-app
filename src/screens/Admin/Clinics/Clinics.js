@@ -20,7 +20,6 @@ function Clinics() {
     try {
       const response = await apiGetClinics()
 
-      console.log(response.data)
       setClinics(response.data)
     } catch (error) {
       console.error(error)
