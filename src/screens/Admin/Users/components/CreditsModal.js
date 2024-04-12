@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ConfirmableModal, Loader, NumberInput, Text } from '@components'
 import { apiUpdateUser } from '../../../../services/user'
 
 function CreditsModal({ user, visible, close, onSubmit }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [credits, setCredits] = useState(false)
+  const [credits, setCredits] = useState(user.credits)
 
   const handleUpdateCredits = async () => {
     setIsLoading(true)
@@ -24,7 +24,7 @@ function CreditsModal({ user, visible, close, onSubmit }) {
     }
   }
 
-  const handleCancel = () => {}
+  const hasChangedCredits = useMemo(() => credits !== user.credits, [credits])
 
   return (
     <>
@@ -35,9 +35,10 @@ function CreditsModal({ user, visible, close, onSubmit }) {
         close={close}
         cancelButtonLabel="Cancelar"
         confirmButtonLabel="Salvar alterações"
-        // confirmButtonDisabled
+        confirmButtonDisabled={!hasChangedCredits}
+        cancelButtonTheme="basic"
         onConfirm={handleUpdateCredits}
-        onCancel={handleCancel}
+        onCancel={() => close()}
       >
         <View style={styles.cardContainer}>
           <Text>Usuário: {user.name}</Text>

@@ -4,12 +4,12 @@ export const apiGetClinics = () => api.get('/clinics')
 
 export const apiCreateClinic = async (clinicData) =>
   api.post(`/clinics`, {
-    user: clinicData,
+    clinic: clinicData,
   })
 
 export const apiUpdateClinic = async (clinicId, clinicData) =>
   api.put(`/clinics/${clinicId}`, {
-    user: clinicData,
+    clinic: clinicData,
   })
 
 export const apiGetClinicRooms = (clinicId) => api.get(`/clinics/${clinicId}/rooms`)

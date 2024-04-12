@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IndexPath, Input, Select, SelectItem } from '@ui-kitten/components'
 import { ConfirmableModal, Loader, NumberInput } from '@components'
-import { apiCreateUser, apiGetRoles, apiUpdateUser } from '../../../../services/user'
+import { useFormFilled } from '@hooks'
+import { apiCreateUser, apiDeleteUser, apiGetRoles, apiUpdateUser } from '../../../../services/user'
 
 function UserModal({ user, visible, close, onSubmit }) {
   const [rolesOptions, setRolesOptions] = useState([])
@@ -15,10 +16,15 @@ function UserModal({ user, visible, close, onSubmit }) {
   const [password, setPassword] = useState()
   const [role, setRole] = useState()
 
+  console.log(name)
+  console.log(user.name)
+
   const creatingUser = useMemo(() => !Object.keys(user).length, [user])
 
   // kitten-ui
   const [selectedRoleIndex, setSelectedRoleIndex] = useState()
+
+  const isFormFilled = useFormFilled({ name, email, password, role })
 
   const onChangeRole = (index) => {
     setSelectedRoleIndex(index)
@@ -26,10 +32,18 @@ function UserModal({ user, visible, close, onSubmit }) {
     setRole(roleValue)
   }
 
-  const handleDeleteUser = () => {}
+  const handleDeleteUser = async () => {
+    try {
+      await apiDeleteUser(user.id)
+      onSubmit()
+      close()
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   useEffect(() => {
-    if (visible && !creatingUser) {
+    if (visible) {
       getRoles()
       setSelectedUserInfo()
     }
@@ -49,6 +63,8 @@ function UserModal({ user, visible, close, onSubmit }) {
   }
 
   console.log({ user })
+
+  console.log({ rolesOptions })
 
   const getRoles = async () => {
     setIsLoading(true)
@@ -120,6 +136,15 @@ function UserModal({ user, visible, close, onSubmit }) {
     }
   }
 
+  const hasEdits = useMemo(
+    () =>
+      name !== user.name ||
+      email !== user.email ||
+      password !== user.password ||
+      role !== user.role,
+    [name, email, password, role, user]
+  )
+
   return (
     <>
       <Loader loading={isLoading} />
@@ -127,21 +152,26 @@ function UserModal({ user, visible, close, onSubmit }) {
         visible={visible}
         backdropStyle={styles.backdrop}
         close={close}
+        cancelButtonTheme={creatingUser ? 'basic' : 'danger'}
+        // cancelButtonAppearence={creatingUser ? 'outline' : 'ghost'}
+        confirmButtonDisabled={creatingUser ? !isFormFilled : !hasEdits}
         cancelButtonLabel={creatingUser ? 'Cancelar' : 'Excluir Usuário'}
         confirmButtonLabel={creatingUser ? 'Criar Usuário' : 'Salvar alterações'}
         onConfirm={creatingUser ? handleCreateUser : handleEditUser}
-        onCancel={handleDeleteUser}
+        onCancel={creatingUser ? () => close() : handleDeleteUser}
       >
         <View style={styles.cardContainer}>
           <Input
             placeholder="Nome do Usuário"
             value={name}
             label="Nome"
+            autoCapitalize="none"
             onChangeText={(value) => setName(value)}
           />
           <Input
             placeholder="usuario@gmail.com"
             value={email}
+            autoCapitalize="none"
             label="Email"
             onChangeText={(value) => setEmail(value)}
           />
@@ -149,12 +179,14 @@ function UserModal({ user, visible, close, onSubmit }) {
             <Input
               value={password}
               label="Senha"
+              caption="Mínimo de 6 caractéres"
+              autoCapitalize="none"
               secureTextEntry
               onChangeText={(value) => setPassword(value)}
             />
           )}
           <NumberInput
-            initialValue={user.credits}
+            initialValue={user.credits || 0}
             label="Créditos"
             onChange={(value) => setCredits(value)}
           />

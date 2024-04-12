@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Input, Select, SelectItem } from '@ui-kitten/components'
 import { ConfirmableModal, Loader } from '@components'
+import { useFormFilled } from '@hooks'
 import { apiGetClinics } from '../../../../services/clinics'
 import { apiCreateRoom, apiUpdateRoom } from '../../../../services/rooms'
 
@@ -17,11 +18,24 @@ function RoomModal({ room, visible, close, onSubmit }) {
 
   const creatingRoom = useMemo(() => !Object.keys(room).length, [room])
 
+  const isFormFilled = useFormFilled({ name, clinicId })
+
+  console.log({ clinicId })
+
   useEffect(() => {
     if (visible) {
       setSelecteRoomInfo()
+    } else {
+      clearFields()
     }
   }, [visible])
+
+  const clearFields = () => {
+    setName('')
+    setClinicId('')
+    setSelectedClinicIndex()
+    setClinicOptions([])
+  }
 
   useEffect(() => {
     if (visible && creatingRoom) {
@@ -37,7 +51,7 @@ function RoomModal({ room, visible, close, onSubmit }) {
 
   const setSelecteRoomInfo = () => {
     setName(room.name)
-    setClinicId(1) // TODO: Arrumar
+    setClinicId(room.clinic_id)
   }
 
   const handleCreateRoom = async () => {
@@ -47,7 +61,7 @@ function RoomModal({ room, visible, close, onSubmit }) {
         clinic_id: clinicId,
       }
 
-      const response = await apiCreateRoom(params)
+      await apiCreateRoom(params)
       onSubmit()
       close()
     } catch (error) {
@@ -62,7 +76,7 @@ function RoomModal({ room, visible, close, onSubmit }) {
         name,
       }
 
-      const response = await apiUpdateRoom(room.id, params)
+      await apiUpdateRoom(room.id, params)
       onSubmit()
       close()
     } catch (error) {
@@ -88,6 +102,12 @@ function RoomModal({ room, visible, close, onSubmit }) {
       setIsLoading(false)
     }
   }
+
+  const hasEdits = useMemo(
+    () => name !== room.name || clinicId !== room.clinic_id,
+    [name, clinicId]
+  )
+
   return (
     <>
       <Loader loading={isLoading} />
@@ -95,9 +115,9 @@ function RoomModal({ room, visible, close, onSubmit }) {
         visible={visible}
         backdropStyle={styles.backdrop}
         close={close}
-        cancelButtonLabel="Cancelar"
+        cancelButtonLabel="Excluir Sala"
         confirmButtonLabel={creatingRoom ? 'Adicionar Sala' : 'Salvar alterações'}
-        // confirmButtonDisabled
+        confirmButtonDisabled={creatingRoom ? !isFormFilled : !hasEdits}
         onConfirm={creatingRoom ? handleCreateRoom : handleEditRoom}
         onCancel={close}
       >

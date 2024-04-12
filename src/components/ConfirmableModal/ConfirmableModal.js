@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    gap: 8,
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

@@ -45,27 +45,38 @@ function Users() {
       description={item.email}
       style={styles.listItem}
       accessoryRight={() => (
-        <>
+        <View style={styles.rowContent}>
           <Button
             onPress={() => {
               setSelectedUser(item)
               setCreditsModalVisible(true)
             }}
+            style={styles.button}
             appearance="ghost"
             status="primary"
           >
             Alterar créditos
           </Button>
           <Feather
-            name="edit"
+            name="trash-2"
             size={18}
-            color="black"
+            color="red"
             onPress={() => {
               setSelectedUser(item)
               setUserModalVisible(true)
             }}
           />
-        </>
+          <Feather
+            name="edit"
+            size={18}
+            color="black"
+            style={styles.editIcon}
+            onPress={() => {
+              setSelectedUser(item)
+              setUserModalVisible(true)
+            }}
+          />
+        </View>
       )}
     />
   )
@@ -100,8 +111,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
+  editIcon: {
+    marginLeft: 12,
+  },
   listItem: {
     height: 50,
+  },
+  rowContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 })
 

@@ -8,6 +8,6 @@ export const apiCreateRoom = async (roomData) =>
   })
 
 export const apiUpdateRoom = async (roomId, roomData) =>
-  api.put(`/clinics/${roomId}`, {
+  api.put(`/rooms/${roomId}`, {
     room: roomData,
   })

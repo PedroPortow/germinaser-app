@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Input } from '@ui-kitten/components'
 import { ConfirmableModal, Loader } from '@components'
+import { useFormFilled } from '@hooks'
 import { apiCreateClinic, apiUpdateClinic } from '../../../../services/clinics'
 
 function ClinicModal({ clinic, visible, close, onSubmit }) {
@@ -11,6 +12,8 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
   const [address, setAddress] = useState()
 
   const creatingClinic = useMemo(() => !Object.keys(clinic).length, [clinic])
+
+  const isFormFilled = useFormFilled({ name, address })
 
   useEffect(() => {
     if (visible) {
@@ -30,7 +33,7 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
         address,
       }
 
-      const response = await apiCreateClinic(params)
+      await apiCreateClinic(params)
       onSubmit()
       close()
     } catch (error) {
@@ -46,7 +49,7 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
         address,
       }
 
-      const response = await apiUpdateClinic(clinic.id, params)
+      await apiUpdateClinic(clinic.id, params)
       onSubmit()
       close()
     } catch (error) {
@@ -55,6 +58,11 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
       setIsLoading(false)
     }
   }
+
+  const hasEdits = useMemo(
+    () => name !== clinic.name || clinic.address !== address,
+    [name, address]
+  )
 
   return (
     <>
@@ -65,7 +73,7 @@ function ClinicModal({ clinic, visible, close, onSubmit }) {
         close={close}
         cancelButtonLabel="Cancelar"
         confirmButtonLabel={creatingClinic ? 'Adicionar Clínica' : 'Salvar alterações'}
-        // confirmButtonDisabled
+        confirmButtonDisabled={creatingClinic ? !isFormFilled : !hasEdits}
         onConfirm={creatingClinic ? handleCreateClinic : handleEditClinic}
         onCancel={close}
       >
