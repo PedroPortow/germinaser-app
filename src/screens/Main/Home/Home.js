@@ -70,7 +70,6 @@ function Home() {
     setBookingModalVisible(false)
   }
 
-  console.log({ selectedBooking })
 
   return (
     <>

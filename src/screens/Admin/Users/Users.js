@@ -57,7 +57,7 @@ function Users() {
           >
             Alterar créditos
           </Button>
-          <Feather
+          {/* <Feather
             name="trash-2"
             size={18}
             color="red"
@@ -65,7 +65,7 @@ function Users() {
               setSelectedUser(item)
               setUserModalVisible(true)
             }}
-          />
+          /> */}
           <Feather
             name="edit"
             size={18}
@@ -111,9 +111,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
-  editIcon: {
-    marginLeft: 12,
-  },
+  // editIcon: {
+  //   marginLeft: 12,
+  // },
   listItem: {
     height: 50,
   },

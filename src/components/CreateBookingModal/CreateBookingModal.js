@@ -7,6 +7,7 @@ import { apiGetClinicRooms, apiGetClinics } from '../../services/clinics'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
 import events from '../../events'
+import { useToast } from '../../context/ToastContext'
 
 function CreateBookingModal({ visible, onClose }) {
   const [clinic, setClinic] = useState()
@@ -25,6 +26,11 @@ function CreateBookingModal({ visible, onClose }) {
   const [selectedDay, setSelectedDay] = useState('20')
   const [selectedTimeSlot, setSelectedTimeSlot] = useState()
   const [isLoading, setIsLoading] = useState(true)
+
+   const { showToast } = useToast();
+
+
+
 
   useEffect(() => {
     getClinicOptions()
@@ -100,19 +106,30 @@ function CreateBookingModal({ visible, onClose }) {
     setRoom(selectedRoomId)
   }
 
+
+
   const handleCreateBooking = async () => {
     try {
       const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
-      const response = await apiCreateBooking({
+      await apiCreateBooking({
+        name,
         start_time: startTime,
         room_id: room,
       })
 
       events.emit('bookingCreated')
       onClose()
+      showToast({
+        message: 'Reserva criada com sucesso!',
+        theme: 'success'
+      })
+
     } catch (error) {
-      console.error(error)
-      throw error
+      showToast({
+        message: 'Erro na criação da reserva, revise os campos preenchidos',
+        theme: 'error'
+      })
+      console.error(error.response.data)
     }
   }
 

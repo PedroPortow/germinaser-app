@@ -24,7 +24,7 @@ function Bookings() {
   return (
     <Agenda
       items={{
-        '2024-04-09': [{ name: 'item 1 - any js object' }],
+        '2024-04-09': [{ name: '{Nome Reserva} {Horário} {Sala/Clinica}' }],
       }}
       loadItemsForMonth={(month) => {
         console.log('trigger items loading')
