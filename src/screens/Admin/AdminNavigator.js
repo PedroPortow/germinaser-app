@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import Clinics from './Clinics/Clinics'
 import Rooms from './Rooms/Rooms'
 import Users from './Users/Users'
+import Bookings from './Bookings/Bookings'
 
 const Tab = createBottomTabNavigator()
 
@@ -32,6 +33,15 @@ function AdminNavigator() {
       <Tab.Screen
         name="Salas"
         component={Rooms}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <FontAwesome5 name="door-open" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Reservas"
+        component={Bookings}
         options={{
           tabBarIcon: ({ size, color }) => (
             <FontAwesome5 name="door-open" size={size} color={color} />

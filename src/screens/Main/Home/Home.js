@@ -95,6 +95,7 @@ function Home() {
       </View>
       <Loader loading={isLoading} />
       <View style={styles.bottomContainer}>
+
         <View style={styles.nextBookingsCol}>
           <View style={styles.textRow}>
             <Text style={styles.mainText}>Próximas reservas</Text>

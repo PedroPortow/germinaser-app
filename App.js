@@ -9,6 +9,7 @@ import { UserContextProvider } from './src/context/UserContext'
 import { default as mapping } from './mapping.json'
 
 import './src/config/localConfig'
+import { ToastProvider } from './src/context/ToastContext'
 
 function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false)
@@ -27,11 +28,13 @@ function App() {
 
   return (
     <ApplicationProvider {...eva} theme={eva.light} customMapping={mapping}>
-      <UserContextProvider>
-        <NavigationContainer>
-          <RootNavigator />
-        </NavigationContainer>
-      </UserContextProvider>
+      <ToastProvider>
+        <UserContextProvider>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </UserContextProvider>
+      </ToastProvider>
     </ApplicationProvider>
   )
 }
