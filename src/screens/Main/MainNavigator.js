@@ -1,13 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Fragment, useState } from 'react'
 import { Feather } from '@expo/vector-icons'
-import { Text } from '@ui-kitten/components'
-import Home from './Home/Home'
-import Bookings from './UserBookings/UserBookings'
-import CreateBookingModal from '../../components/CreateBookingModal/CreateBookingModal'
-import Account from './Account/Account'
-import Schedule from './Schedule/Schedule'
+import Home from './Home'
+import Bookings from './UserBookings'
+import Account from './Account'
+import Schedule from './Schedule'
 import { useCreateBookingModal } from '../../context/CreateBookingModalContext'
 
 const Tab = createBottomTabNavigator()
