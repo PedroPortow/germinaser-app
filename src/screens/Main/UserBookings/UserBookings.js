@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Agenda } from 'react-native-calendars'
 
-function Bookings() {
+function UserBookings() {
   const [items, setItems] = useState({})
 
   const today = new Date()
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Bookings
+export default UserBookings

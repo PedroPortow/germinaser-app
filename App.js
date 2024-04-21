@@ -10,6 +10,7 @@ import { default as mapping } from './mapping.json'
 
 import './src/config/localConfig'
 import { ToastProvider } from './src/context/ToastContext'
+import { CreateBookingModalProvider } from './src/context/CreateBookingModalContext'
 
 function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false)
@@ -29,11 +30,13 @@ function App() {
   return (
     <ApplicationProvider {...eva} theme={eva.light} customMapping={mapping}>
       <ToastProvider>
-        <UserContextProvider>
-          <NavigationContainer>
-            <RootNavigator />
-          </NavigationContainer>
-        </UserContextProvider>
+        <CreateBookingModalProvider>
+          <UserContextProvider>
+            <NavigationContainer>
+              <RootNavigator />
+            </NavigationContainer>
+          </UserContextProvider>
+        </CreateBookingModalProvider>
       </ToastProvider>
     </ApplicationProvider>
   )

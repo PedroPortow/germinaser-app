@@ -17,9 +17,9 @@ function CreateBookingModal({ visible, onClose }) {
   // ui-kitten
   const [selectedRoomIndex, setSelectedRoomIndex] = useState(null)
   const [selectedClinicIndex, setSelectedClinicIndex] = useState(null)
+  const [clinicOptions, setClinicOptions] = useState([])
 
   const [roomOptions, setRoomOptions] = useState([])
-  const [clinicOptions, setClinicOptions] = useState([])
 
   const [dateModalVisible, setDateModalVisible] = useState(false)
 
@@ -27,10 +27,7 @@ function CreateBookingModal({ visible, onClose }) {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState()
   const [isLoading, setIsLoading] = useState(true)
 
-   const { showToast } = useToast();
-
-
-
+  const { showToast } = useToast()
 
   useEffect(() => {
     getClinicOptions()
@@ -106,8 +103,6 @@ function CreateBookingModal({ visible, onClose }) {
     setRoom(selectedRoomId)
   }
 
-
-
   const handleCreateBooking = async () => {
     try {
       const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
@@ -121,13 +116,12 @@ function CreateBookingModal({ visible, onClose }) {
       onClose()
       showToast({
         message: 'Reserva criada com sucesso!',
-        theme: 'success'
+        theme: 'success',
       })
-
     } catch (error) {
       showToast({
         message: 'Erro na criação da reserva, revise os campos preenchidos',
-        theme: 'error'
+        theme: 'error',
       })
       console.error(error.response.data)
     }
