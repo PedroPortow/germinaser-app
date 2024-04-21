@@ -2,10 +2,9 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { Text, Loader, Card, RoundCard, BookingModal } from '@components'
-import { useUserContext } from '@context'
+import { useUserContext, useCreateBookingModal } from '@context'
 import BookingCard from './components/BookingCard'
 import { apiGetBookings } from '../../../services/bookings'
-import events from '../../../events'
 
 function Home() {
   const { user } = useUserContext()
@@ -14,6 +13,8 @@ function Home() {
   const [metadata, setMetadata] = useState({})
   const [bookingModalVisible, setBookingModalVisible] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState({})
+
+  const { refetchTrigger } = useCreateBookingModal()
 
   const getBookings = async (page) => {
     setIsLoading(true)
@@ -33,22 +34,9 @@ function Home() {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    const fetchBookingsOnCreate = () => {
-      getBookings(1)
-    }
-
-    events.on('bookingCreated', fetchBookingsOnCreate)
-
-    return () => {
-      events.off('bookingCreated', fetchBookingsOnCreate)
-    }
-  }, [])
-
   useEffect(() => {
     getBookings(1)
-  }, [])
+  }, [refetchTrigger])
 
   const handleLoadMore = () => {
     if (!isLoading && metadata.current_page < metadata.total_pages) {

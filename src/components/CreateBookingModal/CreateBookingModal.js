@@ -6,10 +6,9 @@ import ChooseDateModal from './components/ChooseDateModal'
 import { apiGetClinicRooms, apiGetClinics } from '../../services/clinics'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
-import events from '../../events'
 import { useToast } from '../../context/ToastContext'
 
-function CreateBookingModal({ visible, onClose }) {
+function CreateBookingModal({ visible, onClose, onCreate }) {
   const [clinic, setClinic] = useState()
   const [room, setRoom] = useState()
   const [name, setName] = useState()
@@ -112,7 +111,7 @@ function CreateBookingModal({ visible, onClose }) {
         room_id: room,
       })
 
-      events.emit('bookingCreated')
+      onCreate()
       onClose()
       showToast({
         message: 'Reserva criada com sucesso!',
