@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
-import { Text, Loader, Card, RoundCard } from '@components'
+import { Text, Loader, Card, RoundCard, BookingModal } from '@components'
+import { useUserContext } from '@context'
 import BookingCard from './components/BookingCard'
-import { useUserContext } from '../../../context/UserContext'
 import { apiGetBookings } from '../../../services/bookings'
-import BookingModal from '../../../components/BookingModal/BookingModal'
 import events from '../../../events'
 
 function Home() {
@@ -70,7 +69,6 @@ function Home() {
     setBookingModalVisible(false)
   }
 
-
   return (
     <>
       <View style={styles.topContainer}>
@@ -95,7 +93,6 @@ function Home() {
       </View>
       <Loader loading={isLoading} />
       <View style={styles.bottomContainer}>
-
         <View style={styles.nextBookingsCol}>
           <View style={styles.textRow}>
             <Text style={styles.mainText}>Próximas reservas</Text>
