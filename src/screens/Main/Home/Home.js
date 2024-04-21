@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { Text, Loader, Card, RoundCard, BookingModal } from '@components'
@@ -151,22 +151,3 @@ const styles = StyleSheet.create({
 })
 
 export default Home
-
-// const weeklyBookings = [
-//   {
-//     house: "Casa 1",
-//     room: "Sala 3",
-//     date: "23/05/12",
-//     week_day: "Segunda",
-//     starting_time: "14:10",
-//     ending_time: "15:10",
-//   },
-//   {
-//     house: "Casa 1",
-//     room: "Sala 3",
-//     date: "23/05/12",
-//     week_day: "Segunda",
-//     starting_time: "14:10",
-//     ending_time: "15:10",
-//   },
-// ];
