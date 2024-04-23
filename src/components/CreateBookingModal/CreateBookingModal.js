@@ -135,6 +135,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
       theme="primary"
       buttonLabel="Reservar"
       onConfirm={handleCreateBooking}
+      disableConfirm={!name || !clinic || !room || !selectedDay || !selectedTimeSlot}
     >
       <Loader loading={isLoading} />
       <ChooseDateModal
@@ -154,7 +155,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
           />
         </View>
         <View style={styles.inputLabelWrapper}>
-          <Text style={styles.label}>Casa</Text>
+          <Text style={styles.label}>Clínica</Text>
           <Select
             onSelect={onChooseClinic}
             value={clinicOptions[selectedClinicIndex?.row]?.label}

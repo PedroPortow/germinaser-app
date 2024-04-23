@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Animated, TouchableOpacity } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Animated, TouchableOpacity } from 'react-native'
+import { AntDesign } from '@expo/vector-icons'
 import Text from '../Text/Text'
 
 const THEMES = {
@@ -13,12 +13,12 @@ const THEMES = {
     backgroundColor: 'red',
     icon: 'closecircle',
     textColor: 'white',
-  }
-};
+  },
+}
 
-function Toast({ message, isVisible, onDismiss, theme = 'success'}) {
-  const [visible, setVisible] = useState(isVisible);
-  const slideAnim = new Animated.Value(-100);
+function Toast({ message, isVisible, onDismiss, theme = 'success' }) {
+  const [visible, setVisible] = useState(isVisible)
+  const slideAnim = new Animated.Value(-100)
 
   useEffect(() => {
     if (visible) {
@@ -26,34 +26,39 @@ function Toast({ message, isVisible, onDismiss, theme = 'success'}) {
         toValue: 0,
         duration: 300,
         useNativeDriver: true,
-      }).start();
+      }).start()
 
       const timeout = setTimeout(() => {
-        closeToast();
-      }, 3000);
+        closeToast()
+      }, 3000)
 
-      return () => clearTimeout(timeout);
+      return () => clearTimeout(timeout)
     }
-  }, [visible]);
+  }, [visible])
 
   useEffect(() => {
-    setVisible(isVisible);
-  }, [isVisible]);
+    setVisible(isVisible)
+  }, [isVisible])
 
   const closeToast = () => {
     Animated.timing(slideAnim, {
       toValue: -175,
       duration: 300,
       useNativeDriver: true,
-    }).start(() => onDismiss());
-  };
+    }).start(() => onDismiss())
+  }
 
-  if (!visible) return null;
+  if (!visible) return null
 
-  const themeSettings = THEMES[theme] || THEMES.success; // Default to success if no theme provided
+  const themeSettings = THEMES[theme] || THEMES.success // Default to success if no theme provided
 
   return (
-    <Animated.View style={[styles.toast, { backgroundColor: themeSettings.backgroundColor, transform: [{ translateY: slideAnim }] }]}>
+    <Animated.View
+      style={[
+        styles.toast,
+        { backgroundColor: themeSettings.backgroundColor, transform: [{ translateY: slideAnim }] },
+      ]}
+    >
       <TouchableOpacity style={styles.closeButton} onPress={closeToast}>
         <AntDesign name={themeSettings.icon} size={24} color={themeSettings.textColor} />
       </TouchableOpacity>
@@ -62,7 +67,7 @@ function Toast({ message, isVisible, onDismiss, theme = 'success'}) {
         <AntDesign name="close" size={18} color={themeSettings.textColor} />
       </TouchableOpacity>
     </Animated.View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -83,11 +88,11 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   closeButton: {
     padding: 5,
   },
-});
+})
 
-export default Toast;
+export default Toast

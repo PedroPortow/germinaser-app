@@ -63,6 +63,8 @@ function ChooseDateModal({ room, onClose, visible, onConfirm }) {
             arrowColor: '#479BA7',
           }}
           onDayPress={onSelectDay}
+          minDate={new Date()}
+          firstDay={1}
           markedDates={{ [selectedDay]: { selected: true } }}
         />
         {selectedDay && availableTimeSlots.length ? (
@@ -97,14 +99,14 @@ const styles = StyleSheet.create({
   timeSlotsWrapper: {
     backgroundColor: 'white',
     padding: 10,
-    marginTop: 22,
+    marginTop: 10,
   },
   content: {
     marginTop: 16,
   },
   timeSlotsText: {
     fontWeight: 'semibold',
-    fontSize: 22,
+    fontSize: 18,
   },
   timeSlotButton: {
     padding: 12,
