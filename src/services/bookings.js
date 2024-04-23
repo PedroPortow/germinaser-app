@@ -4,11 +4,12 @@ import api from './api'
 export const apiGetDayAvailableBookings = (params) =>
   api.get('/bookings/day_available_slots', { params })
 
-export const apiGetBookings = ({ page = 1, perPage = 5 }) =>
+export const apiGetBookings = ({ page = 1, perPage = 5, withCanceled = false }) =>
   api.get('/bookings', {
     params: {
       page,
       per_page: perPage,
+      with_canceled: withCanceled,
     },
   })
 

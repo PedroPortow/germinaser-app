@@ -20,7 +20,7 @@ function Home() {
     setIsLoading(true)
     try {
       const perPage = 7
-      const response = await apiGetBookings({ page, perPage })
+      const response = await apiGetBookings({ page, perPage, withCanceled: false })
 
       if (page === 1) {
         setBookings(response.data.bookings)
@@ -63,7 +63,10 @@ function Home() {
         <BookingModal
           visible={bookingModalVisible}
           onClose={closeBookingModal}
-          onCancelBooking={() => getBookings()}
+          onCancelBooking={() => {
+            setBookings([])
+            getBookings()
+          }}
           booking={selectedBooking}
         />
         <View style={styles.topRow}>
