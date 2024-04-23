@@ -58,7 +58,8 @@
     "react-native/no-inline-styles": "off",
     "react/jsx-no-bind": "off",
     "no-param-reassign": "off",
-    "no-restricted-exports": "off"
+    "no-restricted-exports": "off",
+    "import/no-cycle": "off"
   },
   "settings": {
     "react": {

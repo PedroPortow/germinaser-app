@@ -22,7 +22,6 @@ function Users() {
     try {
       const response = await apiGetAllUsers()
 
-      console.log(response.data)
       setUsers(response.data)
     } catch (error) {
       console.error(error)

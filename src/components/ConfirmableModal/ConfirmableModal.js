@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Modal, Button } from '@ui-kitten/components'
+import { FontAwesome } from '@expo/vector-icons'
 import Card from '../Cards/Card'
 
 function ConfirmableModal({
@@ -26,6 +27,7 @@ function ConfirmableModal({
       animationType="slide"
     >
       <Card style={styles.cardContainer}>
+        {/* <FontAwesome name="close" size={22} color="black" /> */}
         <View style={styles.cardContent}>{children}</View>
         <View style={styles.cardFooter}>
           {cancelButtonLabel ? (

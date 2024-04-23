@@ -5,8 +5,10 @@ import { Feather } from '@expo/vector-icons'
 import { Loader, Card, Text } from '@components'
 import { formatDate, getWeekDay } from '@helpers'
 import Table from '../components/Table'
-import { apiGetBookings } from '../../../services/bookings'
+import { apiGetAllUsersBookings } from '../../../services/bookings'
 import { apiGetClinics } from '../../../services/clinics'
+import { apiGetAllUsers } from '../../../services/user'
+import BookingModal from './components/BookingModal'
 
 function Bookings() {
   const [bookings, setBookings] = useState([])
@@ -20,14 +22,23 @@ function Bookings() {
   const [clinic, setClinic] = useState()
   const [selectedClinicIndex, setSelectedClinicIndex] = useState(null)
 
+  const [user, setUser] = useState()
+  const [selectedUserIndex, setSelectedUserIndex] = useState(null)
+
   const [clinicOptions, setClinicOptions] = useState([])
+  const [userOptions, setUserOptions] = useState([])
 
   const getBookings = async (page) => {
     setIsLoading(true)
 
     try {
       const perPage = 7
-      const response = await apiGetBookings({ page, perPage })
+      const response = await apiGetAllUsersBookings({
+        page,
+        perPage,
+        userId: user,
+        clinicId: clinic,
+      })
 
       if (page === 1) {
         setBookings(response.data.bookings)
@@ -51,7 +62,12 @@ function Bookings() {
   useEffect(() => {
     getBookings(1)
     getClinicOptions()
+    getUserOptions()
   }, [])
+
+  useEffect(() => {
+    getBookings(1)
+  }, [user, clinic])
 
   const getClinicOptions = async () => {
     try {
@@ -70,14 +86,36 @@ function Bookings() {
     }
   }
 
+  const getUserOptions = async () => {
+    try {
+      const response = await apiGetAllUsers()
+
+      const formattedResponse = response.data.map((user) => ({
+        label: user.name,
+        value: user.id,
+      }))
+
+      setUserOptions(formattedResponse)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const onChooseClinic = (selectedClinic) => {
     const selectedClinicId = clinicOptions[selectedClinic.row].value
     setClinic(selectedClinicId)
     setSelectedClinicIndex(selectedClinic)
   }
 
-  console.log({ bookings })
+  const onChooseUser = (selectedUser) => {
+    const selectedUserId = userOptions[selectedUser.row].value
+    setUser(selectedUserId)
+    setSelectedUserIndex(selectedUser)
+  }
 
+  console.log({ clinic })
   const renderItem = ({ item }) => {
     const dateSubtitle = `${getWeekDay(item.date)}, ${formatDate(item.date)}`
 
@@ -104,12 +142,12 @@ function Bookings() {
   return (
     <View style={styles.container}>
       <Loader loading={isLoading} />
-      {/* <BookingModal
+      <BookingModal
         booking={selectedBooking}
         visible={bookingModalVisible}
         close={() => setBookingModalVisible(false)}
         onSubmit={() => getBookings(1)}
-      /> */}
+      />
       <Card style={styles.cardContent}>
         <View style={styles.selectWrapper}>
           <Text style={styles.selectLabel}>Clínica</Text>
@@ -126,11 +164,11 @@ function Bookings() {
         <View style={styles.selectWrapper}>
           <Text style={styles.selectLabel}>Usuário</Text>
           <Select
-            onSelect={onChooseClinic}
-            value={clinicOptions[selectedClinicIndex?.row]?.label}
-            placeholder="Selecione a clínica"
+            onSelect={onChooseUser}
+            value={userOptions[selectedUserIndex?.row]?.label}
+            placeholder="Selecione um usuário"
           >
-            {clinicOptions.map((clinic) => (
+            {userOptions.map((clinic) => (
               <SelectItem key={clinic.value} title={clinic.label} />
             ))}
           </Select>

@@ -9,3 +9,15 @@ export const ROLES_LABEL = {
   admin: 'Administrador',
   owner: 'Dono',
 }
+
+export const BOOKING_STATUS = {
+  upcoming: 'upcoming',
+  done: 'done',
+  canceled: 'canceled',
+}
+
+export const BOOKING_STATUS_LABEL = {
+  upcoming: 'Agendada',
+  past: 'Realizada',
+  canceled: 'Cancelada',
+}

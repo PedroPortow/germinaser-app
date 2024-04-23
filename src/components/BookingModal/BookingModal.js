@@ -3,15 +3,14 @@ import { StyleSheet, View } from 'react-native'
 import { Text } from '@components'
 import { Ionicons } from '@expo/vector-icons'
 import { Divider } from '@ui-kitten/components'
-import StatusBadge from '../StatusBadge/StatusBadge'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
 import ConfirmableModal from '../ConfirmableModal/ConfirmableModal'
-import { apiDeleteBooking } from '../../services/bookings'
+import { apiCancelBooking } from '../../services/bookings'
 
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const handleDeleteBooking = async () => {
     try {
-      await apiDeleteBooking(booking.id)
+      await apiCancelBooking(booking.id)
 
       onCancelBooking()
       onClose()
