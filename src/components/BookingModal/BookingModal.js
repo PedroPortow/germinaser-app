@@ -6,6 +6,7 @@ import { Divider } from '@ui-kitten/components'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
 import ConfirmableModal from '../ConfirmableModal/ConfirmableModal'
 import { apiCancelBooking } from '../../services/bookings'
+import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../constants/constants'
 
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const handleDeleteBooking = async () => {
@@ -26,7 +27,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
       onClose={onClose}
       onCancel={handleDeleteBooking}
       close={onClose}
-      cancelButtonLabel="Cancelar Reserva"
+      cancelButtonLabel={booking.status === BOOKING_STATUS.upcoming && 'Cancelar Reserva'}
       cancelButtonAppearence="outline"
     >
       <View style={styles.content}>
@@ -50,7 +51,10 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
               {booking.start_time} - {getBookingEndtimeFormatted(booking.start_time)}
             </Text>
           </View>
-          <Divider />
+          <View style={styles.row}>
+            <Text style={styles.text}>Status: {BOOKING_STATUS_LABEL[booking.status]}</Text>
+          </View>
+          {booking.status === BOOKING_STATUS.upcoming && <Divider />}
           {/* <View style={styles.badgeWrapper}>
             <StatusBadge status="info">{booking.status || 'Reservado'}</StatusBadge>
           </View> */}
