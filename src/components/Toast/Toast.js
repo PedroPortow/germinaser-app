@@ -5,7 +5,7 @@ import Text from '../Text/Text'
 
 const THEMES = {
   success: {
-    backgroundColor: 'green',
+    backgroundColor: 'rgb(6, 130, 0)',
     icon: 'checkcircle',
     textColor: 'white',
   },
@@ -63,9 +63,9 @@ function Toast({ message, isVisible, onDismiss, theme = 'success' }) {
         <AntDesign name={themeSettings.icon} size={24} color={themeSettings.textColor} />
       </TouchableOpacity>
       <Text style={[styles.text, { color: themeSettings.textColor }]}>{message}</Text>
-      <TouchableOpacity style={styles.closeButton} onPress={closeToast}>
+      {/* <TouchableOpacity style={styles.closeButton} onPress={closeToast}>
         <AntDesign name="close" size={18} color={themeSettings.textColor} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </Animated.View>
   )
 }
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   toast: {
     position: 'absolute',
     zIndex: 99999,
-    top: 65,
+    top: 40,
     left: 0,
     right: 0,
     padding: 10,

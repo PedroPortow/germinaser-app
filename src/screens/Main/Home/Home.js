@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList, Pressable } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
-import { Text, Loader, Card, RoundCard, BookingModal } from '@components'
+import { Loader, Card, RoundCard, BookingModal, Text } from '@components'
 import { useUserContext, useCreateBookingModal } from '@context'
 import BookingCard from './components/BookingCard'
 import { apiGetBookings } from '../../../services/bookings'
+import { useToast } from '../../../context/ToastContext'
 
 function Home() {
   const { user } = useUserContext()
@@ -15,6 +16,8 @@ function Home() {
   const [selectedBooking, setSelectedBooking] = useState({})
 
   const { refetchTrigger } = useCreateBookingModal()
+
+  const { showToast } = useToast()
 
   const getBookings = async (page) => {
     setIsLoading(true)
@@ -44,6 +47,12 @@ function Home() {
     }
   }
 
+  const handleShowToast = () => {
+    showToast({
+      message: 'Reserva criada com sucesso!',
+      theme: 'success',
+    })
+  }
   const handleViewBooking = (booking) => {
     setSelectedBooking(booking)
     setBookingModalVisible(true)
@@ -85,8 +94,12 @@ function Home() {
       <Loader loading={isLoading} />
       <View style={styles.bottomContainer}>
         <View style={styles.nextBookingsCol}>
+          <Pressable onPress={handleShowToast}>
+            <Text>oi</Text>
+          </Pressable>
           <View style={styles.textRow}>
             <Text style={styles.mainText}>Próximas reservas</Text>
+            {/* <Teste style={styles.mainTeste}>Próximas reservas</Teste> */}
           </View>
           {bookings.length ? (
             <FlatList
