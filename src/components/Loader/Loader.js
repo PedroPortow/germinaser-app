@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
-import { Spinner } from '@ui-kitten/components'
 
 function Loader({ loading = true, size = 'large' }) {
   if (!loading) {
@@ -9,7 +8,7 @@ function Loader({ loading = true, size = 'large' }) {
 
   return (
     <View style={styles.container}>
-      <Spinner animating size={size} style={styles.loader} />
+      {/* <Spinner animating size={size} style={styles.loader} /> */}
     </View>
   )
 }

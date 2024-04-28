@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { IndexPath, Input, Select, SelectItem } from '@ui-kitten/components'
 import { ConfirmableModal, Loader, NumberInput } from '@components'
 import { useFormFilled } from '@hooks'
 import { apiCreateUser, apiDeleteUser, apiGetRoles, apiUpdateUser } from '../../../../services/user'

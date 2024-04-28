@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Input } from '@ui-kitten/components'
 import { ConfirmableModal, Loader } from '@components'
 import { useFormFilled } from '@hooks'
 import { apiCreateClinic, apiUpdateClinic } from '../../../../services/clinics'

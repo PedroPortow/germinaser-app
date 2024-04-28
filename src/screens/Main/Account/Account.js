@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import { Text, Button, Card } from '@components'
 import { useNavigation } from '@react-navigation/native'
-import { Divider } from '@ui-kitten/components'
 import { ROLES_LABEL } from '@constants'
 import { useUserContext } from '@context'
 

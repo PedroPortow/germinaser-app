@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native' // Importar TouchableOpacity e Text
-import { Input } from '@ui-kitten/components'
 import { Feather } from '@expo/vector-icons'
 
 function NumberInput({ placeholder, label, initialValue = '', onChange }) {

@@ -6,7 +6,7 @@ const CreateBookingModalContext = createContext()
 export const useCreateBookingModal = () => useContext(CreateBookingModalContext)
 
 export function CreateBookingModalProvider({ children }) {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [refetchTrigger, setRefetchTrigger] = useState(0) // triste
 
   const showCreateBookingModal = useCallback(() => {

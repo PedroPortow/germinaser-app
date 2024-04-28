@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ListItem, Select, SelectItem } from '@ui-kitten/components'
 import { Feather } from '@expo/vector-icons'
 import { Loader, Card, Text } from '@components'
 import { formatDate, getWeekDay } from '@helpers'

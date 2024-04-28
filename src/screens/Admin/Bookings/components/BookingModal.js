@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Divider, Input, Button } from '@ui-kitten/components'
 import { ConfirmableModal, Loader, Text } from '@components'
 import { Ionicons } from '@expo/vector-icons'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '@helpers'

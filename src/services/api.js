@@ -4,6 +4,7 @@ import events from '../events'
 
 const api = axios.create({
   baseURL: 'http://localhost:3000/',
+  // baseURL: 'http://192.168.3.5:3000/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

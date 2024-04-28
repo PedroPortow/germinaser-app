@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
 import { Modal, Text, Loader } from '@components'
-import { Select, SelectItem, Input } from '@ui-kitten/components'
 import ChooseDateModal from './components/ChooseDateModal'
 import { apiGetClinicRooms, apiGetClinics } from '../../services/clinics'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
 import { useToast } from '../../context/ToastContext'
+import { Input, Select } from 'native-base'
+import FullScreenModal from '../FullScreenModal'
+import ClinicSelect from '../ClinicSelect'
+import RoomSelect from '../RoomSelect'
 
 function CreateBookingModal({ visible, onClose, onCreate }) {
   const [clinic, setClinic] = useState()
@@ -66,22 +69,6 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
     }
   }, [visible])
 
-  const getRoomOptions = async (selectedClinic) => {
-    setIsLoading(true)
-
-    try {
-      const response = await apiGetClinicRooms(selectedClinic)
-
-      const formattedResponse = response.data.map((room) => ({
-        label: room.name,
-        value: room.id,
-      }))
-
-      setRoomOptions(formattedResponse)
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const onChooseDate = (day, timeslot) => {
     setSelectedDay(day)
@@ -89,13 +76,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
     setDateModalVisible(false)
   }
 
-  const onChooseClinic = (selectedClinic) => {
-    const selectedClinicId = clinicOptions[selectedClinic.row].value
-    setClinic(selectedClinicId)
-    setSelectedClinicIndex(selectedClinic)
 
-    getRoomOptions(selectedClinic)
-  }
   const onChooseRoom = (selectedRoom) => {
     const selectedRoomId = roomOptions[selectedRoom.row].value
     setSelectedRoomIndex(selectedRoom)
@@ -127,7 +108,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
   }
 
   return (
-    <Modal
+    <FullScreenModal
       visible={visible}
       onClose={onClose}
       title="Nova Reserva"
@@ -139,7 +120,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
     >
       <Loader loading={isLoading} />
       <ChooseDateModal
-        room={room}
+        selectedRoom={room}
         onClose={() => setDateModalVisible(false)}
         visible={dateModalVisible}
         onConfirm={onChooseDate}
@@ -149,36 +130,24 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
           <Text style={styles.label}>Nome da Reserva</Text>
           <Input
             value={name}
-            placeholder="Reserva"
-            caption="Usado para identificar a reserva"
-            onChangeText={(nextValue) => setName(nextValue)}
+            size='lg'
+            variant="outline"
+            placeholder="Reserva João"
+            onChangeText={(value) => setName(value)}rere
           />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Clínica</Text>
-          <Select
-            onSelect={onChooseClinic}
-            value={clinicOptions[selectedClinicIndex?.row]?.label}
-            placeholder="Seleciona a casa"
-          >
-            {clinicOptions.map((clinic) => (
-              <SelectItem key={clinic.value} title={clinic.label} />
-            ))}
-          </Select>
+          <ClinicSelect
+            onSelectClinic={(clinic) => setClinic(clinic)}
+          />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Sala</Text>
-
-          <Select
-            onSelect={onChooseRoom}
-            value={roomOptions[selectedRoomIndex?.row]?.label}
-            disabled={!clinic}
-            placeholder="Seleciona a sala"
-          >
-            {roomOptions.map((room) => (
-              <SelectItem key={room.value} title={room.label} />
-            ))}
-          </Select>
+          <RoomSelect
+            selectedClinic={clinic}
+            onSelectRoom={(clinic) => setRoom(clinic)}
+          />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Data</Text>
@@ -197,7 +166,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
           </Pressable>
         </View>
       </View>
-    </Modal>
+    </FullScreenModal>
   )
 }
 
@@ -206,7 +175,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 26,
     padding: 10,
-    marginTop: 40,
   },
   selectedTimeText: {
     color: '#222B45',

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ListItem, Button } from '@ui-kitten/components'
 import { Feather } from '@expo/vector-icons'
 import { Loader } from '@components'
 import Table from '../components/Table'

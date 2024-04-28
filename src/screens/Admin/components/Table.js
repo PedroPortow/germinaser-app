@@ -1,7 +1,6 @@
 import React from 'react'
 import { Card, Text } from '@components'
 import { StyleSheet } from 'react-native'
-import { List, Divider } from '@ui-kitten/components'
 
 function Table({ headerText, data, listItem, separator = true, onEndReached }) {
   return (

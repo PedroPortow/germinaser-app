@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Modal, Button } from '@ui-kitten/components'
 import { FontAwesome } from '@expo/vector-icons'
 import Card from '../Cards/Card'
 
