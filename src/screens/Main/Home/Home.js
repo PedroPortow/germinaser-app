@@ -6,6 +6,7 @@ import { useUserContext, useCreateBookingModal } from '@context'
 import BookingCard from './components/BookingCard'
 import { apiGetBookings } from '../../../services/bookings'
 import { useToast } from '../../../context/ToastContext'
+import BookingsList from '../../../components/BookingsList/BookingsList'
 
 function Home() {
   const { user } = useUserContext()
@@ -41,7 +42,7 @@ function Home() {
     getBookings(1)
   }, [refetchTrigger])
 
-  const handleLoadMore = () => {
+  const handleNextPage = () => {
     if (!isLoading && metadata.current_page < metadata.total_pages) {
       getBookings(metadata.current_page + 1)
     }
@@ -53,14 +54,10 @@ function Home() {
       theme: 'success',
     })
   }
-  const handleViewBooking = (booking) => {
+  const handleSelectBooking = (booking) => {
     setSelectedBooking(booking)
     setBookingModalVisible(true)
   }
-
-  const renderBooking = ({ item }) => (
-    <BookingCard booking={item} onPress={() => handleViewBooking(item)} />
-  )
 
   const closeBookingModal = () => {
     setBookingModalVisible(false)
@@ -101,20 +98,11 @@ function Home() {
             <Text style={styles.mainText}>Próximas reservas</Text>
             {/* <Teste style={styles.mainTeste}>Próximas reservas</Teste> */}
           </View>
-          {bookings.length ? (
-            <FlatList
-              data={bookings}
-              renderItem={renderBooking}
-              keyExtractor={(booking) => String(booking.id)}
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.05}
-              contentContainerStyle={styles.listContainer}
-            />
-          ) : (
-            <Card style={styles.emptyCardContent}>
-              <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
-            </Card>
-          )}
+          <BookingsList
+            bookings={bookings}
+            handleNextPage={handleNextPage}
+            handleSelectBooking={handleSelectBooking}
+          />
         </View>
       </View>
     </>

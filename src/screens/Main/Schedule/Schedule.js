@@ -1,19 +1,14 @@
-// Schedule.js
-import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import React, { useState } from 'react'
+import { SafeAreaView, SafeAreaViewBase, StyleSheet } from 'react-native'
+import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars'
 
-const Schedule = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-    </SafeAreaView>
-  );
-};
+function Schedule() {}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
-});
+})
 
-export default Schedule;
+export default Schedule

@@ -18,6 +18,7 @@ function CustomModal({
   disableConfirm,
   animationOut = 'slideOutDown',
   theme = 'primary',
+  fillScreen
 }) {
   return (
     <Modal
@@ -59,11 +60,7 @@ function CustomModal({
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-  },
-  modalContent: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 20,
+    justifyContent: 'flex-end'
   },
   footerGradient: {
     position: 'absolute',
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 45,
+    marginTop: 35,
   },
   title: {
     fontWeight: 'bold',

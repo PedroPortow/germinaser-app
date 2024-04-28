@@ -1,59 +1,98 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { Agenda } from 'react-native-calendars'
+import { View, StyleSheet, SafeAreaView } from 'react-native'
+import { apiGetBookings } from '../../../services/bookings'
+import BookingsList from '../../../components/BookingsList/BookingsList'
+import { Text, Button, FilterButton } from '@components'
+import BookingFilterModal from '../../../components/BookingFilterModal/BookingFilterModal'
 
 function UserBookings() {
-  const [items, setItems] = useState({})
+  const [bookings, setBookings] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [bookingModalVisible, setBookingModalVisible] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState({})
 
-  const today = new Date()
+  const [filterModalVisible, setFilterModalVisible] = useState(false)
+  const [metadata, setMetadata] = useState({})
 
-  const getBookingsByDay = (day) => {
-    setTimeout(() => {
-      setItems(newItems)
-    }, 1000)
+  const handleSelectBooking = (booking) => {
+    setSelectedBooking(booking)
+    setBookingModalVisible(true)
   }
 
-  useEffect(() => {}, [])
+  const getBookings = async (page) => {
+    setIsLoading(true)
+    try {
+      const perPage = 7
+      const response = await apiGetBookings({ page, perPage, withCanceled: false })
 
-  const renderItem = (item) => (
-    <View style={styles.item}>
-      <Text>{item.name}</Text>
-    </View>
-  )
+      if (page === 1) {
+        setBookings(response.data.bookings)
+      } else {
+        setBookings((prev) => [...prev, ...response.data.bookings])
+      }
+      setMetadata(response.data.meta)
+    } catch (error) {
+      console.log(error.response)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleNextPage = () => {
+    if (!isLoading && metadata.current_page < metadata.total_pages) {
+      getBookings(metadata.current_page + 1)
+    }
+  }
+  useEffect(() => {
+    getBookings(1)
+  }, [])
+
+  const handleOpenFilterModal = () => {
+    setFilterModalVisible(true)
+  }
+
+  const handleFilterBooking = () => {
+    console.log("raseaeas")
+  }
 
   return (
-    <Agenda
-      items={{
-        '2024-04-09': [{ name: '{Nome Reserva} {Horário} {Sala/Clinica}' }],
-      }}
-      loadItemsForMonth={(month) => {
-        console.log('trigger items loading')
-      }}
-      selected={today}
-      minDate="2024-04-01"
-      renderItem={renderItem}
-      renderEmptyDate={() => (
-        <View>
-          <Text>oi</Text>
+    <SafeAreaView style={styles.container}>
+      <BookingFilterModal 
+        onClose={() => setFilterModalVisible(false)}
+        visible={filterModalVisible} 
+        onConfirm={handleFilterBooking}
+      />
+      <View style={styles.content}>
+        <View style={styles.headerRow}>
+          <Text style={styles.headerText}>Reservas</Text>
+          <FilterButton onPress={() => handleOpenFilterModal()} />
         </View>
-      )}
-    />
+        <BookingsList
+          bookings={bookings}
+          handleNextPage={handleNextPage}
+          handleSelectBooking={handleSelectBooking}
+        />
+      </View>
+    </SafeAreaView>
   )
-}
-
-function timeToString(time) {
-  const date = new Date(time)
-  return date.toISOString().split('T')[0]
 }
 
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
+  container: {
     flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 5,
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 })
 

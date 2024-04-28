@@ -36,7 +36,7 @@ function Button({
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 8,
     width: 'auto',
     gap: 4,

@@ -1,72 +1,72 @@
-/* eslint-disable react/prop-types */
-{
-  "env": {
-    "es2021": true,
-    "node": true,
-    "browser": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-native/all",
-    "airbnb",
-    "prettier"
-  ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
-  "plugins": [
-    "react",
-    "react-native"
-  ],
-  "rules": {
-    "react/jsx-filename-extension": [
-      1,
-      {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
-      }
-    ],
-    "react/prop-types": "off",
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false,
-        "classes": false,
-        "variables": false
-      }
-    ],
-    "react-native/no-color-literals": "off",
-    "react-native/sort-styles": "off",
-    "object-curly-newline": "off",
-    "comma-dangle": "off",
-    "import/no-extraneous-dependencies": "off",
-    "import/no-named-default": "off",
-    "global-require": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/no-unstable-nested-components": "off", // TODO: Revisar
-    "no-console": "off",
-    "react-native/no-raw-text": "off",
-    "no-shadow": "off",
-    "react-native/no-inline-styles": "off",
-    "react/jsx-no-bind": "off",
-    "no-param-reassign": "off",
-    "no-restricted-exports": "off",
-    "import/no-cycle": "off"
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    },
-    "import/resolver": {
-      "babel-module": {}
-    }
-  }
-}
+// /* eslint-disable react/prop-types */
+// {
+//   "env": {
+//     "es2021": true,
+//     "node": true,
+//     "browser": true
+//   },
+//   "extends": [
+//     "eslint:recommended",
+//     "plugin:react/recommended",
+//     "plugin:react-native/all",
+//     "airbnb",
+//     "prettier"
+//   ],
+//   "parserOptions": {
+//     "ecmaFeatures": {
+//       "jsx": true
+//     },
+//     "ecmaVersion": 12,
+//     "sourceType": "module"
+//   },
+//   "plugins": [
+//     "react",
+//     "react-native"
+//   ],
+//   "rules": {
+//     "react/jsx-filename-extension": [
+//       1,
+//       {
+//         "extensions": [
+//           ".js",
+//           ".jsx"
+//         ]
+//       }
+//     ],
+//     "react/prop-types": "off",
+//     "no-use-before-define": [
+//       "error",
+//       {
+//         "functions": false,
+//         "classes": false,
+//         "variables": false
+//       }
+//     ],
+//     "react-native/no-color-literals": "off",
+//     "react-native/sort-styles": "off",
+//     "object-curly-newline": "off",
+//     "comma-dangle": "off",
+//     "import/no-extraneous-dependencies": "off",
+//     "import/no-named-default": "off",
+//     "global-require": "off",
+//     "react/jsx-props-no-spreading": "off",
+//     "react/react-in-jsx-scope": "off",
+//     "react/no-unstable-nested-components": "off", // TODO: Revisar
+//     "no-console": "off",
+//     "react-native/no-raw-text": "off",
+//     "no-shadow": "off",
+//     "react-native/no-inline-styles": "off",
+//     "react/jsx-no-bind": "off",
+//     "no-param-reassign": "off",
+//     "no-restricted-exports": "off",
+//     "import/no-cycle": "off"
+//   },
+//   "settings": {
+//     "react": {
+//       "version": "detect"
+//     },
+//     "import/resolver": {
+//       "babel-module": {}
+//     }
+//   }
+// }
