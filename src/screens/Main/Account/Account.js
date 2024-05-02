@@ -3,6 +3,7 @@ import { Text, Button, Card } from '@components'
 import { useNavigation } from '@react-navigation/native'
 import { ROLES_LABEL } from '@constants'
 import { useUserContext } from '@context'
+import { Divider } from 'native-base'
 
 function Account() {
   const { user, logout, isAdminOrOwner } = useUserContext()

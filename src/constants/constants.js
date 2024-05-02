@@ -18,6 +18,6 @@ export const BOOKING_STATUS = {
 
 export const BOOKING_STATUS_LABEL = {
   upcoming: 'Agendada',
-  past: 'Realizada',
+  done: 'Realizada',
   canceled: 'Cancelada',
 }

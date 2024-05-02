@@ -6,11 +6,20 @@ import Bookings from './UserBookings'
 import Account from './Account'
 import Schedule from './Schedule'
 import { useCreateBookingModal } from '../../context/CreateBookingModalContext'
+import { useFullScreenModal } from '../../context/FullScreenModalContext'
+import { CreateBookingModal } from '../../components'
 
 const Tab = createBottomTabNavigator()
 
 function MainNavigator() {
-  const { showCreateBookingModal } = useCreateBookingModal()
+  const { showModal } = useFullScreenModal()
+
+  const handleOpenCreateBookingModal = (user) => {
+    showModal({
+      title: "Nova Reserva",
+      children: <CreateBookingModal />,
+    })
+  }
 
   return (
     <Tab.Navigator
@@ -53,7 +62,7 @@ function MainNavigator() {
         component={EmptyView}
         options={{
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} onPress={() => showCreateBookingModal()} />
+            <CustomTabBarButton {...props} onPress={handleOpenCreateBookingModal} />
           ),
           tabBarIcon: ({ color, size }) => <Feather name="add" size={size} color={color} />,
         }}

@@ -1,37 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Feather } from '@expo/vector-icons'
-import { Loader, Card, Text } from '@components'
-import { formatDate, getWeekDay } from '@helpers'
-import Table from '../components/Table'
+import { Loader, Card, Text, Button } from '@components'
 import { apiGetAllUsersBookings } from '../../../services/bookings'
-import { apiGetClinics } from '../../../services/clinics'
-import { apiGetAllUsers } from '../../../services/user'
+import FilterButton from '../../../components/FilterButton/FilterButton'
+import FilterBookingsModal from './components/FilterBookingsModal'
 import BookingModal from './components/BookingModal'
+import BookingStatusBadge from '../../../components/BookingStatusBadge/BookingStatusBadge'
+// import BookingModal from './components/BookingModal'
 
 function Bookings() {
-  const [bookings, setBookings] = useState([])
+  const [filterBookingsModalVisible, setFilterBookingsModalVisible] = useState(false)
   const [bookingModalVisible, setBookingModalVisible] = useState(false)
 
-  const [selectedBooking, setSelectedBooking] = useState({})
-
+  const [bookings, setBookings] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [metadata, setMetadata] = useState({})
 
-  const [clinic, setClinic] = useState()
-  const [selectedClinicIndex, setSelectedClinicIndex] = useState(null)
+  const [selectedBooking, setSelectedBooking] = useState({})
 
-  const [user, setUser] = useState()
-  const [selectedUserIndex, setSelectedUserIndex] = useState(null)
-
-  const [clinicOptions, setClinicOptions] = useState([])
-  const [userOptions, setUserOptions] = useState([])
-
-  const getBookings = async (page) => {
+  const getBookings = async (page, user, clinic) => {
     setIsLoading(true)
 
     try {
-      const perPage = 7
+      console.log({user})
+      console.log({clinic})
+      const perPage = 15
       const response = await apiGetAllUsersBookings({
         page,
         perPage,
@@ -58,131 +53,66 @@ function Bookings() {
     }
   }
 
+  const handleOpenBookingModal = (booking) => {
+    setSelectedBooking(booking)
+    setBookingModalVisible(true)
+  }
+
   useEffect(() => {
     getBookings(1)
-    getClinicOptions()
-    getUserOptions()
   }, [])
 
-  useEffect(() => {
-    getBookings(1)
-  }, [user, clinic])
-
-  const getClinicOptions = async () => {
-    try {
-      const response = await apiGetClinics()
-
-      const formattedResponse = response.data.map((clinic) => ({
-        label: clinic.name,
-        value: clinic.id,
-      }))
-
-      setClinicOptions(formattedResponse)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const getUserOptions = async () => {
-    try {
-      const response = await apiGetAllUsers()
-
-      const formattedResponse = response.data.map((user) => ({
-        label: user.name,
-        value: user.id,
-      }))
-
-      setUserOptions(formattedResponse)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const onChooseClinic = (selectedClinic) => {
-    const selectedClinicId = clinicOptions[selectedClinic.row].value
-    setClinic(selectedClinicId)
-    setSelectedClinicIndex(selectedClinic)
-  }
-
-  const onChooseUser = (selectedUser) => {
-    const selectedUserId = userOptions[selectedUser.row].value
-    setUser(selectedUserId)
-    setSelectedUserIndex(selectedUser)
-  }
-
-  console.log({ clinic })
-  const renderItem = ({ item }) => {
-    const dateSubtitle = `${getWeekDay(item.date)}, ${formatDate(item.date)}`
-
-    return (
-      <ListItem
-        title={item.name}
-        description={`${item.room_name} - ${dateSubtitle}`}
-        style={styles.listItem}
-        accessoryRight={() => (
-          <Feather
-            name="edit"
-            size={18}
-            color="black"
-            onPress={() => {
-              setSelectedBooking(item)
-              setBookingModalVisible(true)
-            }}
+  return (
+      <SafeAreaView style={styles.container}>
+        <Loader loading={isLoading} />
+        <BookingModal
+          visible={bookingModalVisible}
+          booking={selectedBooking}
+          onClose={() => setBookingModalVisible(false)}
+          onConfirm={() => getBookings(1)}
+        />
+        <FilterBookingsModal 
+          visible={filterBookingsModalVisible}
+          onClose={() => setFilterBookingsModalVisible(false)}
+          onFilter={getBookings}
+        />
+        <FilterButton 
+          style={styles.filterButtonPosition}
+          onPress={() => setFilterBookingsModalVisible(true)}
+        />
+        <Card style={styles.cardList}>
+          <FlatList
+            data={bookings}
+            onEndReached={handleLoadMore}
+            renderItem={({ item }) => (
+              <Row
+                item={item}
+                handleOpenBookingModal={handleOpenBookingModal}
+              />
+            )}
+            l
+            keyExtractor={(item) => item.id.toString()}
           />
-        )}
-      />
+        </Card>
+      </SafeAreaView>
+  )
+
+  function Row({ item, handleOpenBookingModal }) {
+    console.log({item})
+    return (
+      <View style={styles.listItem}>
+        <View style={styles.bookingNameStatus}>
+          <Text>{item.name}</Text>
+          <BookingStatusBadge bookingStatus={item.status} />
+        </View>
+        <View style={styles.buttonsRow}>
+          <TouchableOpacity style={styles.rowContent} onPress={() => handleOpenBookingModal(item)}>
+            <Feather name="edit" size={20} color="#333" style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+      </View>
     )
   }
-
-  return (
-    <View style={styles.container}>
-      <Loader loading={isLoading} />
-      <BookingModal
-        booking={selectedBooking}
-        visible={bookingModalVisible}
-        close={() => setBookingModalVisible(false)}
-        onSubmit={() => getBookings(1)}
-      />
-      <Card style={styles.cardContent}>
-        <View style={styles.selectWrapper}>
-          <Text style={styles.selectLabel}>Clínica</Text>
-          <Select
-            onSelect={onChooseClinic}
-            value={clinicOptions[selectedClinicIndex?.row]?.label}
-            placeholder="Selecione a clínica"
-          >
-            {clinicOptions.map((clinic) => (
-              <SelectItem key={clinic.value} title={clinic.label} />
-            ))}
-          </Select>
-        </View>
-        <View style={styles.selectWrapper}>
-          <Text style={styles.selectLabel}>Usuário</Text>
-          <Select
-            onSelect={onChooseUser}
-            value={userOptions[selectedUserIndex?.row]?.label}
-            placeholder="Selecione um usuário"
-          >
-            {userOptions.map((clinic) => (
-              <SelectItem key={clinic.value} title={clinic.label} />
-            ))}
-          </Select>
-        </View>
-      </Card>
-      <View style={styles.tableWrapper}>
-        <Table
-          data={bookings}
-          listItem={renderItem}
-          style={styles.tableMargin}
-          onEndReached={handleLoadMore}
-        />
-      </View>
-    </View>
-  )
 }
 
 const styles = StyleSheet.create({
@@ -190,23 +120,39 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
-  selectWrapper: {
-    flexDirection: 'column',
-    gap: 4,
-  },
-  selectLabel: {
-    fontSize: 16,
-    fontWeight: 'semibold',
-  },
-  cardContent: {
-    flexDirection: 'column',
-    gap: 16,
-  },
+  filterButtonPosition: {
+    alignSelf: 'flex-end'
+  },  
+  cardList: {
+    flexDirection: 'column'
+  },  
   listItem: {
-    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#ccc',
   },
-  tableWrapper: {
-    marginBottom: 232,
+  pressableText: {
+    color: '#0000EE',
+  },
+  bookingNameStatus: {
+    flexDirection: 'row',
+    gap: 4
+  }, 
+  rowContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+  },
+  addUserButton: {
+    marginTop: 20
+  },  
+  icon: {
+    marginLeft: 12,
   },
 })
 

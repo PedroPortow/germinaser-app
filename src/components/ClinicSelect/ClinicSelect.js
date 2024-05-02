@@ -33,7 +33,7 @@ function ClinicSelect({ onSelectClinic, selectedClinic }) {
       selectedValue={selectedClinic}
       accessibilityLabel="Choose Clinic"
       placeholder="Selecione uma clínica"
-      size={'lg'}
+      size='lg'
       // dropdownIcon={} // ALTERAR ISSO TÁ FEIO DEMAIS
       _selectedItem={{
         bg: "teal.600",

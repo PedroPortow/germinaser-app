@@ -1,15 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ConfirmableModal, Loader, Text } from '@components'
+import { Loader, Text } from '@components'
 import { Ionicons } from '@expo/vector-icons'
+import { Modal, Input, Divider, Button } from 'native-base'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '@helpers'
 import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../../../constants/constants'
 import { apiCancelBookingAsAdmin, apiUpdateBookingAsAdmin } from '../../../../services/bookings'
+import ConfirmationModal from '../../../../components/ConfirmationModal'
+import BookingStatusBadge from '../../../../components/BookingStatusBadge/BookingStatusBadge'
 
-function BookingModal({ booking, visible, close, onSubmit }) {
+function BookingModal({ booking, visible, onClose, onConfirm }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [name, setName] = useState()
-  const [address, setAddress] = useState()
+  const [bookingName, setBookingName] = useState()
+  const [confirmationModalVisible, setConfirmationModalVisibile] = useState(false)
 
   useEffect(() => {
     if (visible) {
@@ -18,8 +21,7 @@ function BookingModal({ booking, visible, close, onSubmit }) {
   }, [visible])
 
   const setSelecteBookingInfo = () => {
-    setName(booking.name)
-    setAddress(booking.address)
+    setBookingName(booking.name)
   }
 
   const handleEditBooking = async () => {
@@ -27,13 +29,12 @@ function BookingModal({ booking, visible, close, onSubmit }) {
 
     try {
       const params = {
-        name,
-        address,
+        bookingName,
       }
 
       await apiUpdateBookingAsAdmin(booking.id, params)
-      onSubmit()
-      close()
+      onClose()
+      onConfirm()
     } catch (error) {
       console.error(error)
     } finally {
@@ -45,104 +46,117 @@ function BookingModal({ booking, visible, close, onSubmit }) {
     try {
       await apiCancelBookingAsAdmin(booking.id)
 
-      onSubmit()
-      close()
+      onConfirm()
     } catch (error) {
       console.error(error)
     } finally {
+      onClose()
       setIsLoading(false)
     }
   }
 
-  const hasEdits = useMemo(
-    () => name !== booking.name || booking.address !== address,
-    [name, address]
-  )
-
-  console.log({ booking })
+  if (!visible) {
+    return null
+  }
 
   return (
     <>
-      <Loader loading={isLoading} />
-      <ConfirmableModal
-        visible={visible}
-        backdropStyle={styles.backdrop}
-        close={close}
-        confirmButtonLabel={
-          booking.status === BOOKING_STATUS.upcoming ? 'Salvar alterações' : 'Concluir'
-        }
-        confirmButtonDisabled={booking.status === BOOKING_STATUS.upcoming ? !hasEdits : false}
-        onConfirm={booking.status === BOOKING_STATUS.upcoming ? handleEditBooking : () => close()}
-        onCancel={close}
+      <ConfirmationModal
+        visible={confirmationModalVisible}
+        onConfirm={() => {
+          setConfirmationModalVisibile(false)
+          handleCancelBooking()
+          onClose()
+        }}
+        title="🚨Atenção"
+        onCancel={() => setConfirmationModalVisibile(false)}
+        onClose={() => setConfirmationModalVisibile(false)}
       >
-        <View style={styles.cardContainer}>
+        <Text>
+          Esta ação é definitiva, ao cancelar a reserva de um usuário o horário reservado será
+          liberado para outros horários
+        </Text>
+      </ConfirmationModal>
+      <Modal isOpen={visible} onClose={onClose} size="lg">
+        <Modal.Content>
+          <Modal.CloseButton />
+          <Modal.Header style={styles.headerRow}>Detalhes da reserva</Modal.Header>
+          <Modal.Body>
+            <View style={styles.content}>
+              {booking.status === BOOKING_STATUS.upcoming && (
+                <>
+                  <View style={styles.inputLabelWrapper}>
+                    <Text style={styles.label}>Nome da Reserva</Text>
+                    <Input
+                      value={bookingName}
+                      size="lg"
+                      onChangeText={(value) => setBookingName(value)}
+                    />
+                  </View>
+                  <Button colorScheme="red" onPress={() => setConfirmationModalVisibile(true)}>
+                    Cancelar Reserva
+                  </Button>
+                  <Divider marginY={2} />
+                </>
+              )}
+              <View style={styles.row}>
+                <Ionicons name="home-outline" size={20} color="black" />
+                <Text style={styles.text}>
+                  {booking.clinic_name}, {booking.room_name}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Ionicons name="calendar-outline" size={20} color="black" />
+                <Text style={styles.text}>
+                  {formatDate(booking.date)}, {getWeekDay(booking.date)}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Ionicons name="time-outline" size={20} color="black" />
+                <Text style={styles.text}>
+                  {booking.start_time} - {getBookingEndtimeFormatted(booking.start_time)}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <BookingStatusBadge bookingStatus={booking.status} />
+              </View>
+            </View>
+          </Modal.Body>
           {booking.status === BOOKING_STATUS.upcoming && (
-            <>
-              <Input
-                placeholder="Clínica 3"
-                value={name}
-                label="Nome da Reserva"
-                onChangeText={(value) => setName(value)}
-              />
-              <Button onPress={handleCancelBooking} status="danger" size="medium">
-                Cancelar Reserva
-              </Button>
-              <Divider />
-            </>
+            <Modal.Footer>
+              <Button.Group space={2}>
+                <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
+                  Cancelar
+                </Button>
+                <Button onPress={handleEditBooking}>Salvar</Button>
+              </Button.Group>
+            </Modal.Footer>
           )}
-          <View style={styles.bookingInfo}>
-            {booking.status !== BOOKING_STATUS.upcoming && (
-              <Text style={styles.bookingName}>{booking.name}</Text>
-            )}
-            <View style={styles.row}>
-              <Ionicons name="home-outline" size={20} color="black" />
-              <Text style={styles.text}>
-                {booking.clinic_name}, {booking.room_name}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Ionicons name="calendar-outline" size={20} color="black" />
-              <Text style={styles.text}>
-                {formatDate(booking.date)}, {getWeekDay(booking.date)}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              <Ionicons name="time-outline" size={20} color="black" />
-              <Text style={styles.text}>
-                {booking.start_time} - {getBookingEndtimeFormatted(booking.start_time)}
-              </Text>
-            </View>
-            <View style={styles.row}>
-              {/* TODO: Fix this bullshit ass status label */}
-              <Text style={styles.text}>Status: {BOOKING_STATUS_LABEL[booking.status]}</Text>
-            </View>
-          </View>
-        </View>
-      </ConfirmableModal>
+        </Modal.Content>
+      </Modal>
     </>
   )
 }
 
 const styles = StyleSheet.create({
-  cardContainer: {
+  content: {
     flexDirection: 'column',
-    gap: 16,
+    gap: 12,
   },
-  bookingInfo: {
-    flexDirection: 'column',
-    gap: 8,
+  text: {
+    fontSize: 16,
+    fontWeight: 'semibold',
   },
   row: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
+    gap: 4,
   },
-  bookingName: {
-    fontWeight: 'bold',
-    fontSize: 20,
+  inputLabelWrapper: {
+    flexDirection: 'column',
+    gap: 4,
   },
-  backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
+  label: {},
 })
 
 export default BookingModal

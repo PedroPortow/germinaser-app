@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
-import { Text, Button, FilterButton } from '@components'
+import { Text, FilterButton } from '@components'
 import BookingFilterModal from '../../../components/BookingFilterModal/BookingFilterModal'
 
 function UserBookings() {
@@ -51,29 +51,27 @@ function UserBookings() {
     setFilterModalVisible(true)
   }
 
-  const handleFilterBooking = () => {
-    console.log("raseaeas")
-  }
+  const handleFilterBooking = () => {}
 
   return (
-    <SafeAreaView style={styles.container}>
-      <BookingFilterModal 
+    <>
+      {/* <BookingFilterModal 
         onClose={() => setFilterModalVisible(false)}
         visible={filterModalVisible} 
         onConfirm={handleFilterBooking}
-      />
-      <View style={styles.content}>
-        <View style={styles.headerRow}>
-          <Text style={styles.headerText}>Reservas</Text>
-          <FilterButton onPress={() => handleOpenFilterModal()} />
-        </View>
+      /> */}
+      <View style={styles.topContainer}>
+        <Text style={styles.topText}>Reservas</Text>
+        <FilterButton onPress={() => handleOpenFilterModal()} style={styles.customButton} />
+      </View>
+      <View style={styles.bottomContainer}>
         <BookingsList
           bookings={bookings}
           handleNextPage={handleNextPage}
           handleSelectBooking={handleSelectBooking}
         />
       </View>
-    </SafeAreaView>
+    </>
   )
 }
 
@@ -81,18 +79,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  content: {
+  topText: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 18,
+    marginTop: 'auto',
+  },
+  topContainer: {
+    backgroundColor: '#479BA7',
+    paddingVertical: 10,
     paddingHorizontal: 20,
-    paddingTop: 5,
+    height: 120,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  bottomContainer: {
+    padding: 10,
   },
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
   },
+  // customButton: {
+  //   backgroundColor: 'white'
+  // },
   headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
 })
 

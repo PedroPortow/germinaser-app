@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView, Modal, TouchableOpacity } from 'react-native'
-import { Text,  Button, Loader } from '@components'
+import { Ionicons } from '@expo/vector-icons'
+import { Text, Button, Loader } from '@components'
 import { Calendar } from 'react-native-calendars'
 import { apiGetDayAvailableBookings } from '../../../services/bookings'
-import { Ionicons } from '@expo/vector-icons';
 
 function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
   const [selectedDay, setSelectedDay] = useState('')
@@ -27,7 +27,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
 
       setAvailableTimeSlots(response.data.available_slots)
     } catch (err) {
-      console.log('deu bosta')
+      console.log(err)
     } finally {
       setIsLoading(false)
     }
@@ -37,26 +37,17 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
     setSelectedDay(day.dateString)
     fetchAvailableTimeSlots(day)
   }
-  
-  if(!visible){
+
+  if (!visible) {
     return null
   }
 
   return (
-    <Modal
-      visible={visible}
-      animationType='slide'
-      // onClose={onClose}
-      // onConfirm={() => onConfirm(selectedDay, selectedTimeSlot)}
-      // title="Data da Reserva"
-      // closeIcon="chevron-back-outline"
-      // disableConfirm={!selectedTimeSlot}
-      // subtitle="Você possui 2 créditos de reserva disponíveis"
-    >
+    <Modal visible={visible} animationType="slide">
       <View style={styles.content}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Ionicons name={'arrow-back'} size={30} color="black" />
+            <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Data e horário para reserva</Text>
         </View>
@@ -74,8 +65,8 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
             arrowColor: '#479BA7',
           }}
           onDayPress={onSelectDay}
-          minDate={new Date()}
           firstDay={1}
+          minDate={new Date()}
           markedDates={{ [selectedDay]: { selected: true } }}
         />
         {selectedDay && availableTimeSlots.length ? (
@@ -100,9 +91,14 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
             </ScrollView>
           </View>
         ) : null}
-        <Button style={styles.confirmationButton} onPress={() => onConfirm(selectedDay, selectedTimeSlot)}>
-          Confirmar
-        </Button>
+        {selectedTimeSlot && (
+          <Button
+            style={styles.confirmationButton}
+            onPress={() => onConfirm(selectedDay, selectedTimeSlot)}
+          >
+            Confirmar
+          </Button>
+        )}
         {/* <Pressable styles={styles.pres} */}
       </View>
     </Modal>
@@ -119,27 +115,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
     position: 'absolute',
-    bottom: -100
+    bottom: -100,
   },
   closeButton: {
     position: 'absolute',
-    left: 0
-  }, 
+    left: 0,
+  },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-  }, 
+  },
   calendar: {
-    marginTop: 12
+    marginTop: 12,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   content: {
     marginTop: 28,
-    padding: 16
+    padding: 16,
   },
   timeSlotsText: {
     fontWeight: 'semibold',

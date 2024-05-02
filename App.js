@@ -7,8 +7,8 @@ import { UserContextProvider } from './src/context/UserContext'
 import './src/config/localConfig'
 import { ToastProvider } from './src/context/ToastContext'
 import { CreateBookingModalProvider } from './src/context/CreateBookingModalContext'
-import { NativeBaseProvider, Box } from "native-base";
-
+import { NativeBaseProvider, Box } from 'native-base'
+import { FullScreenModalProvider } from './src/context/FullScreenModalContext'
 
 function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false)
@@ -27,15 +27,17 @@ function App() {
 
   return (
     <NativeBaseProvider>
-      <ToastProvider>
-        <CreateBookingModalProvider>
-          <UserContextProvider>
-            <NavigationContainer>
-              <RootNavigator />
-            </NavigationContainer>
-          </UserContextProvider>
-        </CreateBookingModalProvider>
-      </ToastProvider>
+      <FullScreenModalProvider>
+        <ToastProvider>
+          <CreateBookingModalProvider>
+            <UserContextProvider>
+              <NavigationContainer>
+                <RootNavigator />
+              </NavigationContainer>
+            </UserContextProvider>
+          </CreateBookingModalProvider>
+        </ToastProvider>
+      </FullScreenModalProvider>
     </NativeBaseProvider>
   )
 }

@@ -7,7 +7,7 @@ import Button from '../Button/Button';
 const { height } = Dimensions.get('window');
 
 function FullScreenModal({
-  visible,
+  isVisible,
   children,
   onClose,
   title,
@@ -21,7 +21,7 @@ function FullScreenModal({
   const slideAnim = useRef(new Animated.Value(height)).current;
 
   useEffect(() => {
-    if (visible) {
+    if (isVisible) {
       setShowModal(true);
       Animated.timing(slideAnim, {
         toValue: 0,
@@ -30,7 +30,6 @@ function FullScreenModal({
         easing: Easing.out(Easing.cubic) 
       }).start();
     } else {
-      console.log("AQUI")
       Animated.timing(slideAnim, {
         toValue: height,
         duration: 400, 
@@ -38,7 +37,7 @@ function FullScreenModal({
         easing: Easing.in(Easing.cubic) 
       }).start(() => setShowModal(false));
     }
-  }, [visible]);
+  }, [isVisible]);
 
   if (!showModal) return null;
 
@@ -54,7 +53,7 @@ function FullScreenModal({
         <View style={styles.childrenContent}>
           {children}
         </View>
-        {onConfirm && (
+        {/* {onConfirm && (
           <Button
             style={styles.confirmButton}
             onPress={onConfirm}
@@ -63,7 +62,7 @@ function FullScreenModal({
           >
             {buttonLabel}
           </Button>
-        )}
+        )} */}
       </Animated.View>
     </View>
   );

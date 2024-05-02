@@ -22,11 +22,9 @@ function ConfirmationAlertDialog({ onConfirm, onCancel, onClose, visible, title,
             <Button
               variant="ghost"
               colorScheme="blueGray"
-              onPress={() => {
-                setShowAlertDialog(false)
-              }}
+              onPress={onClose}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button 
               colorScheme="danger" 

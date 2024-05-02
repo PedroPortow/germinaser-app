@@ -1,107 +1,97 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Feather } from '@expo/vector-icons'
-import { Loader } from '@components'
-import Table from '../components/Table'
+import { Loader, Card, Text, Button } from '@components'
 import { apiGetAllUsers } from '../../../services/user'
+import { useFullScreenModal } from '../../../context/FullScreenModalContext'
 import UserModal from './components/UserModal'
 import CreditsModal from './components/CreditsModal'
 
 function Users() {
   const [users, setUsers] = useState([])
-  const [userModalVisible, setUserModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const { showModal, hideModal } = useFullScreenModal()
   const [creditsModalVisible, setCreditsModalVisible] = useState(false)
   const [selectedUser, setSelectedUser] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
 
   const getUsers = async () => {
-    setUsers([])
     setIsLoading(true)
-
     try {
       const response = await apiGetAllUsers()
-
       setUsers(response.data)
     } catch (error) {
-      console.error(error)
+      console.error('Error fetching users:', error)
     } finally {
       setIsLoading(false)
     }
   }
+
   useEffect(() => {
     getUsers()
   }, [])
 
-  const openCreateUserModal = () => {
-    setSelectedUser({})
-    setUserModalVisible(true)
+  const handleOpenUserModal = (user) => {
+    showModal({
+      title: user ? 'Editar Usuário' : 'Criar Usuário',
+      buttonLabel: user ? 'Salvar alterações' : 'Criar Usuário',
+      children: <UserModal user={user} onClose={hideModal} visible onConfirm={() => getUsers()} />,
+    })
   }
 
-  const renderItem = ({ item }) => (
-    <ListItem
-      title={`${item.name}`}
-      description={item.email}
-      style={styles.listItem}
-      accessoryRight={() => (
-        <View style={styles.rowContent}>
-          <Button
-            onPress={() => {
-              setSelectedUser(item)
-              setCreditsModalVisible(true)
-            }}
-            style={styles.button}
-            appearance="ghost"
-            status="primary"
-          >
-            Alterar créditos
-          </Button>
-          {/* <Feather
-            name="trash-2"
-            size={18}
-            color="red"
-            onPress={() => {
-              setSelectedUser(item)
-              setUserModalVisible(true)
-            }}
-          /> */}
-          <Feather
-            name="edit"
-            size={18}
-            color="black"
-            style={styles.editIcon}
-            onPress={() => {
-              setSelectedUser(item)
-              setUserModalVisible(true)
-            }}
-          />
-        </View>
-      )}
-    />
-  )
+  const handleOpenCreditsModal = (user) => {
+    setSelectedUser(user)
+    setCreditsModalVisible(true)
+  }
 
   return (
-    <View style={styles.container}>
-      <Loader loading={isLoading} />
-
-      <UserModal
-        user={selectedUser}
-        visible={userModalVisible}
-        close={() => setUserModalVisible(false)}
-        onSubmit={() => getUsers()}
-      />
-      <CreditsModal
-        user={selectedUser}
-        visible={creditsModalVisible}
-        close={() => setCreditsModalVisible(false)}
-        onSubmit={() => getUsers()}
-      />
-
-      <Table data={users} listItem={renderItem} />
-      <Button appearance="ghost" onPress={openCreateUserModal}>
-        + Adicionar Usuário
-      </Button>
-    </View>
+      <SafeAreaView style={styles.container}>
+        <CreditsModal
+          user={selectedUser}
+          isVisible={creditsModalVisible}
+          onConfirm={() => getUsers()}
+          onClose={() => {
+            setSelectedUser({})
+            setCreditsModalVisible(false)
+          }}
+        />
+        <Loader loading={isLoading} />
+        <Card style={styles.cardList}>
+          <FlatList
+            data={users}
+            renderItem={({ item }) => (
+              <Row
+                item={item}
+                handleOpenUserModal={handleOpenUserModal}
+                handleOpenCreditsModal={handleOpenCreditsModal}
+              />
+            )}
+            l
+            keyExtractor={(item) => item.id.toString()}
+          />
+        <Button icon="add-outline" style={styles.addUserButton} onPress={() => {
+          setSelectedUser({})
+          handleOpenUserModal()
+        }}>Adicionar Usuário</Button>
+        </Card>
+      </SafeAreaView>
   )
+
+  function Row({ item, handleOpenUserModal, handleOpenCreditsModal }) {
+    return (
+      <View style={styles.listItem}>
+        <Text>{item.name}</Text>
+        <View style={styles.buttonsRow}>
+          <TouchableOpacity style={styles.rowContent} onPress={() => handleOpenCreditsModal(item)}>
+            <Text style={styles.pressableText}>Alterar créditos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.rowContent} onPress={() => handleOpenUserModal(item)}>
+            <Feather name="edit" size={20} color="#333" style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -109,15 +99,32 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
   },
-  // editIcon: {
-  //   marginLeft: 12,
-  // },
+  cardList: {
+    flexDirection: 'column'
+  },  
   listItem: {
-    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#ccc',
+  },
+  pressableText: {
+    color: '#0000EE',
   },
   rowContent: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+  },
+  addUserButton: {
+    marginTop: 20
+  },  
+  icon: {
+    marginLeft: 12,
   },
 })
 

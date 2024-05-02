@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native'
 import { Text, Button } from '@components'
 import { Ionicons } from '@expo/vector-icons'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
-import ConfirmableModal from '../ConfirmableModal/ConfirmableModal'
 import { apiCancelBooking } from '../../services/bookings'
 import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../constants/constants'
 import { Badge, Modal } from 'native-base'
@@ -13,7 +12,7 @@ import ConfirmationModal from '../ConfirmationModal'
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const [confirmationModalVisible, setConfirmationModalVisibile] = useState(false)
 
-  const handleDeleteBooking = async () => {
+  const handleCancelBooking = async () => {
     try {
       await apiCancelBooking(booking.id)
 
@@ -30,6 +29,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
       <ConfirmationModal 
         visible={confirmationModalVisible}
         onConfirm={() => {
+          handleCancelBooking()
           setConfirmationModalVisibile(false)
           onClose()
           onCancelBooking()
