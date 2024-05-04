@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { IndexPath, Input, Select, SelectItem } from '@ui-kitten/components'
-import { ConfirmableModal, Loader, NumberInput } from '@components'
-import { useFormFilled } from '@hooks'
-import { apiCreateUser, apiDeleteUser, apiGetRoles, apiUpdateUser } from '../../../../services/user'
+import { Ionicons } from '@expo/vector-icons'
+import {  Loader, NumberInput, Text, Button, RolesSelect } from '@components'
+import { Input, Pressable, Icon, Divider } from 'native-base'
+import { apiCreateUser, apiDeleteUser,  apiUpdateUser } from '../../../../services/user'
+import ConfirmationModal from '../../../../components/ConfirmationModal'
 
-function UserModal({ user, visible, close, onSubmit }) {
-  const [rolesOptions, setRolesOptions] = useState([])
-  // todo: arrumar o loader n ta pegando nessas modals
+function UserModal({ user = {}, visible, onClose, onConfirm }) {
   const [isLoading, setIsLoading] = useState(false)
+  const [deleteUserModalVisible, setDeleteUserModalVisible] = useState(false)
 
   const [name, setName] = useState()
   const [email, setEmail] = useState()
@@ -16,35 +16,27 @@ function UserModal({ user, visible, close, onSubmit }) {
   const [password, setPassword] = useState()
   const [role, setRole] = useState()
 
-  console.log(name)
-  console.log(user.name)
+  const [hidePassword, setHidePassword] = useState(true)
 
   const creatingUser = useMemo(() => !Object.keys(user).length, [user])
 
-  // kitten-ui
-  const [selectedRoleIndex, setSelectedRoleIndex] = useState()
-
-  const isFormFilled = useFormFilled({ name, email, password, role })
-
-  const onChangeRole = (index) => {
-    setSelectedRoleIndex(index)
-    const roleValue = rolesOptions[index.row].value
-    setRole(roleValue)
-  }
-
   const handleDeleteUser = async () => {
+    setIsLoading(true)
     try {
       await apiDeleteUser(user.id)
-      onSubmit()
-      close()
+      onClose()
     } catch (error) {
       console.error(error)
+    } finally {
+      setDeleteUserModalVisible(false)
+      setIsLoading(false)
+      onConfirm()
+      onClose()
     }
   }
 
   useEffect(() => {
     if (visible) {
-      getRoles()
       setSelectedUserInfo()
     }
   }, [visible])
@@ -58,45 +50,13 @@ function UserModal({ user, visible, close, onSubmit }) {
   const setSelectedUserInfo = () => {
     setName(user.name)
     setEmail(user.email)
-    console.log({ user })
+    setRole(user.role)
     setCredits(user.credits)
   }
 
-  console.log({ user })
-
-  console.log({ rolesOptions })
-
-  const getRoles = async () => {
-    setIsLoading(true)
-    try {
-      const response = await apiGetRoles()
-
-      const ROLES_LABEL = {
-        user: 'Usuário',
-        owner: 'Dono',
-        admin: 'Administrador',
-      }
-
-      const formattedResponse = response.data.roles.map((role) => ({
-        label: ROLES_LABEL[role],
-        value: role,
-      }))
-
-      setRolesOptions(formattedResponse)
-      setUserRole()
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const setUserRole = () => {
-    const roleIndex = rolesOptions.findIndex((role) => role.value === user.role)
-    setSelectedRoleIndex(new IndexPath(roleIndex))
-  }
-
   const handleCreateUser = async () => {
+    setIsLoading(true)
+
     try {
       const params = {
         name,
@@ -106,17 +66,17 @@ function UserModal({ user, visible, close, onSubmit }) {
         role,
       }
 
-      const response = await apiCreateUser(params)
-      onSubmit()
-      console.log({ response })
-      close()
+      await apiCreateUser(params)
     } catch (error) {
       console.error(error)
     } finally {
+      onConfirm()
+      onClose()
       setIsLoading(false)
     }
   }
   const handleEditUser = async () => {
+    setIsLoading(true)
     try {
       const params = {
         name,
@@ -125,84 +85,108 @@ function UserModal({ user, visible, close, onSubmit }) {
         role,
       }
 
-      const response = await apiUpdateUser(user.id, params)
-      onSubmit()
-      console.log({ response })
-      close()
+      await apiUpdateUser(user.id, params)
     } catch (error) {
       console.error(error)
     } finally {
+      onConfirm()
+      onClose()
       setIsLoading(false)
     }
   }
 
-  const hasEdits = useMemo(
-    () =>
-      name !== user.name ||
-      email !== user.email ||
-      password !== user.password ||
-      role !== user.role,
-    [name, email, password, role, user]
-  )
-
   return (
     <>
-      <Loader loading={isLoading} />
-      <ConfirmableModal
-        visible={visible}
-        backdropStyle={styles.backdrop}
-        close={close}
-        cancelButtonTheme={creatingUser ? 'basic' : 'danger'}
-        // cancelButtonAppearence={creatingUser ? 'outline' : 'ghost'}
-        confirmButtonDisabled={creatingUser ? !isFormFilled : !hasEdits}
-        cancelButtonLabel={creatingUser ? 'Cancelar' : 'Excluir Usuário'}
-        confirmButtonLabel={creatingUser ? 'Criar Usuário' : 'Salvar alterações'}
-        onConfirm={creatingUser ? handleCreateUser : handleEditUser}
-        onCancel={creatingUser ? () => close() : handleDeleteUser}
+      <ConfirmationModal
+        visible={deleteUserModalVisible}
+        onClose={() => setDeleteUserModalVisible(false)}
+        title="Atenção"
+        onConfirm={handleDeleteUser}
       >
-        <View style={styles.cardContainer}>
+        <Text>
+          Esta é uma ação permanente, ao remover um usuário todas as reservas associadas ao mesmo
+          também serão removidas
+        </Text>
+      </ConfirmationModal>
+      <Loader loading={isLoading} />
+      <View style={styles.cardContainer}>
+        <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Nome</Text>
           <Input
-            placeholder="Nome do Usuário"
             value={name}
-            label="Nome"
-            autoCapitalize="none"
+            size="lg"
+            variant="outline"
             onChangeText={(value) => setName(value)}
           />
+        </View>
+        <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Email</Text>
           <Input
-            placeholder="usuario@gmail.com"
             value={email}
-            autoCapitalize="none"
-            label="Email"
+            size="lg"
+            variant="outline"
+            placeholder="usuario@gmail.com"
+            autoCapitalize={false}
             onChangeText={(value) => setEmail(value)}
           />
-          {creatingUser && (
+        </View>
+        {creatingUser && (
+          <View style={styles.inputLabelWrapper}>
+            <Text style={styles.label}>Senha</Text>
             <Input
+              type={hidePassword ? 'text' : 'password'}
+              size="lg"
+              variant="outline"
+              autoCapitalize={false}
+              InputRightElement={
+                <Pressable onPress={() => setHidePassword(!hidePassword)}>
+                  <Icon
+                    as={
+                      <Ionicons
+                        name={hidePassword ? 'eye-outline' : 'eye-off-outline'}
+                        size={20}
+                        color="black"
+                      />
+                    }
+                    size={5}
+                    mr="2"
+                    color="muted.400"
+                  />
+                </Pressable>
+              }
               value={password}
-              label="Senha"
-              caption="Mínimo de 6 caractéres"
-              autoCapitalize="none"
-              secureTextEntry
               onChangeText={(value) => setPassword(value)}
             />
-          )}
-          <NumberInput
-            initialValue={user.credits || 0}
-            label="Créditos"
-            onChange={(value) => setCredits(value)}
-          />
-          <Select
-            selectedIndex={selectedRoleIndex}
-            onSelect={onChangeRole}
-            label="Cargo"
-            value={rolesOptions[selectedRoleIndex?.row]?.label || 'Selecione uma opção'}
-            placeholder="Cargo"
-          >
-            {rolesOptions.map((role) => (
-              <SelectItem key={role.value} title={role.label} />
-            ))}
-          </Select>
+          </View>
+        )}
+        <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Cargo</Text>
+          <RolesSelect onSelectRole={(role) => setRole(role)} selectedRole={role} />
         </View>
-      </ConfirmableModal>
+        <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Créditos</Text>
+          <NumberInput onChange={(value) => setCredits(value)} initialValue={user.credits} />
+        </View>
+        {!creatingUser && (
+          <>
+            <Divider />
+            <Button
+              icon="trash"
+              theme="destructive"
+              onPress={() => setDeleteUserModalVisible(true)}
+              style={styles.destructiveButtonWidth}
+            >
+              Remover usuário
+            </Button>
+          </>
+        )}
+        <Button
+          style={creatingUser ? styles.createButtonPosition : styles.editButtonPosition}
+          onPress={creatingUser ? handleCreateUser : handleEditUser}
+        >
+          {creatingUser ? 'Criar usuário' : 'Salvar alterações'}
+        </Button>
+      </View>
     </>
   )
 }
@@ -211,9 +195,21 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'column',
     gap: 16,
+    padding: 20,
   },
-  backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  createButtonPosition: {
+    position: 'relative',
+    bottom: -180,
+    left: 0,
+  },
+  editButtonPosition: {
+    position: 'relative',
+    bottom: -240,
+    left: 0,
+  },
+  inputLabelWrapper: {
+    flexDirection: 'column',
+    gap: 4,
   },
 })
 

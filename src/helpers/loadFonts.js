@@ -1,5 +1,4 @@
-// ./src/utils/loadFonts.js
-import * as Font from 'expo-font';
+import * as Font from 'expo-font'
 
 export default async function loadFonts() {
   await Font.loadAsync({
@@ -9,5 +8,5 @@ export default async function loadFonts() {
     'Nunito-ExtraLight': require('../assets/fonts/Nunito-ExtraLight.ttf'),
     'Nunito-Light': require('../assets/fonts/Nunito-Light.ttf'),
     'Nunito-Medium': require('../assets/fonts/Nunito-Medium.ttf'),
-  });
+  })
 }

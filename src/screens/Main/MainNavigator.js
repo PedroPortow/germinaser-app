@@ -1,94 +1,89 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Fragment, useState } from 'react'
 import { Feather } from '@expo/vector-icons'
-import { Text } from '@ui-kitten/components'
-import Home from './Home/Home'
-import Bookings from './Bookings/Bookings'
-import CreateBookingModal from '../../components/CreateBookingModal/CreateBookingModal'
-import Account from './Account/Account'
-
-function SettingsScreen() {
-  return (
-    <View>
-      <Text>Settings Screen</Text>
-    </View>
-  )
-}
+import Home from './Home'
+import Bookings from './UserBookings'
+import Account from './Account'
+import Schedule from './Schedule'
+import { useCreateBookingModal } from '../../context/CreateBookingModalContext'
+import { useFullScreenModal } from '../../context/FullScreenModalContext'
+import { CreateBookingModal } from '../../components'
 
 const Tab = createBottomTabNavigator()
 
 function MainNavigator() {
-  const [isModalVisible, setModalVisible] = useState(false)
+  const { showModal } = useFullScreenModal()
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible)
+  const handleOpenCreateBookingModal = (user) => {
+    showModal({
+      title: "Nova Reserva",
+      children: <CreateBookingModal />,
+    })
   }
 
   return (
-    <>
-      <CreateBookingModal visible={isModalVisible} onClose={toggleModal} />
-      <Tab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: '#479BA7',
-          tabBarInactiveTintColor: 'gray',
-          tabBarHideOnKeyboard: true,
-          headerShown: false,
-          tabBarStyle: {
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-            left: 0,
-            elevation: 0,
-            background: '#fff',
-          },
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: '#479BA7',
+        tabBarInactiveTintColor: 'gray',
+        tabBarHideOnKeyboard: true,
+        headerShown: false,
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          left: 0,
+          elevation: 0,
+          background: '#fff',
+        },
+      }}
+      detachInactiveScreens
+      initialRouteName="Home"
+      backBehavior="history"
+    >
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ size, color }) => <Feather name="home" size={size} color={color} />,
         }}
-        detachInactiveScreens
-        initialRouteName="Home"
-        backBehavior="history"
-      >
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarIcon: ({ size, color }) => <Feather name="home" size={size} color={color} />,
-          }}
-        />
+      />
 
-        <Tab.Screen
-          name="Horários"
-          component={SettingsScreen}
-          options={{
-            tabBarIcon: ({ size, color }) => <Feather name="calendar" size={size} color={color} />,
-          }}
-        />
+      <Tab.Screen
+        name="Horários"
+        component={Schedule}
+        options={{
+          tabBarIcon: ({ size, color }) => <Feather name="calendar" size={size} color={color} />,
+        }}
+      />
 
-        <Tab.Screen
-          name="ActionButton"
-          component={EmptyView}
-          options={{
-            tabBarButton: (props) => <CustomTabBarButton {...props} onPress={toggleModal} />,
-            tabBarIcon: ({ color, size }) => <Feather name="add" size={size} color={color} />,
-          }}
-        />
+      <Tab.Screen
+        name="ActionButton"
+        component={EmptyView}
+        options={{
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} onPress={handleOpenCreateBookingModal} />
+          ),
+          tabBarIcon: ({ color, size }) => <Feather name="add" size={size} color={color} />,
+        }}
+      />
 
-        <Tab.Screen
-          name="Reservas"
-          component={Bookings}
-          options={{
-            tabBarIcon: ({ size, color }) => <Feather name="archive" size={size} color={color} />,
-          }}
-        />
-        <Tab.Screen
-          name="Conta"
-          component={Account}
-          options={{
-            tabBarIcon: ({ size, color }) => <Feather name="user" size={size} color={color} />,
-          }}
-        />
-        {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
-      </Tab.Navigator>
-    </>
+      <Tab.Screen
+        name="Reservas"
+        component={Bookings}
+        options={{
+          tabBarIcon: ({ size, color }) => <Feather name="archive" size={size} color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Conta"
+        component={Account}
+        options={{
+          tabBarIcon: ({ size, color }) => <Feather name="user" size={size} color={color} />,
+        }}
+      />
+      {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
+    </Tab.Navigator>
   )
 }
 

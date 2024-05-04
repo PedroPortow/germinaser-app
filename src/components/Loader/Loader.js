@@ -1,15 +1,17 @@
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
-import { Spinner } from '@ui-kitten/components'
+import { Spinner } from 'native-base'
 
-function Loader({ loading = true, size = 'large' }) {
+function Loader({ loading = true, size="sm" }) {
   if (!loading) {
     return null
   }
 
   return (
     <View style={styles.container}>
-      <Spinner animating size={size} style={styles.loader} />
+      <View style={styles.backgroundLoader}>
+        <Spinner size={size}/>
+      </View>
     </View>
   )
 }
@@ -28,8 +30,17 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
-  loader: {
-    zIndex: 999999, // todo: arrumar o loader n funcionando nas modais
+  backgroundLoader: {
+    padding: 25,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84, 
+    elevation: 5,
   },
 })
 

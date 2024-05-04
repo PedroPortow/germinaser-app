@@ -11,7 +11,12 @@
         "expo-font",
         {
           "fonts": [
-            "./src/assets/fonts/Nunito.ttf"
+            "./src/assets/fonts/Nunito-Regular.ttf",
+            "./src/assets/fonts/Nunito-Bold.ttf",
+            "./src/assets/fonts/Nunito-SemiBold.ttf",
+            "./src/assets/fonts/Nunito-ExtraLight.ttf",
+            "./src/assets/fonts/Nunito-Light.ttf",
+            "./src/assets/fonts/Nunito-Medium.ttf"
           ]
         }
       ],

@@ -1,18 +1,19 @@
 import React from 'react'
 import { Card, Text } from '@components'
 import { StyleSheet } from 'react-native'
-import { List, Divider } from '@ui-kitten/components'
 
-function Table({ headerText, data, listItem, separator = true }) {
+function Table({ headerText, data, listItem, separator = true, onEndReached }) {
   return (
     <Card style={styles.card}>
       <Text style={styles.tableTitle}>{headerText}</Text>
-      {/* <Divider /> */}
       <List
         style={styles.list}
         data={data}
         renderItem={listItem}
         ItemSeparatorComponent={separator ? () => <Divider /> : null}
+        onEndReached={onEndReached}
+        // onEndReachedThreshold={0.001}
+        // contentContainerStyle={styles.listContainer}
       />
     </Card>
   )

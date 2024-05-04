@@ -18,6 +18,7 @@ module.exports = function (api) {
             '@helpers': './src/helpers',
             '@fonts': './src/assets/fonts',
             '@config': './src/config',
+            '@': './src',
           },
         },
       ],

@@ -8,14 +8,14 @@ import AdminNavigator from './Admin/AdminNavigator'
 const RootStack = createNativeStackNavigator()
 
 function RootNavigator() {
-  const { isAuthenticated } = useUserContext()
+  const { isAuthenticated, isAdminOrOwner } = useUserContext()
 
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (
         <>
           <RootStack.Screen component={MainNavigator} name="Main" />
-          <RootStack.Screen component={AdminNavigator} name="Admin" />
+          {isAdminOrOwner && <RootStack.Screen component={AdminNavigator} name="Admin" />}
         </>
       ) : (
         <RootStack.Screen component={AuthNavigator} name="Auth" />

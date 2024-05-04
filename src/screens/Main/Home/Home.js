@@ -1,12 +1,12 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { View, StyleSheet, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, StyleSheet, FlatList, Pressable } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
-import { Text, Loader, Card, RoundCard } from '@components'
+import { Loader, Card, RoundCard, BookingModal, Text } from '@components'
+import { useUserContext, useCreateBookingModal } from '@context'
 import BookingCard from './components/BookingCard'
-import { useUserContext } from '../../../context/UserContext'
 import { apiGetBookings } from '../../../services/bookings'
-import BookingModal from '../../../components/BookingModal/BookingModal'
-import events from '../../../events'
+import { useToast } from '../../../context/ToastContext'
+import BookingsList from '../../../components/BookingsList/BookingsList'
 
 function Home() {
   const { user } = useUserContext()
@@ -16,11 +16,15 @@ function Home() {
   const [bookingModalVisible, setBookingModalVisible] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState({})
 
+  const { refetchTrigger } = useCreateBookingModal()
+
+  const { showToast } = useToast()
+
   const getBookings = async (page) => {
     setIsLoading(true)
     try {
       const perPage = 7
-      const response = await apiGetBookings({ page, perPage })
+      const response = await apiGetBookings({ page, perPage, withCanceled: false })
 
       if (page === 1) {
         setBookings(response.data.bookings)
@@ -34,42 +38,30 @@ function Home() {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    const fetchBookingsOnCreate = () => {
-      getBookings(1)
-    }
-
-    events.on('bookingCreated', fetchBookingsOnCreate)
-
-    return () => {
-      events.off('bookingCreated', fetchBookingsOnCreate)
-    }
-  }, [])
-
   useEffect(() => {
     getBookings(1)
-  }, [])
+  }, [refetchTrigger])
 
-  const handleLoadMore = () => {
+  const handleNextPage = () => {
     if (!isLoading && metadata.current_page < metadata.total_pages) {
       getBookings(metadata.current_page + 1)
     }
   }
 
-  const handleViewBooking = (booking) => {
+  const handleShowToast = () => {
+    showToast({
+      message: 'Reserva criada com sucesso!',
+      theme: 'success',
+    })
+  }
+  const handleSelectBooking = (booking) => {
     setSelectedBooking(booking)
     setBookingModalVisible(true)
   }
 
-  const renderBooking = ({ item }) => (
-    <BookingCard booking={item} onPress={() => handleViewBooking(item)} />
-  )
-
   const closeBookingModal = () => {
     setBookingModalVisible(false)
   }
-
 
   return (
     <>
@@ -77,7 +69,10 @@ function Home() {
         <BookingModal
           visible={bookingModalVisible}
           onClose={closeBookingModal}
-          onCancelBooking={() => getBookings()}
+          onCancelBooking={() => {
+            setBookings([])
+            getBookings()
+          }}
           booking={selectedBooking}
         />
         <View style={styles.topRow}>
@@ -96,23 +91,18 @@ function Home() {
       <Loader loading={isLoading} />
       <View style={styles.bottomContainer}>
         <View style={styles.nextBookingsCol}>
+          <Pressable onPress={handleShowToast}>
+            <Text>oi</Text>
+          </Pressable>
           <View style={styles.textRow}>
             <Text style={styles.mainText}>Próximas reservas</Text>
+            {/* <Teste style={styles.mainTeste}>Próximas reservas</Teste> */}
           </View>
-          {bookings.length ? (
-            <FlatList
-              data={bookings}
-              renderItem={renderBooking}
-              keyExtractor={(booking) => String(booking.id)}
-              onEndReached={handleLoadMore}
-              onEndReachedThreshold={0.05}
-              contentContainerStyle={styles.listContainer}
-            />
-          ) : (
-            <Card style={styles.emptyCardContent}>
-              <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
-            </Card>
-          )}
+          <BookingsList
+            bookings={bookings}
+            handleNextPage={handleNextPage}
+            handleSelectBooking={handleSelectBooking}
+          />
         </View>
       </View>
     </>
@@ -165,22 +155,3 @@ const styles = StyleSheet.create({
 })
 
 export default Home
-
-// const weeklyBookings = [
-//   {
-//     house: "Casa 1",
-//     room: "Sala 3",
-//     date: "23/05/12",
-//     week_day: "Segunda",
-//     starting_time: "14:10",
-//     ending_time: "15:10",
-//   },
-//   {
-//     house: "Casa 1",
-//     room: "Sala 3",
-//     date: "23/05/12",
-//     week_day: "Segunda",
-//     starting_time: "14:10",
-//     ending_time: "15:10",
-//   },
-// ];

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import Clinics from './Clinics/Clinics'
 import Rooms from './Rooms/Rooms'
 import Users from './Users/Users'
+import Bookings from './Bookings/Bookings'
 
 const Tab = createBottomTabNavigator()
 
@@ -13,14 +14,24 @@ function AdminNavigator() {
 
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: '#479BA7',
-        tabBarInactiveTintColor: 'gray',
-        tabBarHideOnKeyboard: true,
-      }}
-      initialRouteName="Users"
-      backBehavior="history"
-      detachInactiveScreens
+    screenOptions={{
+      tabBarActiveTintColor: '#479BA7',
+      tabBarInactiveTintColor: 'gray',
+      tabBarHideOnKeyboard: true,
+      headerShown: false,
+      tabBarStyle: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        elevation: 0,
+        background: '#fff',
+        zIndex: 0  // Set a negative zIndex to render other components above
+      },
+    }}
+    detachInactiveScreens
+    initialRouteName="Users"
+    backBehavior="history"
     >
       <Tab.Screen
         name="Usuários"
@@ -29,7 +40,7 @@ function AdminNavigator() {
           tabBarIcon: ({ size, color }) => <Feather name="user" size={size} color={color} />,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Salas"
         component={Rooms}
         options={{
@@ -37,8 +48,17 @@ function AdminNavigator() {
             <FontAwesome5 name="door-open" size={size} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
+        name="Reservas"
+        component={Bookings}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <FontAwesome5 name="archive" size={size} color={color} />
+          ),
+        }}
+      />
+      {/* <Tab.Screen
         name="Clínicas"
         component={Clinics}
         options={{
@@ -46,17 +66,17 @@ function AdminNavigator() {
             <FontAwesome5 name="clinic-medical" size={size} color={color} />
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="ActionButton"
         component={EmptyView}
         options={{
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} onPress={() => navigation.navigate('Home')} />
+            <CustomTabBarButton {...props} onPress={() => navigation.navigate('Main')} />
           ),
         }}
-      />
+      /> 
     </Tab.Navigator>
   )
 }
