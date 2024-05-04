@@ -8,7 +8,7 @@ import { useToast } from '../../../context/ToastContext'
 import BookingsList from '../../../components/BookingsList/BookingsList'
 
 function Home({ refetch }) {
-  const { user } = useUserContext()
+  const { user, getUserData } = useUserContext()
   const [bookings, setBookings] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [metadata, setMetadata] = useState({})
@@ -37,6 +37,7 @@ function Home({ refetch }) {
   }
   useEffect(() => {
     getBookings()
+    getUserData()
   }, [refetch])
 
   const handleNextPage = () => {

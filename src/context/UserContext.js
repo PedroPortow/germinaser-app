@@ -79,6 +79,7 @@ export function UserContextProvider({ children }) {
       login,
       logout,
       user,
+      getUserData,
       isAdminOrOwner,
     }),
     [token, isAuthenticated, login, logout, user, isAdminOrOwner]
