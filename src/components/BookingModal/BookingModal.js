@@ -8,9 +8,12 @@ import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../constants/constants'
 import { Badge, Modal } from 'native-base'
 import BookingStatusBadge from '../BookingStatusBadge/BookingStatusBadge'
 import ConfirmationModal from '../ConfirmationModal'
+import { useUserContext } from '../../context/UserContext'
 
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const [confirmationModalVisible, setConfirmationModalVisibile] = useState(false)
+
+ const { getUserData } = useUserContext()
 
   const handleCancelBooking = async () => {
     try {
@@ -18,6 +21,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
 
       onCancelBooking()
       onClose()
+      getUserData()
     } catch (error) {
       console.error(error)
       throw error

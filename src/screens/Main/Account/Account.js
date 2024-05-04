@@ -4,10 +4,15 @@ import { useNavigation } from '@react-navigation/native'
 import { ROLES_LABEL } from '@constants'
 import { useUserContext } from '@context'
 import { Divider } from 'native-base'
+import { useEffect } from 'react'
 
-function Account() {
-  const { user, logout, isAdminOrOwner } = useUserContext()
+function Account({ refetch }) {
+  const { user, logout, isAdminOrOwner, getUserData } = useUserContext()
   const navigation = useNavigation()
+
+  useEffect(() => {
+    getUserData()
+  }, [refetch])
 
   return (
     <>

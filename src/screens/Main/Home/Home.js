@@ -6,6 +6,7 @@ import { useUserContext } from '@context'
 import { apiGetBookings } from '../../../services/bookings'
 import { useToast } from '../../../context/ToastContext'
 import BookingsList from '../../../components/BookingsList/BookingsList'
+import { BOOKING_STATUS } from '../../../constants/constants'
 
 function Home({ refetch }) {
   const { user, getUserData } = useUserContext()
@@ -21,7 +22,7 @@ function Home({ refetch }) {
     setIsLoading(true)
     try {
       const perPage = 7
-      const response = await apiGetBookings({ page, perPage, status: 'scheduled' })
+      const response = await apiGetBookings({ page, perPage, status: BOOKING_STATUS.scheduled })
 
       if (page === 1) {
         setBookings(response.data.bookings)
