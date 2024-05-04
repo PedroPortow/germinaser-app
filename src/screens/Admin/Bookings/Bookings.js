@@ -86,7 +86,6 @@ function Bookings() {
                 handleOpenBookingModal={handleOpenBookingModal}
               />
             )}
-            l
             keyExtractor={(item) => item.id.toString()}
           />
         </Card>
@@ -94,7 +93,6 @@ function Bookings() {
   )
 
   function Row({ item, handleOpenBookingModal }) {
-    console.log({item})
     return (
       <View style={styles.listItem}>
         <View style={styles.bookingNameStatus}>

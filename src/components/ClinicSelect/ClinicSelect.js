@@ -3,7 +3,7 @@ import { Select } from "native-base";
 import { Ionicons } from '@expo/vector-icons'
 import { apiGetClinics } from '../../services/clinics';
 
-function ClinicSelect({ onSelectClinic, selectedClinic }) {
+function ClinicSelect({ onSelectClinic, selectedClinic, withAllOption = true }) {
   const [clinicOptions, setClinicOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -12,7 +12,6 @@ function ClinicSelect({ onSelectClinic, selectedClinic }) {
     try {
       const response = await apiGetClinics();
 
-      const allClinicsOption = { label: 'Todas', value: 'all' };
 
       const formattedResponse = response.data.map((clinic) => ({
         label: clinic.name,
@@ -20,7 +19,12 @@ function ClinicSelect({ onSelectClinic, selectedClinic }) {
         address: clinic.address
       }));
 
-      setClinicOptions([allClinicsOption, ...formattedResponse]);
+      if(withAllOption) {
+        const allClinicsOption = { label: 'Todas', value: 'all' };
+        setClinicOptions([allClinicsOption, ...formattedResponse]);
+      } else {
+        setClinicOptions(formattedResponse)
+      }
     } catch (error) {
       console.error(error.response);
     } finally {

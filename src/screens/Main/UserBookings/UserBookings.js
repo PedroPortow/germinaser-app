@@ -3,6 +3,7 @@ import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
 import { Text, FilterButton, BookingFilterModal } from '@components'
+import BookingModal from '../../../components/BookingModal/BookingModal'
 
 function UserBookings() {
   const [bookings, setBookings] = useState([])
@@ -62,6 +63,14 @@ function UserBookings() {
         onConfirm={handleFilterBooking}
       /> */}
       {/* <BookingFilterModal /> */}
+      <BookingModal
+        visible={bookingModalVisible}
+        onClose={() => setBookingModalVisible(false)}
+        onCancelBooking={() => {
+          getBookings()
+        }}
+        booking={selectedBooking}
+      />
       <BookingFilterModal
         onClose={() => setFilterModalVisible(false)}
         visible={filterModalVisible}

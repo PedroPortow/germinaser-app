@@ -26,7 +26,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
 
   return (
     <>
-      <ConfirmationModal 
+      <ConfirmationModal
         visible={confirmationModalVisible}
         onConfirm={() => {
           handleCancelBooking()
@@ -69,7 +69,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
             </View>
           </View>
         </Modal.Body>
-        {booking.status === BOOKING_STATUS.upcoming && (
+        {booking.status === BOOKING_STATUS.scheduled && (
           <Modal.Footer>
             <Button style={styles.footerButton} onPress={() => setConfirmationModalVisibile(true)}>Cancelar Reserva</Button>
           </Modal.Footer>

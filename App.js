@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Text, View } from 'react-native'
 import { loadFonts } from '@helpers'
+import { NativeBaseProvider } from 'native-base'
 import RootNavigator from './src/screens/RootNavigator'
 import { UserContextProvider } from './src/context/UserContext'
 import './src/config/localConfig'
 import { ToastProvider } from './src/context/ToastContext'
-import { CreateBookingModalProvider } from './src/context/CreateBookingModalContext'
-import { NativeBaseProvider, Box } from 'native-base'
 import { FullScreenModalProvider } from './src/context/FullScreenModalContext'
 
 function App() {
@@ -29,13 +28,11 @@ function App() {
     <NativeBaseProvider>
       <FullScreenModalProvider>
         <ToastProvider>
-          <CreateBookingModalProvider>
-            <UserContextProvider>
-              <NavigationContainer>
-                <RootNavigator />
-              </NavigationContainer>
-            </UserContextProvider>
-          </CreateBookingModalProvider>
+          <UserContextProvider>
+            <NavigationContainer>
+              <RootNavigator />
+            </NavigationContainer>
+          </UserContextProvider>
         </ToastProvider>
       </FullScreenModalProvider>
     </NativeBaseProvider>

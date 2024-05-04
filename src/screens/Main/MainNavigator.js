@@ -5,21 +5,24 @@ import Home from './Home'
 import Bookings from './UserBookings'
 import Account from './Account'
 import Schedule from './Schedule'
-import { useCreateBookingModal } from '../../context/CreateBookingModalContext'
 import { useFullScreenModal } from '../../context/FullScreenModalContext'
 import { CreateBookingModal } from '../../components'
+import { useState } from 'react'
 
 const Tab = createBottomTabNavigator()
 
 function MainNavigator() {
-  const { showModal } = useFullScreenModal()
+  const { showModal, hideModal } = useFullScreenModal()
+  const [refetchTrigger, setRefetchTrigger] = useState(0) // desculpa deuses da programacao
 
-  const handleOpenCreateBookingModal = (user) => {
+  const handleOpenCreateBookingModal = () => {
     showModal({
       title: "Nova Reserva",
-      children: <CreateBookingModal />,
+      children: <CreateBookingModal onClose={hideModal} onCreate={() => setRefetchTrigger(prev => prev + 1)} />,
     })
   }
+
+  console.log({refetchTrigger})
 
   return (
     <Tab.Navigator
@@ -43,11 +46,12 @@ function MainNavigator() {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
         options={{
           tabBarIcon: ({ size, color }) => <Feather name="home" size={size} color={color} />,
         }}
-      />
+      >
+        {props => <Home {...props} refetch={refetchTrigger} />}
+      </Tab.Screen>
 
       <Tab.Screen
         name="Horários"
@@ -73,6 +77,7 @@ function MainNavigator() {
         component={Bookings}
         options={{
           tabBarIcon: ({ size, color }) => <Feather name="archive" size={size} color={color} />,
+          unmountOnBlur: true
         }}
       />
       <Tab.Screen
