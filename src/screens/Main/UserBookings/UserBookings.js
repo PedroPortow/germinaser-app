@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
-import { Text, FilterButton } from '@components'
-import BookingFilterModal from '../../../components/BookingFilterModal/BookingFilterModal'
+import { Text, FilterButton, BookingFilterModal } from '@components'
 
 function UserBookings() {
   const [bookings, setBookings] = useState([])
@@ -19,11 +18,15 @@ function UserBookings() {
     setBookingModalVisible(true)
   }
 
-  const getBookings = async (page) => {
+  const getBookings = async (page=1, filters = {} ) => {
     setIsLoading(true)
+    const perPage = 17
+    const params = { page, perPage, ...filters };
+
+    console.log({params})
+
     try {
-      const perPage = 7
-      const response = await apiGetBookings({ page, perPage, withCanceled: false })
+      const response = await apiGetBookings(params)
 
       if (page === 1) {
         setBookings(response.data.bookings)
@@ -44,22 +47,26 @@ function UserBookings() {
     }
   }
   useEffect(() => {
-    getBookings(1)
+    getBookings()
   }, [])
 
   const handleOpenFilterModal = () => {
     setFilterModalVisible(true)
   }
 
-  const handleFilterBooking = () => {}
-
   return (
     <>
-      {/* <BookingFilterModal 
+      {/* <BookingFilterModal
         onClose={() => setFilterModalVisible(false)}
-        visible={filterModalVisible} 
+        visible={filterModalVisible}
         onConfirm={handleFilterBooking}
       /> */}
+      {/* <BookingFilterModal /> */}
+      <BookingFilterModal
+        onClose={() => setFilterModalVisible(false)}
+        visible={filterModalVisible}
+        onConfirm={getBookings}
+      />
       <View style={styles.topContainer}>
         <Text style={styles.topText}>Reservas</Text>
         <FilterButton onPress={() => handleOpenFilterModal()} style={styles.customButton} />

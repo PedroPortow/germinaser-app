@@ -20,19 +20,14 @@ function Bookings() {
 
   const [selectedBooking, setSelectedBooking] = useState({})
 
-  const getBookings = async (page, user, clinic) => {
+  const getBookings = async (page=1,  filters = {} ) => {
     setIsLoading(true)
 
+    const perPage = 17
+    const params = { page, perPage, ...filters };
+
     try {
-      console.log({user})
-      console.log({clinic})
-      const perPage = 15
-      const response = await apiGetAllUsersBookings({
-        page,
-        perPage,
-        userId: user,
-        clinicId: clinic,
-      })
+      const response = await apiGetAllUsersBookings(params)
 
       if (page === 1) {
         setBookings(response.data.bookings)
@@ -71,12 +66,12 @@ function Bookings() {
           onClose={() => setBookingModalVisible(false)}
           onConfirm={() => getBookings(1)}
         />
-        <FilterBookingsModal 
+        <FilterBookingsModal
           visible={filterBookingsModalVisible}
           onClose={() => setFilterBookingsModalVisible(false)}
           onFilter={getBookings}
         />
-        <FilterButton 
+        <FilterButton
           style={styles.filterButtonPosition}
           onPress={() => setFilterBookingsModalVisible(true)}
         />
@@ -84,6 +79,7 @@ function Bookings() {
           <FlatList
             data={bookings}
             onEndReached={handleLoadMore}
+            ListEmptyComponent={<Text>Não há reservas correspondendo a esses filtros</Text>}
             renderItem={({ item }) => (
               <Row
                 item={item}
@@ -122,10 +118,10 @@ const styles = StyleSheet.create({
   },
   filterButtonPosition: {
     alignSelf: 'flex-end'
-  },  
+  },
   cardList: {
     flexDirection: 'column'
-  },  
+  },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -140,7 +136,7 @@ const styles = StyleSheet.create({
   bookingNameStatus: {
     flexDirection: 'row',
     gap: 4
-  }, 
+  },
   rowContent: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -150,7 +146,7 @@ const styles = StyleSheet.create({
   },
   addUserButton: {
     marginTop: 20
-  },  
+  },
   icon: {
     marginLeft: 12,
   },

@@ -4,13 +4,9 @@ import api from './api'
 export const apiGetDayAvailableBookings = (params) =>
   api.get('/bookings/day_available_slots', { params })
 
-export const apiGetBookings = ({ page = 1, perPage = 5, withCanceled = false }) =>
+export const apiGetBookings = (params) =>
   api.get('/bookings', {
-    params: {
-      page,
-      per_page: perPage,
-      with_canceled: withCanceled,
-    },
+    params
   })
 
 export const apiCreateBooking = (params) =>
@@ -29,12 +25,7 @@ export const apiUpdateBookingAsAdmin = (bookingId, bookingData) =>
 export const apiCancelBookingAsAdmin = (bookingId) =>
   api.post(`/admin/bookings/${bookingId}/cancel`)
 
-export const apiGetAllUsersBookings = ({ page = 1, perPage = 5, userId, clinicId }) =>
+export const apiGetAllUsersBookings = (params) =>
   api.get('/admin/bookings', {
-    params: {
-      page,
-      per_page: perPage,
-      user_id: userId,
-      clinic_id: clinicId,
-    },
+    params
   })

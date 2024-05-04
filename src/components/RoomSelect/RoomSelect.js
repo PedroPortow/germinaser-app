@@ -13,19 +13,23 @@ function RoomSelect({ onSelectRoom, selectedClinic }) {
     try {
       const response = await apiGetClinicRooms(selectedClinic)
 
+      const allRoomsOption = { label: 'Todas', value: 'all' }; // Opção para representar todas as salas
       const formattedResponse = response.data.map((room) => ({
         label: room.name,
         value: room.id,
-      }))
+       }));
 
-      setRoomOptions(formattedResponse)
-    } finally {
+      setRoomOptions([allRoomsOption, ...formattedResponse]);
+    } catch(error) {
+      console.error(error)
+    }
+    finally {
       setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    if(!!selectedClinic){
+    if(!!selectedClinic && selectedClinic != "all"){
       getRoomOptions();
     }
   }, [selectedClinic]);
@@ -35,13 +39,15 @@ function RoomSelect({ onSelectRoom, selectedClinic }) {
       // selectedValue={}
       accessibilityLabel="Choose Room"
       placeholder="Selecione uma sala"
-      size={'lg'}
-      // dropdownIcon={} // ALTERAR ISSO TÁ FEIO DEMAIS
-      _selectedItem={{
-        bg: "teal.600",
-        endIcon: <Ionicons name="checkmark-circle" size={5} color="white" />
-      }}
-      mt={1}
+      size='lg'
+      dropdownIcon={
+        <Ionicons
+          name="chevron-down-outline"
+          size={18}
+          color="#333"
+          style={{marginRight: 8}}
+        />
+      }
       onValueChange={(itemValue) => onSelectRoom(itemValue)}
       isDisabled={!selectedClinic || isLoading}
     >

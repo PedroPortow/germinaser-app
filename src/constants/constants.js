@@ -10,14 +10,16 @@ export const ROLES_LABEL = {
   owner: 'Dono',
 }
 
+// SCHEDULED, COMPLETED, CANCELED
+
 export const BOOKING_STATUS = {
-  upcoming: 'upcoming',
-  done: 'done',
+  scheduled: 'scheduled',
+  completed: 'completed',
   canceled: 'canceled',
 }
 
 export const BOOKING_STATUS_LABEL = {
-  upcoming: 'Agendada',
-  done: 'Realizada',
+  scheduled: 'Agendada',
+  completed: 'Realizada',
   canceled: 'Cancelada',
 }

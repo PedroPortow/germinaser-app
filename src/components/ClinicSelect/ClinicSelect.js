@@ -11,12 +11,16 @@ function ClinicSelect({ onSelectClinic, selectedClinic }) {
     setIsLoading(true);
     try {
       const response = await apiGetClinics();
+
+      const allClinicsOption = { label: 'Todas', value: 'all' };
+
       const formattedResponse = response.data.map((clinic) => ({
         label: clinic.name,
         value: clinic.id,
         address: clinic.address
       }));
-      setClinicOptions(formattedResponse);
+
+      setClinicOptions([allClinicsOption, ...formattedResponse]);
     } catch (error) {
       console.error(error.response);
     } finally {
@@ -34,17 +38,20 @@ function ClinicSelect({ onSelectClinic, selectedClinic }) {
       accessibilityLabel="Choose Clinic"
       placeholder="Selecione uma clínica"
       size='lg'
-      // dropdownIcon={} // ALTERAR ISSO TÁ FEIO DEMAIS
-      _selectedItem={{
-        bg: "teal.600",
-        endIcon: <Ionicons name="checkmark-circle" size={5} color="white" />
-      }}
+      dropdownIcon={
+        <Ionicons
+          name="chevron-down-outline"
+          size={18}
+          color="#333"
+          style={{marginRight: 8}}
+        />
+      }
       mt={1}
       onValueChange={(itemValue) => onSelectClinic(itemValue)}
       isDisabled={isLoading}
     >
       {clinicOptions.map((clinic) => (
-        <Select.Item key={clinic.value} label={`${clinic.label} - ${clinic.address}`} value={clinic.value} />
+        <Select.Item key={clinic.value} label={`${clinic.label}`}  value={clinic.value} />
       ))}
     </Select>
   );
