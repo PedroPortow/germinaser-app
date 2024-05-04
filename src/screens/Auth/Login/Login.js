@@ -4,7 +4,7 @@ import { Text, Button } from '@components'
 import { useUserContext } from '../../../context/UserContext'
 
 function Login() {
-  const [email, setEmail] = useState('owner@gmail.com')
+  const [email, setEmail] = useState('user@gmail.com')
   const [password, setPassword] = useState('123456')
   const { login } = useUserContext()
 

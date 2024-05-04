@@ -34,6 +34,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
   }
 
   const onSelectDay = (day) => {
+    setSelectedTimeSlot(null)
     setSelectedDay(day.dateString)
     fetchAvailableTimeSlots(day)
   }
@@ -65,6 +66,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
             arrowColor: '#479BA7',
           }}
           onDayPress={onSelectDay}
+
           firstDay={1}
           minDate={new Date()}
           markedDates={{ [selectedDay]: { selected: true } }}
@@ -99,7 +101,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
             Confirmar
           </Button>
         )}
-        {/* <Pressable styles={styles.pres} */}
       </View>
     </Modal>
   )
@@ -110,12 +111,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     marginTop: 10,
+    height: 350
   },
   confirmationButton: {
     alignSelf: 'center',
-    width: '80%',
-    position: 'absolute',
-    bottom: -100,
+    width: '90%',
   },
   closeButton: {
     position: 'absolute',
