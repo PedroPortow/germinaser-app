@@ -83,7 +83,7 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
           <Modal.Header style={styles.headerRow}>Detalhes da reserva</Modal.Header>
           <Modal.Body>
             <View style={styles.content}>
-              {booking.status === BOOKING_STATUS.upcoming && (
+              {booking.status === BOOKING_STATUS.scheduled && (
                 <>
                   <View style={styles.inputLabelWrapper}>
                     <Text style={styles.label}>Nome da Reserva</Text>
@@ -122,7 +122,7 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
               </View>
             </View>
           </Modal.Body>
-          {booking.status === BOOKING_STATUS.upcoming && (
+          {booking.status === BOOKING_STATUS.scheduled && (
             <Modal.Footer>
               <Button.Group space={2}>
                 <Button variant="ghost" colorScheme="blueGray" onPress={onClose}>
