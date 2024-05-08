@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ScrollView, Modal, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Button, Loader } from '@components'
+import { Text, Loader, Button } from '@components'
 import { Calendar } from 'react-native-calendars'
 import { apiGetDayAvailableBookings } from '../../../services/bookings'
 
@@ -66,7 +66,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
             arrowColor: '#479BA7',
           }}
           onDayPress={onSelectDay}
-
           firstDay={1}
           minDate={new Date()}
           markedDates={{ [selectedDay]: { selected: true } }}
@@ -74,23 +73,19 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
         {selectedDay && availableTimeSlots.length ? (
           <View style={styles.timeSlotsWrapper}>
             <Text style={styles.timeSlotsText}>Horários disponíveis:</Text>
-            <ScrollView
-              contentContainerStyle={styles.timeSlotsContainer}
-              style={{ maxHeight: 500 }}
-            >
-              {selectedDay &&
-                availableTimeSlots.map((slot, index) => (
-                  <Button
-                    key={index}
-                    selected={selectedTimeSlot === slot}
-                    theme="outline"
-                    style={styles.timeSlotButton}
-                    onPress={() => setSelectedTimeSlot(slot)}
-                  >
-                    {slot}
-                  </Button>
-                ))}
-            </ScrollView>
+            <View style={styles.timeSlotsContainer}>
+              {availableTimeSlots.map((slot) => (
+                <Button
+                  selected={selectedTimeSlot === slot}
+                  theme="outline"
+                  style={styles.timeSlotButton}
+                  onPress={() => setSelectedTimeSlot(slot)}
+                >
+                  {slot}
+                </Button>
+              ))
+                }
+            </View>
           </View>
         ) : null}
         {selectedTimeSlot && (
@@ -111,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     marginTop: 10,
-    height: 350
+    height: 350,
   },
   confirmationButton: {
     alignSelf: 'center',
@@ -142,14 +137,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   timeSlotButton: {
-    padding: 12,
-    width: '32,5%',
+    width: 115
   },
   timeSlotsContainer: {
     flexDirection: 'row',
     gap: 4,
     marginTop: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
     flexWrap: 'wrap',
+    width: 'auto',
+    maxHeight: 500,
   },
 })
 

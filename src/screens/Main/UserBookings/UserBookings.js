@@ -98,14 +98,14 @@ const styles = StyleSheet.create({
   topText: {
     fontWeight: 'bold',
     color: 'white',
-    fontSize: 18,
+    fontSize: 24,
+    marginBottom: 4,
     marginTop: 'auto',
   },
   topContainer: {
     backgroundColor: '#479BA7',
-    paddingVertical: 10,
     paddingHorizontal: 20,
-    height: 120,
+    height: 80,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
@@ -117,9 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  // customButton: {
-  //   backgroundColor: 'white'
-  // },
+
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',

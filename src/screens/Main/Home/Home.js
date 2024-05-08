@@ -111,7 +111,7 @@ function Home({ refetch }) {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
   },
   emptyCardContent: {
     flexDirection: 'column',
