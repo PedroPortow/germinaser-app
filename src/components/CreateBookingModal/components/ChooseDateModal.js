@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Modal, TouchableOpacity, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Text, Loader, Button } from '@components'
 import { Calendar } from 'react-native-calendars'
@@ -24,7 +24,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
 
     try {
       const response = await apiGetDayAvailableBookings(params)
-
       setAvailableTimeSlots(response.data.available_slots)
     } catch (err) {
       console.log(err)
@@ -73,9 +72,10 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
         {selectedDay && availableTimeSlots.length ? (
           <View style={styles.timeSlotsWrapper}>
             <Text style={styles.timeSlotsText}>Horários disponíveis:</Text>
-            <View style={styles.timeSlotsContainer}>
-              {availableTimeSlots.map((slot) => (
+            <ScrollView style={styles.timeSlotsContainer}>
+              {availableTimeSlots.map((slot, index) => (
                 <Button
+                  key={index}
                   selected={selectedTimeSlot === slot}
                   theme="outline"
                   style={styles.timeSlotButton}
@@ -85,7 +85,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
                 </Button>
               ))
                 }
-            </View>
+            </ScrollView>
           </View>
         ) : null}
         {selectedTimeSlot && (
@@ -136,18 +136,14 @@ const styles = StyleSheet.create({
     fontWeight: 'semibold',
     fontSize: 18,
   },
-  timeSlotButton: {
-    width: 115
-  },
   timeSlotsContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 4,
     marginTop: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    width: 'auto',
     maxHeight: 500,
+  },
+  timeSlotButton: {
+    marginBottom: 4, // Adicione margem entre os botões se necessário
   },
 })
 
