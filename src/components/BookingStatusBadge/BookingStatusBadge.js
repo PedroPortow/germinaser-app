@@ -5,13 +5,13 @@ import { BOOKING_STATUS_LABEL } from '../../constants/constants';
 function BookingStatusBadge({ bookingStatus }) {
   const colorSchemesMapping = {
     upcoming: 'info',
-    canceled: 'error',  
+    canceled: 'error',
     done: 'success',
   };
 
   console.log(bookingStatus);
 
-  const colorScheme = colorSchemesMapping[bookingStatus] 
+  const colorScheme = colorSchemesMapping[bookingStatus]
 
   return (
     <Badge variant="subtle" colorScheme={colorScheme}>

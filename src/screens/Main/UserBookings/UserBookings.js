@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
+import { Text, FilterButton, BookingFilterModal } from '@components'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
-import { Text, FilterButton, BookingFilterModal } from '@components'
 import BookingModal from '../../../components/BookingModal/BookingModal'
 
 function UserBookings() {

@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   inputLabelWrapper: {
     flexDirection: 'column',
-    gap: 4,
+    gap: 1,
   },
   label: {
     fontSize: 18,
