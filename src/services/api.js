@@ -1,10 +1,13 @@
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
+import { API_URL } from '@env';
 import events from '../events'
+
+console.log(API_URL);
 
 const api = axios.create({
   baseURL: 'http://localhost:3000/',
-  // baseURL: 'http://192.168.3.5:3000/',
+  // baseURL: 'http://192.168.3.5:3000/',s
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
