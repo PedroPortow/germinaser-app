@@ -6,7 +6,7 @@ function BookingStatusBadge({ bookingStatus }) {
   const colorSchemesMapping = {
     upcoming: 'info',
     canceled: 'error',
-    done: 'success',
+    completed: 'success',
   };
 
   console.log(bookingStatus);

@@ -31,10 +31,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "config": {
-        "usesNonExemptEncryption": false
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -44,6 +41,18 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2c0548b4-1616-41de-b8fb-79b28719d7a7"
+      }
+    },
+    "owner": "pedroportow",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2c0548b4-1616-41de-b8fb-79b28719d7a7"
     }
   }
 }

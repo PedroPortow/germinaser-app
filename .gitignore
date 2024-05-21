@@ -4,6 +4,7 @@
 # Expo asset cache
 /.expo/*
 
+
 # Production build directory
 /web-build/
 /ios/build/
@@ -76,3 +77,5 @@ npm-debug.log*
 # Misc
 **/.DS_Store
 **/Thumbs.db
+
+/dist

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Feather } from '@expo/vector-icons'
@@ -7,7 +8,6 @@ import Account from './Account'
 import Schedule from './Schedule'
 import { useFullScreenModal } from '../../context/FullScreenModalContext'
 import { CreateBookingModal } from '../../components'
-import { useState } from 'react'
 
 const Tab = createBottomTabNavigator()
 

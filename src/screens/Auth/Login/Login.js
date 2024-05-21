@@ -4,7 +4,7 @@ import { Text, Button } from '@components'
 import { useUserContext } from '../../../context/UserContext'
 
 function Login() {
-  const [email, setEmail] = useState('user@gmail.com')
+  const [email, setEmail] = useState('admin@gmail.com')
   const [password, setPassword] = useState('123456')
   const { login } = useUserContext()
 
@@ -12,7 +12,7 @@ function Login() {
     try {
       await login(email, password)
     } catch (error) {
-      console.error('Erro ao fazer login:', error.message)
+      console.error(error)
     }
   }
 

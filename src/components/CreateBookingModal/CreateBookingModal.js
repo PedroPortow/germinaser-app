@@ -5,10 +5,10 @@ import { Input } from 'native-base'
 import ChooseDateModal from './components/ChooseDateModal'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
-import { useToast } from '../../context/ToastContext'
 import ClinicSelect from '../ClinicSelect'
 import RoomSelect from '../RoomSelect'
 import Button from '../Button'
+import moment from 'moment-timezone'
 
 function CreateBookingModal({ visible, onClose, onCreate }) {
   const [clinic, setClinic] = useState()
@@ -45,27 +45,19 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
   const handleCreateBooking = async () => {
     setIsLoading(true)
     try {
-      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
+      const startTime = `${selectedDay}T${selectedTimeSlot}:00`
+
+      const timeFormatted = moment.tz(startTime, 'YYYY-MM-DDTHH:mm:ss', 'America/Sao_Paulo').format()
       await apiCreateBooking({
         name,
-        start_time: startTime,
+        start_time: timeFormatted,
         room_id: room,
       })
 
-      // TODO: Trigger refetch...
       onClose()
       onCreate()
-      // showToast({
-      //   message: 'Reserva criada com sucesso!',
-      //   theme: 'success',
-      // })
     } catch (error) {
-      // showToast({
-      //   message: 'Erro na criação da reserva, revise os campos preenchidos',
-      //   theme: 'error',
-      // })
       console.log(error)
-      // console.error(error.response.data)
     } finally {
       setIsLoading(false)
     }
