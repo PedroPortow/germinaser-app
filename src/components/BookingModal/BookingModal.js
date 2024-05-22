@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Text, Button } from '@components'
 import { Ionicons } from '@expo/vector-icons'
+import moment from 'moment'
+import { Modal } from 'native-base'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
 import { apiCancelBooking } from '../../services/bookings'
-import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../constants/constants'
-import { Badge, Modal } from 'native-base'
+import { BOOKING_STATUS } from '../../constants/constants'
 import BookingStatusBadge from '../BookingStatusBadge/BookingStatusBadge'
 import ConfirmationModal from '../ConfirmationModal'
+import { useUserContext } from '../../context/UserContext'
 
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const [confirmationModalVisible, setConfirmationModalVisibile] = useState(false)
+
+ const { getUserData } = useUserContext()
 
   const handleCancelBooking = async () => {
     try {
@@ -18,15 +22,23 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
 
       onCancelBooking()
       onClose()
+      getUserData()
     } catch (error) {
       console.error(error)
       throw error
     }
   }
 
+  const isSameDay = useMemo(() => {
+    const today = moment();
+    const bookingDate = moment(booking.date);
+
+    return bookingDate.isSame(today, 'day');
+  }, [booking.date]);
+
   return (
     <>
-      <ConfirmationModal 
+      <ConfirmationModal
         visible={confirmationModalVisible}
         onConfirm={() => {
           handleCancelBooking()
@@ -34,11 +46,19 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
           onClose()
           onCancelBooking()
         }}
-        title={'🚨Atenção'}
+        title='🚨Atenção'
         onCancel={() => setConfirmationModalVisibile(false)}
         onClose={() => setConfirmationModalVisibile(false)}
       >
-        <Text>Esta ação é definitiva, ao cancelar uma reserva o horário da mesma podera ser reservado por outros usuários</Text>
+        <View style={styles.confirmationModalContent}>
+          <Text style={styles.text}>Esta ação é definitiva! </Text>
+         <Text style={styles.text}> 
+          {isSameDay 
+            ? 'O crédito utilizado para esta reserva só será ressarcido caso alguém reserve este horário'
+            : 'O crédito utilizado para esta reserva será ressarcido'
+          }
+        </Text>
+        </View>
       </ConfirmationModal>
       <Modal isOpen={visible} onClose={onClose}>
       <Modal.Content maxWidth="400px">
@@ -69,7 +89,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
             </View>
           </View>
         </Modal.Body>
-        {booking.status === BOOKING_STATUS.upcoming && (
+        {booking.status === BOOKING_STATUS.scheduled && (
           <Modal.Footer>
             <Button style={styles.footerButton} onPress={() => setConfirmationModalVisibile(true)}>Cancelar Reserva</Button>
           </Modal.Footer>
@@ -89,10 +109,6 @@ const styles = StyleSheet.create({
   footerButton: {
     width: '100%',
   },
-  content: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-  },
   cardTitle: {
     fontWeight: 'bold',
     fontSize: 20,
@@ -100,11 +116,17 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'column',
     gap: 24,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   headerRow: {
     flexDirection: 'row',
     gap: 4,
     alignItems: 'center',
+  },
+  confirmationModalContent: {
+    flexDirection: 'column',
+    gap: 4
   },
   text: {
     fontSize: 16,

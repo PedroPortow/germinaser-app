@@ -11,14 +11,15 @@ export function formatDate(dateString) {
 
 export function getWeekDay(dateString) {
   const date = new Date(dateString)
+
   const weekDays = [
-    'Domingo',
     'Segunda-feira',
     'Terça-feira',
     'Quarta-feira',
     'Quinta-feira',
     'Sexta-feira',
     'Sábado',
+    'Domingo',
   ]
   return weekDays[date.getDay()]
 }

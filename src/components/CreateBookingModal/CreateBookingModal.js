@@ -40,6 +40,8 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
     setDateModalVisible(false)
   }
 
+  console.log({onCreate})
+
   const handleCreateBooking = async () => {
     setIsLoading(true)
     try {
@@ -50,10 +52,9 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
         room_id: room,
       })
 
-      // onCreate()
-
       // TODO: Trigger refetch...
       onClose()
+      onCreate()
       // showToast({
       //   message: 'Reserva criada com sucesso!',
       //   theme: 'success',
@@ -88,16 +89,15 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
             variant="outline"
             placeholder="Reserva João"
             onChangeText={(value) => setName(value)}
-            rere
           />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Clínica</Text>
-          <ClinicSelect onSelectClinic={(clinic) => setClinic(clinic)} />
+          <ClinicSelect onSelectClinic={(clinic) => setClinic(clinic)} withAllOption={false} />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Sala</Text>
-          <RoomSelect selectedClinic={clinic} onSelectRoom={(clinic) => setRoom(clinic)} />
+          <RoomSelect selectedClinic={clinic} onSelectRoom={(clinic) => setRoom(clinic)} withAllOption={false} />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Data</Text>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   inputLabelWrapper: {
     flexDirection: 'column',
-    gap: 4,
+    gap: 1,
   },
   label: {
     fontSize: 18,

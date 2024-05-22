@@ -10,8 +10,8 @@ function ConfirmationAlertDialog({ onConfirm, onCancel, onClose, visible, title,
   }
 
   return (
-    <AlertDialog isOpen={visible} onClose={onClose}>
-      <AlertDialog.Content maxWidth="400px">
+    <AlertDialog isOpen={visible} onClose={onClose} size='lg'>
+      <AlertDialog.Content >
         <AlertDialog.CloseButton />
         {!!title && <AlertDialog.Header>{title}</AlertDialog.Header>}
         <AlertDialog.Body>
@@ -26,11 +26,11 @@ function ConfirmationAlertDialog({ onConfirm, onCancel, onClose, visible, title,
             >
               Cancelar
             </Button>
-            <Button 
-              colorScheme="danger" 
+            <Button
+              colorScheme="danger"
               onPress={onConfirm}
               >
-                Confirmar 
+                Confirmar
             </Button>
           </Button.Group>
         </AlertDialog.Footer>

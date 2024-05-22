@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, SafeAreaView } from 'react-native'
+import { Text, FilterButton, BookingFilterModal } from '@components'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
-import { Text, FilterButton, BookingFilterModal } from '@components'
+import BookingModal from '../../../components/BookingModal/BookingModal'
 
 function UserBookings() {
   const [bookings, setBookings] = useState([])
@@ -62,6 +63,14 @@ function UserBookings() {
         onConfirm={handleFilterBooking}
       /> */}
       {/* <BookingFilterModal /> */}
+      <BookingModal
+        visible={bookingModalVisible}
+        onClose={() => setBookingModalVisible(false)}
+        onCancelBooking={() => {
+          getBookings()
+        }}
+        booking={selectedBooking}
+      />
       <BookingFilterModal
         onClose={() => setFilterModalVisible(false)}
         visible={filterModalVisible}
@@ -89,14 +98,14 @@ const styles = StyleSheet.create({
   topText: {
     fontWeight: 'bold',
     color: 'white',
-    fontSize: 18,
+    fontSize: 24,
+    marginBottom: 4,
     marginTop: 'auto',
   },
   topContainer: {
     backgroundColor: '#479BA7',
-    paddingVertical: 10,
     paddingHorizontal: 20,
-    height: 120,
+    height: 80,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
@@ -108,9 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  // customButton: {
-  //   backgroundColor: 'white'
-  // },
+
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',

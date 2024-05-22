@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, FlatList, Pressable } from 'react-native'
+import { View, StyleSheet, Pressable } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
-import { Loader, Card, RoundCard, BookingModal, Text } from '@components'
-import { useUserContext, useCreateBookingModal } from '@context'
-import BookingCard from './components/BookingCard'
+import { Loader, RoundCard, BookingModal, Text } from '@components'
+import { useUserContext } from '@context'
 import { apiGetBookings } from '../../../services/bookings'
 import { useToast } from '../../../context/ToastContext'
 import BookingsList from '../../../components/BookingsList/BookingsList'
+import { BOOKING_STATUS } from '../../../constants/constants'
 
-function Home() {
-  const { user } = useUserContext()
+function Home({ refetch }) {
+  const { user, getUserData } = useUserContext()
   const [bookings, setBookings] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [metadata, setMetadata] = useState({})
   const [bookingModalVisible, setBookingModalVisible] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState({})
 
-  const { refetchTrigger } = useCreateBookingModal()
-
   const { showToast } = useToast()
 
-  const getBookings = async (page) => {
+  const getBookings = async (page = 1) => {
     setIsLoading(true)
     try {
       const perPage = 7
-      const response = await apiGetBookings({ page, perPage, withCanceled: false })
+      const response = await apiGetBookings({ page, perPage, status: BOOKING_STATUS.scheduled })
 
       if (page === 1) {
         setBookings(response.data.bookings)
@@ -39,8 +37,9 @@ function Home() {
     }
   }
   useEffect(() => {
-    getBookings(1)
-  }, [refetchTrigger])
+    getBookings()
+    getUserData()
+  }, [refetch])
 
   const handleNextPage = () => {
     if (!isLoading && metadata.current_page < metadata.total_pages) {
@@ -112,7 +111,7 @@ function Home() {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
   },
   emptyCardContent: {
     flexDirection: 'column',

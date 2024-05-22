@@ -21,21 +21,6 @@ export function UserContextProvider({ children }) {
     }
   }, [])
 
-  useEffect(() => {
-    const loadToken = async () => {
-      const storedToken = await SecureStore.getItemAsync('userToken')
-
-      if (storedToken) {
-        getUserData()
-        setIsAuthenticated(true)
-        setToken(storedToken)
-      } else {
-        setIsAuthenticated(false)
-      }
-    }
-
-    loadToken()
-  }, [])
 
   const isAdminOrOwner = useMemo(() => hasRole(user.role, [ROLES.ADMIN, ROLES.OWNER]), [user.role])
 
@@ -79,6 +64,7 @@ export function UserContextProvider({ children }) {
       login,
       logout,
       user,
+      getUserData,
       isAdminOrOwner,
     }),
     [token, isAuthenticated, login, logout, user, isAdminOrOwner]

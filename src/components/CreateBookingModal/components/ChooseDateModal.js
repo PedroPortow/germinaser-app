@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ScrollView, Modal, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Modal, TouchableOpacity, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Text, Button, Loader } from '@components'
+import { Text, Loader, Button } from '@components'
 import { Calendar } from 'react-native-calendars'
 import { apiGetDayAvailableBookings } from '../../../services/bookings'
 
@@ -24,7 +24,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
 
     try {
       const response = await apiGetDayAvailableBookings(params)
-
       setAvailableTimeSlots(response.data.available_slots)
     } catch (err) {
       console.log(err)
@@ -34,6 +33,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
   }
 
   const onSelectDay = (day) => {
+    setSelectedTimeSlot(null)
     setSelectedDay(day.dateString)
     fetchAvailableTimeSlots(day)
   }
@@ -72,22 +72,19 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
         {selectedDay && availableTimeSlots.length ? (
           <View style={styles.timeSlotsWrapper}>
             <Text style={styles.timeSlotsText}>Horários disponíveis:</Text>
-            <ScrollView
-              contentContainerStyle={styles.timeSlotsContainer}
-              style={{ maxHeight: 500 }}
-            >
-              {selectedDay &&
-                availableTimeSlots.map((slot, index) => (
-                  <Button
-                    key={index}
-                    selected={selectedTimeSlot === slot}
-                    theme="outline"
-                    style={styles.timeSlotButton}
-                    onPress={() => setSelectedTimeSlot(slot)}
-                  >
-                    {slot}
-                  </Button>
-                ))}
+            <ScrollView style={styles.timeSlotsContainer}>
+              {availableTimeSlots.map((slot, index) => (
+                <Button
+                  key={index}
+                  selected={selectedTimeSlot === slot}
+                  theme="outline"
+                  style={styles.timeSlotButton}
+                  onPress={() => setSelectedTimeSlot(slot)}
+                >
+                  {slot}
+                </Button>
+              ))
+                }
             </ScrollView>
           </View>
         ) : null}
@@ -99,7 +96,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
             Confirmar
           </Button>
         )}
-        {/* <Pressable styles={styles.pres} */}
       </View>
     </Modal>
   )
@@ -110,12 +106,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     marginTop: 10,
+    height: 350,
   },
   confirmationButton: {
     alignSelf: 'center',
-    width: '80%',
-    position: 'absolute',
-    bottom: -100,
+    width: '90%',
   },
   closeButton: {
     position: 'absolute',
@@ -141,15 +136,14 @@ const styles = StyleSheet.create({
     fontWeight: 'semibold',
     fontSize: 18,
   },
-  timeSlotButton: {
-    padding: 12,
-    width: '32,5%',
-  },
   timeSlotsContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 4,
     marginTop: 4,
-    flexWrap: 'wrap',
+    maxHeight: 500,
+  },
+  timeSlotButton: {
+    marginBottom: 4, // Adicione margem entre os botões se necessário
   },
 })
 
