@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated, Dimensions, Easing } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Text from '../Text/Text';
-import Button from '../Button/Button';
+import { Text } from 'native-base';
 
 const { height } = Dimensions.get('window');
 
@@ -12,10 +11,6 @@ function FullScreenModal({
   onClose,
   title,
   closeIcon = 'close',
-  onConfirm,
-  buttonLabel = 'Confirmar',
-  disableConfirm,
-  theme = 'primary',
 }) {
   const [showModal, setShowModal] = useState(false);
   const slideAnim = useRef(new Animated.Value(height)).current;
@@ -53,16 +48,6 @@ function FullScreenModal({
         <View style={styles.childrenContent}>
           {children}
         </View>
-        {/* {onConfirm && (
-          <Button
-            style={styles.confirmButton}
-            onPress={onConfirm}
-            theme={theme === 'primary' ? 'primary' : 'destructiveOutline'}
-            disabled={disableConfirm}
-          >
-            {buttonLabel}
-          </Button>
-        )} */}
       </Animated.View>
     </View>
   );
@@ -94,23 +79,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
     padding: 16,
     marginTop: 16
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: 24
+    fontWeight: 600,
+    fontSize: 22
   },
   childrenContent: {
     flex: 1,
   },
-  confirmButton: {
-    alignSelf: 'center',
-    width: '80%',
-    position: 'absolute',
-    bottom: 60
-  }
 });
 
 export default FullScreenModal;

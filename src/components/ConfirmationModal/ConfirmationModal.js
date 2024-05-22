@@ -1,8 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Text } from '@components'
 import { Ionicons } from '@expo/vector-icons'
-import { Badge, AlertDialog, Button } from 'native-base'
+import { Badge, AlertDialog, Button, Text } from 'native-base'
 
 function ConfirmationAlertDialog({ onConfirm, onCancel, onClose, visible, title, children }) {
   if (!visible) {
@@ -40,30 +39,9 @@ function ConfirmationAlertDialog({ onConfirm, onCancel, onClose, visible, title,
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  footerButton: {
-    width: '100%',
-  },
-  cardTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   content: {
     flexDirection: 'column',
     gap: 24,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    gap: 4,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'semibold',
   },
 })
 

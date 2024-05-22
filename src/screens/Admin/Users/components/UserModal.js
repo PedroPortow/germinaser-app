@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import {  Loader, NumberInput, Text, Button, RolesSelect } from '@components'
-import { Input, Pressable, Icon, Divider } from 'native-base'
+import {  Loader, NumberInput, Button, RolesSelect } from '@components'
+import { Input, Pressable, Icon, Divider, Text } from 'native-base'
 import { apiCreateUser, apiDeleteUser,  apiUpdateUser } from '../../../../services/user'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
@@ -16,7 +16,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
   const [password, setPassword] = useState()
   const [role, setRole] = useState()
 
-  const [hidePassword, setHidePassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
 
   const creatingUser = useMemo(() => !Object.keys(user).length, [user])
 
@@ -67,11 +67,11 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       }
 
       await apiCreateUser(params)
+      onConfirm()
+      onClose()
     } catch (error) {
       console.error(error)
     } finally {
-      onConfirm()
-      onClose()
       setIsLoading(false)
     }
   }
@@ -86,11 +86,11 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       }
 
       await apiUpdateUser(user.id, params)
+      onConfirm()
+      onClose()
     } catch (error) {
       console.error(error)
     } finally {
-      onConfirm()
-      onClose()
       setIsLoading(false)
     }
   }
@@ -100,11 +100,11 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       <ConfirmationModal
         visible={deleteUserModalVisible}
         onClose={() => setDeleteUserModalVisible(false)}
-        title="Atenção"
+        title='🚨 Atenção'
         onConfirm={handleDeleteUser}
       >
-        <Text>
-          Esta é uma ação permanente, ao remover um usuário todas as reservas associadas ao mesmo
+        <Text style={styles.confirmationText}>
+          Ao remover um usuário todas as reservas associadas ao mesmo
           também serão removidas
         </Text>
       </ConfirmationModal>
@@ -134,16 +134,16 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
           <View style={styles.inputLabelWrapper}>
             <Text style={styles.label}>Senha</Text>
             <Input
-              type={hidePassword ? 'text' : 'password'}
+              type={showPassword ? 'text' : 'password'}
               size="lg"
               variant="outline"
               autoCapitalize={false}
               InputRightElement={
-                <Pressable onPress={() => setHidePassword(!hidePassword)}>
+                <Pressable onPress={() => setShowPassword(!showPassword)}>
                   <Icon
                     as={
                       <Ionicons
-                        name={hidePassword ? 'eye-outline' : 'eye-off-outline'}
+                        name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                         size={20}
                         color="black"
                       />
@@ -199,17 +199,25 @@ const styles = StyleSheet.create({
   },
   createButtonPosition: {
     position: 'relative',
-    bottom: -180,
+    bottom: -240,
     left: 0,
   },
   editButtonPosition: {
     position: 'relative',
-    bottom: -240,
+    bottom: -260,
     left: 0,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: 500,
   },
   inputLabelWrapper: {
     flexDirection: 'column',
-    gap: 4,
+    gap: 2,
+  },
+  confirmationText: {
+    fontSize: 16,
+    fontWeight: 400,
   },
 })
 

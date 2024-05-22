@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
-import { Text, Loader } from '@components'
-import { Input } from 'native-base'
+import { Loader } from '@components'
+import { Input, Text } from 'native-base'
 import ChooseDateModal from './components/ChooseDateModal'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
@@ -16,11 +16,15 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
   const [name, setName] = useState()
 
   const [dateModalVisible, setDateModalVisible] = useState(false)
-
+  
+  
   const [selectedDay, setSelectedDay] = useState('20')
   const [selectedTimeSlot, setSelectedTimeSlot] = useState()
   const [isLoading, setIsLoading] = useState(false)
-
+  
+  const dateButtonActive = useMemo(() => (name || clinic || room), [name, clinic, room])
+  const submitButtonActive = useMemo(() => (name || clinic || room || selectedTimeSlot || selectedDay), [name, clinic, room, selectedTimeSlot, selectedDay])
+  
   const resetStates = () => {
     setRoom(null)
     setClinic(null)
@@ -71,6 +75,8 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
     }
   }
 
+  console.log({dateButtonActive})
+
   return (
     <>
       <Loader loading={isLoading} />
@@ -87,7 +93,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
             value={name}
             size="lg"
             variant="outline"
-            placeholder="Reserva João"
+            placeholder="Nome para identificar a reserva"
             onChangeText={(value) => setName(value)}
           />
         </View>
@@ -102,7 +108,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Data</Text>
           <Pressable
-            style={styles.pressableInput}
+            style={dateButtonActive ? styles.activePressable : styles.disabledPressable }
             onPress={() => setDateModalVisible(true)}
             disabled={!room}
           >
@@ -111,14 +117,14 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
                 {formatDate(selectedDay)} - {selectedTimeSlot}
               </Text>
             ) : (
-              <Text style={styles.placeholder}>Selecione a data</Text>
+              <Text style={dateButtonActive ? styles.placeholderActive : styles.placeholderInactive}>Selecione a data</Text>
             )}
           </Pressable>
         </View>
         <Button
           style={styles.bottomButtonPosition}
           onPress={handleCreateBooking}
-          disabled={!name || !clinic || !room || !selectedDay || !selectedTimeSlot}
+          disabled={!submitButtonActive}
         >
           Confirmar reserva
         </Button>
@@ -130,7 +136,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
 const styles = StyleSheet.create({
   bottomButtonPosition: {
     position: 'relative',
-    bottom: -260,
+    bottom: -350,
     left: 0,
   },
   content: {
@@ -140,31 +146,46 @@ const styles = StyleSheet.create({
   },
   selectedTimeText: {
     color: '#222B45',
-    fontWeight: 'bold',
+    fontWeight: 400,
     fontSize: 15,
   },
-  placeholder: {
-    color: '#C5CCD9',
-    fontWeight: 'semibold',
-    fontSize: 15,
+  placeholderActive: {
+    color: 'text.400',
+    fontWeight: 400,
+    fontSize: 16,
   },
-  pressableInput: {
+  placeholderInactive: {
+    color: '#ccc',
+    fontWeight: 400,
+    fontSize: 16,
+  },
+  disabledPressable: {
     paddingVertical: 9,
     paddingHorizontal: 16,
     borderWidth: 1,
-    borderColor: '#E4E9F2',
+    borderColor: '#d4d4d4',
     borderRadius: 4,
     color: 'black',
     paddingRight: 30,
     backgroundColor: '#F7F9FC',
+  },
+  activePressable: {
+    paddingVertical: 9,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#d4d4d4',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30,
+    backgroundColor: '#FFFF',
   },
   inputLabelWrapper: {
     flexDirection: 'column',
     gap: 1,
   },
   label: {
-    fontSize: 18,
-    fontWeight: 'semibold',
+    fontSize: 14,
+    fontWeight: 500,
   },
 })
 

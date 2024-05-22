@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
-import { Loader, RoundCard, BookingModal, Text } from '@components'
+import { Loader, RoundCard, BookingModal } from '@components'
 import { useUserContext } from '@context'
+import { Text } from 'native-base'
 import { apiGetBookings } from '../../../services/bookings'
 import { useToast } from '../../../context/ToastContext'
 import BookingsList from '../../../components/BookingsList/BookingsList'
@@ -144,9 +145,9 @@ const styles = StyleSheet.create({
     marginTop: '16px',
   },
   mainText: {
-    fontWeight: 'bold',
+    fontWeight: 600,
     fontSize: 20,
-    marginBottom: 10,
+    marginBottom: 4,
   },
   textRow: {
     marginTop: 20,

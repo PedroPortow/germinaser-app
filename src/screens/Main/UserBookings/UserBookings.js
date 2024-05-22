@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
-import { Text, FilterButton, BookingFilterModal } from '@components'
+import { View, StyleSheet } from 'react-native'
+import { FilterButton, BookingFilterModal } from '@components'
+import { Text } from 'native-base'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
 import BookingModal from '../../../components/BookingModal/BookingModal'
 
-function UserBookings() {
+function UserBookings({ refetch }) {
   const [bookings, setBookings] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [bookingModalVisible, setBookingModalVisible] = useState(false)
@@ -49,7 +50,7 @@ function UserBookings() {
   }
   useEffect(() => {
     getBookings()
-  }, [])
+  }, [refetch])
 
   const handleOpenFilterModal = () => {
     setFilterModalVisible(true)
@@ -57,12 +58,6 @@ function UserBookings() {
 
   return (
     <>
-      {/* <BookingFilterModal
-        onClose={() => setFilterModalVisible(false)}
-        visible={filterModalVisible}
-        onConfirm={handleFilterBooking}
-      /> */}
-      {/* <BookingFilterModal /> */}
       <BookingModal
         visible={bookingModalVisible}
         onClose={() => setBookingModalVisible(false)}
@@ -92,13 +87,10 @@ function UserBookings() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   topText: {
-    fontWeight: 'bold',
+    fontWeight: 600,
     color: 'white',
-    fontSize: 24,
+    fontSize: 22,
     marginBottom: 4,
     marginTop: 'auto',
   },
@@ -112,15 +104,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     padding: 10,
-  },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
   },
 })
 

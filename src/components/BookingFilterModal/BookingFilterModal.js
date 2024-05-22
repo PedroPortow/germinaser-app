@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Text, Loader, ClinicSelect, } from '@components'
+import { Loader, ClinicSelect, } from '@components'
 import { StyleSheet, View, } from 'react-native'
-import { Modal, Button, Select } from 'native-base'
+import { Modal, Button, Select, Text } from 'native-base'
 import RoomSelect from '../RoomSelect'
 import { BOOKING_STATUS_LABEL } from '../../constants/constants'
 import { Ionicons } from '@expo/vector-icons'
 
 function BookingFilterModal({ onClose, onConfirm, visible }) {
   const [isLoading, setIsLoading] = useState(false)
-  const [selectedClinic, setSelectedClinic] = useState(null)
+  const [selectedClinic, setSelectedClinic] = useState('all')
 
-  // só funciona se ttiver selectedClinic
-  const [selectedRoom, setSelectedRoom] = useState(null)
+  const [selectedRoom, setSelectedRoom] = useState('all')
 
   const [selectedStatus, setSelectedStatus] = useState('all')
 
@@ -64,6 +63,7 @@ function BookingFilterModal({ onClose, onConfirm, visible }) {
             <Text style={styles.label}>Sala</Text>
             <RoomSelect
               selectedClinic={selectedClinic}
+              selectedRoom={selectedRoom}
               onSelectRoom={room => setSelectedRoom(room)}
             />
           </View>
@@ -96,6 +96,10 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'column',
     gap: 16
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: 500,
   },
 })
 

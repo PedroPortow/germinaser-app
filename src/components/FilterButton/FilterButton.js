@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, SafeAreaView } from 'react-native'
-import { Text, Button } from '@components'
+import React from 'react'
+import { StyleSheet } from 'react-native'
+import { Button } from '@components'
 
 function FilterButton({ onPress, style }) {
   return (
-    <Button icon="filter" style={[styles.filterButton, style]} onPress={onPress}>
+    <Button
+      icon="filter"
+      style={[styles.filterButton, style]}ww
+      textStyle={{ fontSize: 14 }}
+      onPress={onPress}
+      iconSize={18}
+    >
       Filtros
     </Button>
   )
@@ -12,7 +18,6 @@ function FilterButton({ onPress, style }) {
 
 const styles = StyleSheet.create({
   filterButton: {
-    width: 120,
   },
 })
 

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Feather } from '@expo/vector-icons'
-import { Loader, Card, Text, Button } from '@components'
+import { Text } from 'native-base'
+import { Loader, Card, Button } from '@components'
 import { apiGetAllUsers } from '../../../services/user'
 import { useFullScreenModal } from '../../../context/FullScreenModalContext'
 import UserModal from './components/UserModal'
@@ -80,12 +81,12 @@ function Users() {
   function Row({ item, handleOpenUserModal, handleOpenCreditsModal }) {
     return (
       <View style={styles.listItem}>
-        <Text>{item.name}</Text>
+        <Text style={styles.usernameText}>{item.name}</Text>
         <View style={styles.buttonsRow}>
-          <TouchableOpacity style={styles.rowContent} onPress={() => handleOpenCreditsModal(item)}>
+          <TouchableOpacity style={styles.pressableCreditsButton} onPress={() => handleOpenCreditsModal(item)}>
             <Text style={styles.pressableText}>Alterar créditos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.rowContent} onPress={() => handleOpenUserModal(item)}>
+          <TouchableOpacity  onPress={() => handleOpenUserModal(item)}>
             <Feather name="edit" size={20} color="#333" style={styles.icon} />
           </TouchableOpacity>
         </View>
@@ -111,18 +112,26 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   pressableText: {
-    color: '#0000EE',
+    color: 'black',
+    fontWeight: 400
   },
-  rowContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  pressableCreditsButton: {
+    backgroundColor: '#d4d4d4',
+    borderRadius: 4,
+    paddingVertical: 2,
+    paddingHorizontal: 10
   },
   buttonsRow: {
     flexDirection: 'row',
+    alignItems: 'center'
   },
   addUserButton: {
     marginTop: 20
   },  
+  usernameText: {
+    fontWeight: 500,
+    fontSize: 16,
+  },
   icon: {
     marginLeft: 12,
   },

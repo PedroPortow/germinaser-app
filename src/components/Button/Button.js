@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-unused-styles */
 import { Pressable, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import Text from '../Text/Text'
+import { Text } from 'native-base'
 
 function Button({
   onPress,
@@ -11,6 +11,8 @@ function Button({
   selected = false,
   disabled = false,
   icon,
+  iconSize = 22,
+  textStyle: customTextStyle, // Adicione esta linha para receber estilos personalizados para o texto
 }) {
   const buttonStyle = StyleSheet.flatten([
     styles.button,
@@ -24,11 +26,12 @@ function Button({
     styles.text,
     styles[`${theme}Text`],
     selected && styles[`${theme}TextSelected`],
+    customTextStyle, // Adicione este para aplicar estilos personalizados
   ])
 
   return (
     <Pressable onPress={!disabled ? onPress : undefined} style={buttonStyle} disabled={disabled}>
-      {icon && <Ionicons name={icon} size={22} style={styles.icon} />}
+      {icon && <Ionicons name={icon} size={iconSize} style={styles.icon} />}
       <Text style={textStyle}>{children}</Text>
     </Pressable>
   )
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     width: 'auto',
     gap: 4,
-    borderRadius: 12,
+    borderRadius: 6,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
   primaryText: {
     fontSize: 16,
     color: 'white',
-    fontWeight: 'bold',
+    fontWeight: '500',
   },
   destructive: {
     backgroundColor: 'red',
