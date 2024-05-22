@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, TextInput, Image } from 'react-native'
-import { Text, Button } from '@components'
+import { StyleSheet, View, Image } from 'react-native'
+import { Input, Pressable, Icon, Divider, Text } from 'native-base'
+import {  Button } from '@components'
+import { Ionicons } from '@expo/vector-icons'
 import { useUserContext } from '../../../context/UserContext'
 
 function Login() {
-  const [email, setEmail] = useState('user@gmail.com')
+  const [email, setEmail] = useState('pedrolportow@gmail.com')
   const [password, setPassword] = useState('123456')
+  const [showPassword, setShowPassword] = useState(false)
   const { login } = useUserContext()
 
   const handleLogin = async () => {
@@ -20,26 +23,51 @@ function Login() {
     <View style={styles.container}>
       <Image source={require('@assets/logo.png')} style={styles.logo} />
       <View style={styles.inputsContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome de usuário"
+        <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Email</Text>
+          <Input
           value={email}
-          autoCapitalize="none"
-          onChangeText={(text) => setEmail(text)}
+          size="lg"
+          placeholder='Seu endereço de email'
+          variant="outline"
+          onChangeText={(value) => setEmail(value)}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
+      </View>
+        <View style={styles.inputLabelWrapper}>
+          <Text style={styles.label}>Senha</Text>
+          <Input
+          type={showPassword ? 'text' : 'password'}
+          size="lg"
+          variant="outline"
+          placeholder='Sua senha'
+          autoCapitalize={false}
+          InputRightElement={
+            <Pressable onPress={() => setShowPassword(!showPassword)}>
+              <Icon
+                as={
+                  <Ionicons
+                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    size={20}
+                    color="black"
+                  />
+                }
+                size={5}
+                mr="2"
+                color="muted.400"
+              />
+            </Pressable>
+          }
           value={password}
-          autoCapitalize="none"
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
+          onChangeText={(value) => setPassword(value)}
         />
+      </View>
+     
+    
+        
       </View>
       <Button onPress={handleLogin} theme="primary" style={{ width: '100%', margin: 20 }}>
         Entrar
       </Button>
-      <Text style={styles.passwordLabel}>Esqueceu a senha?</Text>
       {/* <Pressable style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>ENTRAR</Text>
       </Pressable> */}
@@ -48,41 +76,12 @@ function Login() {
 }
 
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: '#479BA7',
-    flex: 1,
-  },
-  passwordLabel: {
-    fontWeight: 'bold',
-    color: '#AAAAAA',
-    marginTop: 240,
-  },
   container: {
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 150,
     backgroundColor: 'white',
-    borderRadius: 40,
-    marginVertical: 8,
-    marginHorizontal: 8,
     flex: 1,
-  },
-  button: {
-    backgroundColor: '#479BA7',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderRadius: 50,
-    marginTop: 32,
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
-    width: '100%',
-    gap: 8,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 16,
   },
   logo: {
     width: 300,
@@ -93,19 +92,13 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 24,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  inputLabelWrapper: {
+    flexDirection: 'column',
+    gap: 4,
   },
-  input: {
-    width: '100%',
-    padding: 15,
-    borderWidth: 1,
-    color: 'black',
-    backgroundColor: '#F6F6F6',
-    borderColor: '#ccc',
-    borderRadius: 8,
+  label: {
+    fontSize: 14,
+    fontWeight: 600
   },
 })
 
