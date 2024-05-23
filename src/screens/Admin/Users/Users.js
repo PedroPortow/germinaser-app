@@ -83,9 +83,9 @@ function Users() {
       <View style={styles.listItem}>
         <Text style={styles.usernameText}>{item.name}</Text>
         <View style={styles.buttonsRow}>
-          <TouchableOpacity style={styles.pressableCreditsButton} onPress={() => handleOpenCreditsModal(item)}>
+          {/* <TouchableOpacity style={styles.pressableCreditsButton} onPress={() => handleOpenCreditsModal(item)}>
             <Text style={styles.pressableText}>Alterar créditos</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity  onPress={() => handleOpenUserModal(item)}>
             <Feather name="edit" size={20} color="#333" style={styles.icon} />
           </TouchableOpacity>

@@ -115,6 +115,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
           <Input
             value={name}
             size="lg"
+            placeholder='Digite o nome do usuário'
             variant="outline"
             onChangeText={(value) => setName(value)}
           />
@@ -173,6 +174,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
             <Button
               icon="trash"
               theme="destructive"
+              iconSize={20}
               onPress={() => setDeleteUserModalVisible(true)}
               style={styles.destructiveButtonWidth}
             >
@@ -199,12 +201,12 @@ const styles = StyleSheet.create({
   },
   createButtonPosition: {
     position: 'relative',
-    bottom: -240,
+    bottom: -280,
     left: 0,
   },
   editButtonPosition: {
     position: 'relative',
-    bottom: -260,
+    bottom: -280,
     left: 0,
   },
   label: {

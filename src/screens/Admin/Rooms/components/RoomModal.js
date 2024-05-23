@@ -173,6 +173,7 @@ function RoomModal({ user = {}, visible, onClose, onConfirm }) {
             <Button
               icon="trash"
               theme="destructive"
+              iconSize={12}
               onPress={() => setDeleteRoomModalVisible(true)}
               style={styles.destructiveButtonWidth}
             >

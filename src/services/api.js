@@ -6,8 +6,8 @@ import events from '../events'
 console.log(API_URL);
 
 const api = axios.create({
-  // baseURL: 'http://0.0.0.0:3000/',
-  baseURL: 'http://192.168.3.5:3000/',
+  baseURL: 'http://0.0.0.0:3000/',
+  // baseURL: 'http://192.168.3.5:3000/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

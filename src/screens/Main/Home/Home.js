@@ -100,6 +100,7 @@ function Home({ refetch }) {
           </View>
           <BookingsList
             bookings={bookings}
+            isLoading={isLoading}
             handleNextPage={handleNextPage}
             handleSelectBooking={handleSelectBooking}
           />
