@@ -8,20 +8,17 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking, isLoading
     <BookingCard booking={item} onPress={() => handleSelectBooking(item)} />
   )
 
-  if (!bookings.length && !isLoading) {
-    return (
-      <Card style={styles.emptyCardContent}>
-        <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
-      </Card>
-    )
-  }
-
   return (
     <FlatList
       data={bookings}
       renderItem={renderBooking}
       keyExtractor={(booking) => String(booking.id)}
       onEndReached={handleNextPage}
+      ListEmptyComponent={
+        <Card style={styles.emptyCardContent}>
+          <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
+        </Card>
+      }
       onEndReachedThreshold={0.05}
       contentContainerStyle={styles.listContainer}
     />
@@ -29,9 +26,6 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking, isLoading
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   listContainer: {
     paddingBottom: 200,
   },

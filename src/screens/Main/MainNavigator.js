@@ -8,17 +8,22 @@ import Account from './Account'
 import Schedule from './Schedule'
 import { useFullScreenModal } from '../../context/FullScreenModalContext'
 import { CreateBookingModal } from '../../components'
+import ScheduleNavigator from './Schedule/ScheduleNavigator'
 
 const Tab = createBottomTabNavigator()
 
 function MainNavigator() {
   const { showModal, hideModal } = useFullScreenModal()
-  const [refetchTrigger, setRefetchTrigger] = useState(0) 
+  const [refetchTrigger, setRefetchTrigger] = useState(0)
+
+  const onCreateBooking = () => {
+    setRefetchTrigger(prev => prev + 1)
+  }
 
   const handleOpenCreateBookingModal = () => {
     showModal({
       title: "Nova Reserva",
-      children: <CreateBookingModal onClose={hideModal} onCreate={() => setRefetchTrigger(prev => prev + 1)} />,
+      children: <CreateBookingModal onClose={hideModal} onCreate={onCreateBooking} />,
     })
   }
 

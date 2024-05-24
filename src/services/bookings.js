@@ -14,6 +14,10 @@ export const apiCreateBooking = (params) =>
     booking: params,
   })
 
+export const apiGetWeekAvailableslots = (params) => (
+  api.get('/bookings/week_available_slots', { params })
+)
+
 export const apiCancelBooking = (bookingId) => api.post(`/bookings/${bookingId}/cancel`)
 
 // ADMIN
@@ -29,3 +33,4 @@ export const apiGetAllUsersBookings = (params) =>
   api.get('/admin/bookings', {
     params
   })
+  

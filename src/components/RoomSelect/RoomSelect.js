@@ -39,7 +39,6 @@ function RoomSelect({ onSelectRoom, selectedClinic, selectedRoom, withAllOption 
     }
   }, [selectedClinic]);
 
-  console.log({selectedClinic})
   return (
     <Select
       selectedValue={selectedRoom}

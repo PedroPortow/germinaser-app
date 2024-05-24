@@ -25,7 +25,6 @@ function UserBookings({ refetch }) {
     const perPage = 17
     const params = { page, perPage, ...filters };
 
-    console.log({params})
 
     try {
       const response = await apiGetBookings(params)
@@ -104,6 +103,8 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     padding: 10,
+    paddingHorizontal: 20
+    // marginHorizontal: 20,
   },
 })
 

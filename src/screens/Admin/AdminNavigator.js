@@ -26,7 +26,7 @@ function AdminNavigator() {
         left: 0,
         elevation: 0,
         background: '#fff',
-        zIndex: 0  // Set a negative zIndex to render other components above
+        zIndex: 0  
       },
     }}
     detachInactiveScreens

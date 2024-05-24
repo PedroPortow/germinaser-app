@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     marginTop: 10,
-    height: 380,
+    height: 350,
     flexDirection: 'column',
     gap: 4
   },

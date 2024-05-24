@@ -10,12 +10,20 @@ const UserContext = createContext()
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState({})
-  const [token, setToken] = useState(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    events.on('logout', logout)
+    const checkAuthentication = async () => {
+      const token = await SecureStore.getItemAsync('userToken')
+      if (token) {
+        await getUserData()
+        setIsAuthenticated(true)
+      }
+    }
 
+    checkAuthentication()
+
+    events.on('logout', logout)
     return () => {
       events.off('logout', logout)
     }
@@ -27,7 +35,6 @@ export function UserContextProvider({ children }) {
   const getUserData = async () => {
     try {
       const response = await apiGetUserData()
-
       setUser(response.data)
     } catch (error) {
       console.log(error.response)
@@ -35,31 +42,23 @@ export function UserContextProvider({ children }) {
   }
 
   const login = async (email, password) => {
-    try {
-      const response = await apiPostLogin(email, password)
+    const response = await apiPostLogin(email, password)
 
-      const token = response.headers.authorization
+    const token = response.headers.authorization
 
-      setUser(response.data)
-      await SecureStore.setItemAsync('userToken', token)
+    setUser(response.data)
 
-      setToken(token)
-      setIsAuthenticated(true)
-    } catch (error) {
-      console.error('Login falhou:', error.response)
-      throw error
-    }
+    setIsAuthenticated(true)
+    await SecureStore.setItemAsync('userToken', token)
   }
 
   const logout = async () => {
     await SecureStore.deleteItemAsync('userToken')
-    setToken(null)
     setIsAuthenticated(false)
   }
 
   const values = useMemo(
     () => ({
-      token,
       isAuthenticated,
       login,
       logout,
@@ -67,7 +66,7 @@ export function UserContextProvider({ children }) {
       getUserData,
       isAdminOrOwner,
     }),
-    [token, isAuthenticated, login, logout, user, isAdminOrOwner]
+    [isAuthenticated, login, logout, user, isAdminOrOwner]
   )
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>

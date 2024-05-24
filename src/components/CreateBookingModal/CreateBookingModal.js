@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
 import { Loader } from '@components'
-import { Input, Text } from 'native-base'
+import { Input, Text, useToast } from 'native-base'
 import ChooseDateModal from './components/ChooseDateModal'
 import { formatDate } from '../../helpers/date'
 import { apiCreateBooking } from '../../services/bookings'
-import { useToast } from '../../context/ToastContext'
 import ClinicSelect from '../ClinicSelect'
 import RoomSelect from '../RoomSelect'
 import Button from '../Button'
+import CustomAlert from '../CustomAlert'
 
 function CreateBookingModal({ visible, onClose, onCreate }) {
   const [clinic, setClinic] = useState()
@@ -16,15 +16,16 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
   const [name, setName] = useState()
 
   const [dateModalVisible, setDateModalVisible] = useState(false)
-  
-  
+
   const [selectedDay, setSelectedDay] = useState('20')
   const [selectedTimeSlot, setSelectedTimeSlot] = useState()
   const [isLoading, setIsLoading] = useState(false)
-  
+
   const dateButtonActive = useMemo(() => (name || clinic || room), [name, clinic, room])
   const submitButtonActive = useMemo(() => (name || clinic || room || selectedTimeSlot || selectedDay), [name, clinic, room, selectedTimeSlot, selectedDay])
-  
+
+  const toast = useToast();
+
   const resetStates = () => {
     setRoom(null)
     setClinic(null)
@@ -44,8 +45,6 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
     setDateModalVisible(false)
   }
 
-  console.log({onCreate})
-
   const handleCreateBooking = async () => {
     setIsLoading(true)
     try {
@@ -56,26 +55,21 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
         room_id: room,
       })
 
-      // TODO: Trigger refetch...
       onClose()
       onCreate()
-      // showToast({
-      //   message: 'Reserva criada com sucesso!',
-      //   theme: 'success',
-      // })
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Reserva realizada com sucesso!" status='success'/>
+      })
     } catch (error) {
-      // showToast({
-      //   message: 'Erro na criação da reserva, revise os campos preenchidos',
-      //   theme: 'error',
-      // })
-      console.log(error)
-      // console.error(error.response.data)
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Erro na criação da reserva, revise os campos preenchidos" status='error'/>
+      })
     } finally {
       setIsLoading(false)
     }
   }
-
-  console.log({dateButtonActive})
 
   return (
     <>
@@ -136,7 +130,7 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
 const styles = StyleSheet.create({
   bottomButtonPosition: {
     position: 'relative',
-    bottom: -350,
+    bottom: -320,
     left: 0,
   },
   content: {

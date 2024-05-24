@@ -9,8 +9,6 @@ function BookingStatusBadge({ bookingStatus }) {
     done: 'success',
   };
 
-  console.log(bookingStatus);
-
   const colorScheme = colorSchemesMapping[bookingStatus]
 
   return (

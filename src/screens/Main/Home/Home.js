@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Pressable } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { Loader, RoundCard, BookingModal } from '@components'
 import { useUserContext } from '@context'
 import { Text } from 'native-base'
 import { apiGetBookings } from '../../../services/bookings'
-import { useToast } from '../../../context/ToastContext'
 import BookingsList from '../../../components/BookingsList/BookingsList'
 import { BOOKING_STATUS } from '../../../constants/constants'
 
@@ -16,8 +15,6 @@ function Home({ refetch }) {
   const [metadata, setMetadata] = useState({})
   const [bookingModalVisible, setBookingModalVisible] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState({})
-
-  const { showToast } = useToast()
 
   const getBookings = async (page = 1) => {
     setIsLoading(true)
@@ -48,12 +45,6 @@ function Home({ refetch }) {
     }
   }
 
-  const handleShowToast = () => {
-    showToast({
-      message: 'Reserva criada com sucesso!',
-      theme: 'success',
-    })
-  }
   const handleSelectBooking = (booking) => {
     setSelectedBooking(booking)
     setBookingModalVisible(true)
@@ -91,12 +82,8 @@ function Home({ refetch }) {
       <Loader loading={isLoading} />
       <View style={styles.bottomContainer}>
         <View style={styles.nextBookingsCol}>
-          <Pressable onPress={handleShowToast}>
-            <Text>oi</Text>
-          </Pressable>
           <View style={styles.textRow}>
             <Text style={styles.mainText}>Próximas reservas</Text>
-            {/* <Teste style={styles.mainTeste}>Próximas reservas</Teste> */}
           </View>
           <BookingsList
             bookings={bookings}
@@ -112,20 +99,8 @@ function Home({ refetch }) {
 
 const styles = StyleSheet.create({
   bottomContainer: {
-    flex: 1,
+    flex: 1, 
     marginHorizontal: 20,
-  },
-  emptyCardContent: {
-    flexDirection: 'column',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  listContainer: {
-    paddingBottom: 200,
-  },
-  emptyCardText: {
-    textAlign: 'center',
-    fontWeight: 'semibold',
   },
   topContainer: {
     backgroundColor: '#479BA7',

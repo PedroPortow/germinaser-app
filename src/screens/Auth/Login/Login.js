@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Platform, ScrollView } from 'react-native';
-import { Input, Pressable, Icon, Divider, Text, KeyboardAvoidingView } from 'native-base';
+import { Input, Pressable, Icon, Divider, Text, KeyboardAvoidingView, useToast } from 'native-base';
 import { Button } from '@components';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserContext } from '../../../context/UserContext';
+import CustomAlert from '../../../components/CustomAlert';
 
 function Login() {
   const [email, setEmail] = useState('pedrolportow@gmail.com');
@@ -11,17 +12,22 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useUserContext();
 
+  const toast = useToast();
+
   const handleLogin = async () => {
     try {
       await login(email, password);
     } catch (error) {
-      console.error('Erro ao fazer login:', error.message);
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Email ou senha incorreta" status='error'/>
+      })
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "padding" : "height"} 
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <ScrollView contentContainerStyle={styles.scrollViewContent}>

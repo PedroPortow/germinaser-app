@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native'
-import { Text, Button, Card } from '@components'
+import { Divider, Text } from 'native-base'
+import { Button, Card } from '@components'
 import { useNavigation } from '@react-navigation/native'
 import { ROLES_LABEL } from '@constants'
 import { useUserContext } from '@context'
-import { Divider } from 'native-base'
 import { useEffect } from 'react'
 
 function Account({ refetch }) {
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'column',
     gap: 8,
+    marginBottom: 12
   },
   topContainer: {
     backgroundColor: '#479BA7',

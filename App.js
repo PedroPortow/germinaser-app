@@ -27,13 +27,11 @@ function App() {
   return (
     <NativeBaseProvider>
       <FullScreenModalProvider>
-        <ToastProvider>
           <UserContextProvider>
             <NavigationContainer>
               <RootNavigator />
             </NavigationContainer>
           </UserContextProvider>
-        </ToastProvider>
       </FullScreenModalProvider>
     </NativeBaseProvider>
   )
