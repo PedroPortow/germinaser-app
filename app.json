@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "client",
+    "name": "GerminaSer",
     "slug": "client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,7 @@
       "expo-secure-store"
     ],
     "splash": {
-      "image": "./src/assets/splash.png",
+      "image": "./src/assets/germina.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -31,7 +31,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
