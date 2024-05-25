@@ -1,24 +1,32 @@
 import React, { useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Text, Button } from '@components'
+import { Button } from '@components'
 import { Ionicons } from '@expo/vector-icons'
 import moment from 'moment'
-import { Modal } from 'native-base'
+import { Modal, Text, useToast } from 'native-base'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '../../helpers'
 import { apiCancelBooking } from '../../services/bookings'
 import { BOOKING_STATUS } from '../../constants/constants'
 import BookingStatusBadge from '../BookingStatusBadge/BookingStatusBadge'
 import ConfirmationModal from '../ConfirmationModal'
 import { useUserContext } from '../../context/UserContext'
+import CustomAlert from '../CustomAlert'
 
 function BookingModal({ booking, visible, onClose, onCancelBooking }) {
   const [confirmationModalVisible, setConfirmationModalVisibile] = useState(false)
 
  const { getUserData } = useUserContext()
 
+ const toast = useToast();
+
   const handleCancelBooking = async () => {
     try {
       await apiCancelBooking(booking.id)
+
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Reserva cancelada com sucesso!" status='success'/>
+      })
 
       onCancelBooking()
       onClose()
@@ -46,7 +54,7 @@ function BookingModal({ booking, visible, onClose, onCancelBooking }) {
           onClose()
           onCancelBooking()
         }}
-        title='🚨Atenção'
+        title='🚨 Atenção'
         onCancel={() => setConfirmationModalVisibile(false)}
         onClose={() => setConfirmationModalVisibile(false)}
       >
@@ -109,10 +117,6 @@ const styles = StyleSheet.create({
   footerButton: {
     width: '100%',
   },
-  cardTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   content: {
     flexDirection: 'column',
     gap: 24,
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontWeight: 'semibold',
+    fontWeight: 400,
   },
 })
 

@@ -103,7 +103,7 @@ function RoomModal({ user = {}, visible, onClose, onConfirm }) {
         title="Atenção"
         onConfirm={handleDeleteRoom}
       >
-        <Text>
+        <Text style={styles.confirmationText}>
           Esta é uma ação permanente, ao remover um usuário todas as reservas associadas ao mesmo
           também serão removidas
         </Text>
@@ -173,6 +173,7 @@ function RoomModal({ user = {}, visible, onClose, onConfirm }) {
             <Button
               icon="trash"
               theme="destructive"
+              iconSize={12}
               onPress={() => setDeleteRoomModalVisible(true)}
               style={styles.destructiveButtonWidth}
             >
@@ -206,6 +207,10 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: -240,
     left: 0,
+  },
+  confirmationText: {
+    fontSize: 16,
+    fontWeight: 400,
   },
   inputLabelWrapper: {
     flexDirection: 'column',

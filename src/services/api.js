@@ -3,12 +3,10 @@ import * as SecureStore from 'expo-secure-store'
 import { EXPO_API_URL } from '@env';
 import events from '../events'
 
-console.log(EXPO_API_URL);
-
 const api = axios.create({
-  // baseURL: API_URL,
-  baseURL: 'http://localhost:3000/',
-  // baseURL: EXPO_API_URL,
+  // baseURL: 'http://0.0.0.0:3000/',
+  // baseURL: 'http://localhost:3000/',
+  baseURL: 'http://192.168.3.5:3000/',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -17,6 +15,8 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const token = await SecureStore.getItemAsync('userToken')
+
+  console.log({token})
 
   if (token) {
     config.headers.Authorization = token

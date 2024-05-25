@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import Home from './Home'
-import Bookings from './UserBookings'
+import UserBookings from './UserBookings'
 import Account from './Account'
 import Schedule from './Schedule'
 import { useFullScreenModal } from '../../context/FullScreenModalContext'
@@ -13,16 +13,18 @@ const Tab = createBottomTabNavigator()
 
 function MainNavigator() {
   const { showModal, hideModal } = useFullScreenModal()
-  const [refetchTrigger, setRefetchTrigger] = useState(0) // desculpa deuses da programacao
+  const [refetchTrigger, setRefetchTrigger] = useState(0)
+
+  const onCreateBooking = () => {
+    setRefetchTrigger(prev => prev + 1)
+  }
 
   const handleOpenCreateBookingModal = () => {
     showModal({
       title: "Nova Reserva",
-      children: <CreateBookingModal onClose={hideModal} onCreate={() => setRefetchTrigger(prev => prev + 1)} />,
+      children: <CreateBookingModal onClose={hideModal} onCreate={onCreateBooking} />,
     })
   }
-
-  console.log({refetchTrigger})
 
   return (
     <Tab.Navigator
@@ -74,12 +76,12 @@ function MainNavigator() {
 
       <Tab.Screen
         name="Reservas"
-        component={Bookings}
         options={{
           tabBarIcon: ({ size, color }) => <Feather name="archive" size={size} color={color} />,
-          unmountOnBlur: true
         }}
-      />
+      >
+        {props => <UserBookings {...props} refetch={refetchTrigger} />}
+      </Tab.Screen>
       <Tab.Screen
         name="Conta"
         component={Account}
@@ -87,7 +89,6 @@ function MainNavigator() {
           tabBarIcon: ({ size, color }) => <Feather name="user" size={size} color={color} />,
         }}
       />
-      {/* <Tab.Screen name="Settings" component={SettingsScreen} /> */}
     </Tab.Navigator>
   )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Select } from "native-base";
-import { Ionicons } from '@expo/vector-icons'
 import { apiGetRoles } from '../../services/user';
 
 function RolesSelect({ onSelectRole, selectedRole }) {

@@ -3,18 +3,12 @@ import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import BookingCard from '../../screens/Main/Home/components/BookingCard'
 import { Card } from '../Cards'
 
-function BookingsList({ bookings, handleNextPage, handleSelectBooking }) {
+function BookingsList({ bookings, handleNextPage, handleSelectBooking, isLoading }) {
   const renderBooking = ({ item }) => (
     <BookingCard booking={item} onPress={() => handleSelectBooking(item)} />
   )
 
-  if (!bookings.length) {
-    return (
-      <Card style={styles.emptyCardContent}>
-        <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
-      </Card>
-    )
-  }
+
 
   return (
     <FlatList
@@ -22,6 +16,11 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking }) {
       renderItem={renderBooking}
       keyExtractor={(booking) => String(booking.id)}
       onEndReached={handleNextPage}
+      ListEmptyComponent={ !isLoading &&
+        <Card style={styles.emptyCardContent}>
+          <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
+        </Card>
+      }
       onEndReachedThreshold={0.05}
       contentContainerStyle={styles.listContainer}
     />
@@ -29,9 +28,6 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   listContainer: {
     paddingBottom: 200,
   },

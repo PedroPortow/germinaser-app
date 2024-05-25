@@ -72,9 +72,9 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
         onCancel={() => setConfirmationModalVisibile(false)}
         onClose={() => setConfirmationModalVisibile(false)}
       >
-        <Text>
-          Esta ação é definitiva, ao cancelar a reserva de um usuário o horário reservado será
-          liberado para outros horários
+        <Text style={styles.confirmationText}>
+          Ao cancelar a reserva de um usuário o horário previamente reservado será
+          liberado para reserva novamente
         </Text>
       </ConfirmationModal>
       <Modal isOpen={visible} onClose={onClose} size="lg">
@@ -156,7 +156,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     gap: 4,
   },
-  label: {},
+  label: {
+
+  },
+  confirmationText: {
+    fontSize: 16,
+    fontWeight: 400,
+  },
 })
 
 export default BookingModal

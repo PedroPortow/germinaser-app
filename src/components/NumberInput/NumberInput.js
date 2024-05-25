@@ -45,14 +45,14 @@ function NumberInput({ placeholder, label, initialValue = '', onChange }) {
         fontSize={14}
         InputLeftElement={
           <IconButton
-            icon={<Feather name="minus" size={20} color="black" />}
+            icon={<Feather name="minus" size={18} color="black" />}
             onPress={decrement}
             borderRadius="full"
           />
         }
         InputRightElement={
           <IconButton
-            icon={<Feather name="plus" size={20} color="black" />}
+            icon={<Feather name="plus" size={18} color="black" />}
             onPress={increment}
             borderRadius="full"
           />

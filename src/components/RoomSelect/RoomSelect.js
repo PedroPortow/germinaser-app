@@ -3,7 +3,7 @@ import { Select } from "native-base";
 import { Ionicons } from '@expo/vector-icons'
 import { apiGetClinicRooms  } from '../../services/clinics';
 
-function RoomSelect({ onSelectRoom, selectedClinic, withAllOption = true }) {
+function RoomSelect({ onSelectRoom, selectedClinic, selectedRoom, withAllOption = true }) {
   const [roomOptions, setRoomOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,7 +41,7 @@ function RoomSelect({ onSelectRoom, selectedClinic, withAllOption = true }) {
 
   return (
     <Select
-      // selectedValue={}
+      selectedValue={selectedRoom}
       accessibilityLabel="Choose Room"
       placeholder="Selecione uma sala"
       size='lg'
@@ -54,7 +54,7 @@ function RoomSelect({ onSelectRoom, selectedClinic, withAllOption = true }) {
         />
       }
       onValueChange={(itemValue) => onSelectRoom(itemValue)}
-      isDisabled={!selectedClinic || isLoading}
+      isDisabled={selectedClinic == 'all' || isLoading}
     >
       {roomOptions.map((room) => (
         <Select.Item key={room.value} label={room.label} value={room.value} />

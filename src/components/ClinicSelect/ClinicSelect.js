@@ -3,7 +3,15 @@ import { Select } from "native-base";
 import { Ionicons } from '@expo/vector-icons'
 import { apiGetClinics } from '../../services/clinics';
 
-function ClinicSelect({ onSelectClinic, selectedClinic, withAllOption = true }) {
+function ClinicSelect({
+  onSelectClinic,
+  selectedClinic,
+  withAllOption = true,
+  variant = 'outline',
+  style,
+  iconColor = "#333",
+  fontStyle
+}) {
   const [clinicOptions, setClinicOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,11 +50,14 @@ function ClinicSelect({ onSelectClinic, selectedClinic, withAllOption = true }) 
       accessibilityLabel="Choose Clinic"
       placeholder="Selecione uma clínica"
       size='lg'
+      variant={variant}
+      style={style}
+      fontStyle={fontStyle}
       dropdownIcon={
         <Ionicons
           name="chevron-down-outline"
           size={18}
-          color="#333"
+          color={iconColor}
           style={{marginRight: 8}}
         />
       }

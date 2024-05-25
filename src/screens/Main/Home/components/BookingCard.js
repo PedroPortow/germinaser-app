@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-import { Text } from '@components'
+import { Text } from 'native-base'
 import { formatDate, getWeekDay, getBookingEndtimeFormatted } from '@helpers'
 
 function BookingCard({ booking, icon, onPress }) {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   weekText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: 600,
     color: '#333',
   },
   textContent: {
@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 600,
     color: '#333',
   },
   timeText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: 600,
     color: '#333',
   },
   subtext: {

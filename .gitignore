@@ -9,9 +9,13 @@
 /web-build/
 /ios/build/
 /android/build/
+/dist
+
 
 # Environment variables
 *.env
+
+/dist
 
 # Keystore files for Android
 *.jks
