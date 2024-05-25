@@ -8,13 +8,15 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking, isLoading
     <BookingCard booking={item} onPress={() => handleSelectBooking(item)} />
   )
 
+
+
   return (
     <FlatList
       data={bookings}
       renderItem={renderBooking}
       keyExtractor={(booking) => String(booking.id)}
       onEndReached={handleNextPage}
-      ListEmptyComponent={
+      ListEmptyComponent={ !isLoading &&
         <Card style={styles.emptyCardContent}>
           <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
         </Card>
