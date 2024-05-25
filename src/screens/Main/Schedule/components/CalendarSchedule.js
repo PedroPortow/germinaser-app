@@ -1,49 +1,38 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { WeekCalendar, CalendarProvider, AgendaList } from 'react-native-calendars';
-import { Badge, Text } from 'native-base';
-import { apiGetWeekAvailableslots } from '../../../../services/bookings';
+import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
+import { Badge, Text, FlatList, ScrollView } from 'native-base';
 import moment from 'moment';
+import { apiGetRoomsAvailableSlots } from '../../../../services/bookings';
 
-function WeekSchedule({ selectedClinic = 1 }) {
-  const [selectedDate, setSelectedDate] = useState('2024-05-20');
-  const [weekStartDate, setWeekStartDate] = useState(moment('2024-05-20').startOf('week').format('YYYY-MM-DD'));
-  const [data, setData] = useState({});
+function CalendarSchedule({ selectedClinic, setIsLoading }) {
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
+  const [data, setData] = useState([]);
 
-  const fetchWeekData = async (date, clinicId) => {
+  const fetchRoomsAvailableSlots = async () => {
+    setIsLoading(true)
     const params = {
-      date,
-      clinic_id: clinicId,
+      date: selectedDate,
+      clinic_id: selectedClinic,
     };
-
+    
     try {
-      const response = await apiGetWeekAvailableslots(params);
-      setData(response.data);
+      setIsLoading(false)
+      const response = await apiGetRoomsAvailableSlots(params);
+      const formattedData = response.data.map(item => ({
+        name: item.room.name,
+        availableTimeSlots: item.availableTimeSlots,
+      }));
+      setData(formattedData);
     } catch (error) {
+      setIsLoading(false)
       console.error('Failed to fetch data', error);
     }
   };
 
   useEffect(() => {
-    fetchWeekData(weekStartDate, selectedClinic);
-  }, [weekStartDate, selectedClinic]);
-
-  useEffect(() => {
-    const newWeekStartDate = moment(selectedDate).startOf('week').format('YYYY-MM-DD');
-    if (newWeekStartDate !== weekStartDate) {
-      setWeekStartDate(newWeekStartDate);
-    }
-  }, [selectedDate, weekStartDate]);
-
-  const generateAgendaItems = () => {
-    const items = {};
-
-    for (const [date, rooms] of Object.entries(data)) {
-      items[date] = rooms;
-    }
-
-    return Object.entries(items).map(([title, data]) => ({ title, data }));
-  };
+    fetchRoomsAvailableSlots();
+  }, [selectedDate, selectedClinic]);
 
   const renderItem = useCallback(({ item }) => {
     return (
@@ -55,7 +44,7 @@ function WeekSchedule({ selectedClinic = 1 }) {
           <Text style={styles.label}>Horários disponíveis:</Text>
           <View style={styles.timeSlotsWrapper}>
             {item.availableTimeSlots.map((timeslot) => (
-              <Badge key={timeslot} variant={'solid'} colorScheme={'info'}>
+              <Badge key={timeslot} variant='solid' colorScheme='info'>
                 <Text style={styles.badgeText}>{timeslot}</Text>
               </Badge>
             ))}
@@ -66,19 +55,25 @@ function WeekSchedule({ selectedClinic = 1 }) {
   }, []);
 
   return (
-    <CalendarProvider date={selectedDate} >
-      <WeekCalendar
+    <CalendarProvider date={selectedDate}>
+      <ExpandableCalendar
         onDayPress={(day) => {
           setSelectedDate(day.dateString);
         }}
+        initialPosition='closed'
+        allowShadow
         firstDay={1}
         markedDates={{
           [selectedDate]: { selected: true, marked: true },
         }}
       />
-      <AgendaList sections={generateAgendaItems()} renderItem={renderItem}
-
-      />
+      <ScrollView>
+        <FlatList
+          data={data || []}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.name}
+        />
+      </ScrollView>
     </CalendarProvider>
   );
 }
@@ -121,9 +116,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },
-  badge: {
-    margin: 5,
-  },
 });
 
-export default WeekSchedule;
+export default CalendarSchedule;

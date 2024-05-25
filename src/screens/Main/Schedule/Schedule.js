@@ -1,34 +1,32 @@
-import { Text, View } from 'native-base'
+import { View } from 'native-base'
 import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet } from 'react-native'
-import { ClinicSelect } from '../../../components'
-import { CalendarProvider } from 'react-native-calendars'
-import { WeekSchedule } from './components'
+import {  StyleSheet } from 'react-native'
+import { ClinicSelect, Loader } from '../../../components'
+import {  CalendarSchedule } from './components'
 
 
 function Schedule() {
   const [selectedClinic, setSelectedClinic] = useState(1)
-
-
-  const handleSelectClinic = () => {
-
-  }
-
+  const [isLoading, setIsLoading] = useState(false)
 
 
   return (
     <>
+      <Loader loading={isLoading} />
       <View style={styles.topContainer}>
         <ClinicSelect
           variant='unstyled'
-          onSelectClinic={handleSelectClinic}
+          onSelectClinic={(clinic) => setSelectedClinic(clinic)}
           selectedClinic={selectedClinic}
           withAllOption={false}
           style={styles.select}
           iconColor='white'
         />
       </View>
-      <WeekSchedule />
+      <CalendarSchedule 
+        selectedClinic={selectedClinic}
+        setIsLoading={setIsLoading}
+      />
 
     </>
 
@@ -37,7 +35,7 @@ function Schedule() {
 
 const styles = StyleSheet.create({
   select: {
-    width: 200,
+    width: 50,
     color: 'white',
     fontWeight: '600',
     fontSize: 16

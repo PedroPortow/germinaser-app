@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from 'react-native'
+import { Text, StyleSheet, FlatList } from 'react-native'
 import BookingCard from '../../screens/Main/Home/components/BookingCard'
 import { Card } from '../Cards'
 
@@ -9,6 +9,13 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking, isLoading
   )
 
 
+  if(!isLoading && !bookings.length){
+    return (
+      <Card style={styles.emptyCardContent}>
+        <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
+      </Card>
+    )
+  }
 
   return (
     <FlatList
@@ -16,11 +23,8 @@ function BookingsList({ bookings, handleNextPage, handleSelectBooking, isLoading
       renderItem={renderBooking}
       keyExtractor={(booking) => String(booking.id)}
       onEndReached={handleNextPage}
-      ListEmptyComponent={ !isLoading &&
-        <Card style={styles.emptyCardContent}>
-          <Text style={styles.emptyCardText}>Você não possui nenhuma reserva</Text>
-        </Card>
-      }
+      // ListEmptyComponent={
+      // }
       onEndReachedThreshold={0.05}
       contentContainerStyle={styles.listContainer}
     />

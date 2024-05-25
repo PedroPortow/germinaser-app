@@ -18,6 +18,10 @@ export const apiGetWeekAvailableslots = (params) => (
   api.get('/bookings/week_available_slots', { params })
 )
 
+export const apiGetRoomsAvailableSlots = (params) => (
+  api.get('/bookings/rooms_available_slots', { params })
+)
+
 export const apiCancelBooking = (bookingId) => api.post(`/bookings/${bookingId}/cancel`)
 
 // ADMIN

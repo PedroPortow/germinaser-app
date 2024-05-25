@@ -8,7 +8,6 @@ import Account from './Account'
 import Schedule from './Schedule'
 import { useFullScreenModal } from '../../context/FullScreenModalContext'
 import { CreateBookingModal } from '../../components'
-import ScheduleNavigator from './Schedule/ScheduleNavigator'
 
 const Tab = createBottomTabNavigator()
 
