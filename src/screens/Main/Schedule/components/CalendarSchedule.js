@@ -4,6 +4,7 @@ import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 import { Badge, Text, FlatList, ScrollView } from 'native-base';
 import moment from 'moment';
 import { apiGetRoomsAvailableSlots } from '../../../../services/bookings';
+import { Button, Card } from '../../../../components';
 
 function CalendarSchedule({ selectedClinic, setIsLoading }) {
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
@@ -34,25 +35,21 @@ function CalendarSchedule({ selectedClinic, setIsLoading }) {
     fetchRoomsAvailableSlots();
   }, [selectedDate, selectedClinic]);
 
-  const renderItem = useCallback(({ item }) => {
-    return (
-      <View style={styles.hourlyItemWrapper}>
-        <View style={styles.hourContainer}>
-          <Text style={styles.hourText}>{item.name}</Text>
-        </View>
-        <View style={styles.hourRightContent}>
+  const renderItem = useCallback(({ item }) =>  (
+      <Card style={styles.roomContainer}>
+        <Text style={styles.roomTitle}>{item.name}</Text>
+        <View style={styles.timeSlotsContainer}>
           <Text style={styles.label}>Horários disponíveis:</Text>
           <View style={styles.timeSlotsWrapper}>
             {item.availableTimeSlots.map((timeslot) => (
-              <Badge key={timeslot} variant='solid' colorScheme='info'>
+              <Button key={timeslot} variant='solid' colorScheme='info' style={styles.timeSlotButton}>
                 <Text style={styles.badgeText}>{timeslot}</Text>
-              </Badge>
+              </Button>
             ))}
           </View>
         </View>
-      </View>
-    );
-  }, []);
+      </Card>
+    ), []);
 
   return (
     <CalendarProvider date={selectedDate}>
@@ -63,14 +60,22 @@ function CalendarSchedule({ selectedClinic, setIsLoading }) {
         initialPosition='closed'
         allowShadow
         firstDay={1}
+        minDate={new Date()}
         markedDates={{
           [selectedDate]: { selected: true, marked: true },
         }}
+        theme={{
+          selectedDayBackgroundColor: '#479BA7',
+          selectedDayTextColor: '#ffffff',
+          todayTextColor: '#479BA7',
+          arrowColor: '#479BA7',
+        }}
       />
-      <ScrollView>
+      <ScrollView style={styles.marginScrollView}>
         <FlatList
           data={data || []}
           renderItem={renderItem}
+          contentContainerStyle={styles.listContainer}
           keyExtractor={(item) => item.name}
         />
       </ScrollView>
@@ -79,37 +84,42 @@ function CalendarSchedule({ selectedClinic, setIsLoading }) {
 }
 
 const styles = StyleSheet.create({
+  listContainer: {
+    margin: 8
+  }, 
+  timeSlotButton: {
+    width: 70
+  }, 
   label: {
     fontWeight: '500',
     fontSize: 16,
   },
-  hourContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 100,
-  },
+  marginScrollView: {
+    marginBottom: 100
+  }, 
   timeSlotsWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
-    width: 300,
     gap: 10,
     marginTop: 8,
   },
-  hourRightContent: {
+  timeSlotsContainer: {
     paddingTop: 4,
   },
-  hourlyItemWrapper: {
+  roomContainer: {
     display: 'flex',
-    flexDirection: 'row',
-    height: 200,
+    flexDirection: 'column',
+    height: 275,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     backgroundColor: 'white',
-    padding: 10,
+    padding: 15,
+    gap: 8
   },
-  hourText: {
+  roomTitle: {
     fontWeight: '600',
+    fontSize: 16
   },
   badgeText: {
     color: 'white',
