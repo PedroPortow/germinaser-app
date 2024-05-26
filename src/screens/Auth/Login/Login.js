@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Platform, ScrollView } from 'react-native';
-import { Input, Pressable, Icon, Divider, Text, KeyboardAvoidingView, useToast } from 'native-base';
+import { Input, Pressable, Icon,  Text, KeyboardAvoidingView, useToast } from 'native-base';
 import { Button } from '@components';
 import { Ionicons } from '@expo/vector-icons';
 import { useUserContext } from '../../../context/UserContext';
 import CustomAlert from '../../../components/CustomAlert';
 
 function Login() {
-  const [email, setEmail] = useState('pedrolportow@gmail.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useUserContext();
 
@@ -40,6 +40,7 @@ function Login() {
               size="lg"
               placeholder="Seu endereço de email"
               variant="outline"
+              autoCapitalize={false}
               onChangeText={(value) => setEmail(value)}
             />
           </View>
