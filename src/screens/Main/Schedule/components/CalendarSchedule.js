@@ -16,7 +16,7 @@ function CalendarSchedule({ selectedClinic, setIsLoading }) {
       date: selectedDate,
       clinic_id: selectedClinic,
     };
-    
+
     try {
       setIsLoading(false)
       const response = await apiGetRoomsAvailableSlots(params);
@@ -86,17 +86,17 @@ function CalendarSchedule({ selectedClinic, setIsLoading }) {
 const styles = StyleSheet.create({
   listContainer: {
     margin: 8
-  }, 
+  },
   timeSlotButton: {
-    width: 70
-  }, 
+    width: 78
+  },
   label: {
     fontWeight: '500',
     fontSize: 16,
   },
   marginScrollView: {
     marginBottom: 100
-  }, 
+  },
   timeSlotsWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   roomContainer: {
     display: 'flex',
     flexDirection: 'column',
-    height: 275,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     backgroundColor: 'white',
