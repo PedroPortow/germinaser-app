@@ -1,102 +1,107 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
-import { Badge, Text, FlatList, ScrollView } from 'native-base';
-import moment from 'moment';
+import { Text, FlatList, ScrollView } from 'native-base';
 import { apiGetRoomsAvailableSlots } from '../../../../services/bookings';
-import { Button, Card } from '../../../../components';
+import { Button, Card, CreateBookingModal } from '../../../../components';
+import { useFullScreenModal } from '../../../../context/FullScreenModalContext';
 
-function CalendarSchedule({ selectedClinic, setIsLoading }) {
-  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
+const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDate }) => {
   const [data, setData] = useState([]);
 
-  const fetchRoomsAvailableSlots = async () => {
-    setIsLoading(true)
+  const { showModal, hideModal } = useFullScreenModal();
+
+  const fetchRoomsAvailableSlots = useCallback(async () => {
+    setIsLoading(true);
     const params = {
       date: selectedDate,
       clinic_id: selectedClinic,
     };
-    
+
     try {
-      setIsLoading(false)
       const response = await apiGetRoomsAvailableSlots(params);
       const formattedData = response.data.map(item => ({
-        name: item.room.name,
+        room: {
+          id: item.room.id,
+          name: item.room.name,
+        },
         availableTimeSlots: item.availableTimeSlots,
       }));
       setData(formattedData);
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       console.error('Failed to fetch data', error);
     }
-  };
+  }, [selectedDate, selectedClinic, setIsLoading]);
 
   useEffect(() => {
     fetchRoomsAvailableSlots();
-  }, [selectedDate, selectedClinic]);
+  }, [selectedDate, selectedClinic, fetchRoomsAvailableSlots]);
 
-  const renderItem = useCallback(({ item }) =>  (
-      <Card style={styles.roomContainer}>
-        <Text style={styles.roomTitle}>{item.name}</Text>
-        <View style={styles.timeSlotsContainer}>
-          <Text style={styles.label}>Horários disponíveis:</Text>
-          <View style={styles.timeSlotsWrapper}>
-            {item.availableTimeSlots.map((timeslot) => (
-              <Button key={timeslot} variant='solid' colorScheme='info' style={styles.timeSlotButton}>
-                <Text style={styles.badgeText}>{timeslot}</Text>
-              </Button>
-            ))}
-          </View>
+  const handleSelectTimeSlot = useCallback((selectedTimeSlot, item) => {
+    showModal({
+      title: "Nova Reserva",
+      children: (
+        <CreateBookingModal
+          onClose={hideModal}
+          onCreate={() => console.log("oi")}
+          selectedClinic={selectedClinic}
+          selectedDay={selectedDate}
+          selectedTimeSlot={selectedTimeSlot}
+          selectedRoom={item.room.id}
+        />
+      ),
+    });
+  }, [selectedClinic, selectedDate, showModal, hideModal]);
+
+  const renderItem = useCallback(({ item }) => (
+    <Card style={styles.roomContainer}>
+      <Text style={styles.roomTitle}>{item.room.name}</Text>
+      <View style={styles.timeSlotsContainer}>
+        <Text style={styles.label}>Horários disponíveis:</Text>
+        <View style={styles.timeSlotsWrapper}>
+          {item.availableTimeSlots.map((timeSlot) => (
+            <Button
+              key={`${timeSlot}-${item.room.id}`}
+              ariant='solid'
+              colorScheme='info'
+              onPress={() => handleSelectTimeSlot(timeSlot, item)}
+              style={styles.timeSlotButton}
+            >
+              <Text style={styles.badgeText}>{timeSlot}</Text>
+            </Button>
+          ))}
         </View>
-      </Card>
-    ), []);
+      </View>
+    </Card>
+  ), [handleSelectTimeSlot]);
 
   return (
-    <CalendarProvider date={selectedDate}>
-      <ExpandableCalendar
-        onDayPress={(day) => {
-          setSelectedDate(day.dateString);
-        }}
-        initialPosition='closed'
-        allowShadow
-        firstDay={1}
-        minDate={new Date()}
-        markedDates={{
-          [selectedDate]: { selected: true, marked: true },
-        }}
-        theme={{
-          selectedDayBackgroundColor: '#479BA7',
-          selectedDayTextColor: '#ffffff',
-          todayTextColor: '#479BA7',
-          arrowColor: '#479BA7',
-        }}
+    <ScrollView style={styles.marginScrollView}>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContainer}
+        keyExtractor={(item) => item.room.id.toString()}
       />
-      <ScrollView style={styles.marginScrollView}>
-        <FlatList
-          data={data || []}
-          renderItem={renderItem}
-          contentContainerStyle={styles.listContainer}
-          keyExtractor={(item) => item.name}
-        />
-      </ScrollView>
-    </CalendarProvider>
+    </ScrollView>
   );
-}
+});
 
 const styles = StyleSheet.create({
   listContainer: {
-    margin: 8
-  }, 
+    margin: 8,
+  },
   timeSlotButton: {
-    width: 70
-  }, 
+    width: 78,
+  },
   label: {
     fontWeight: '500',
     fontSize: 16,
   },
   marginScrollView: {
-    marginBottom: 100
-  }, 
+    marginBottom: 100,
+  },
   timeSlotsWrapper: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -110,16 +115,15 @@ const styles = StyleSheet.create({
   roomContainer: {
     display: 'flex',
     flexDirection: 'column',
-    height: 275,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     backgroundColor: 'white',
     padding: 15,
-    gap: 8
+    gap: 8,
   },
   roomTitle: {
     fontWeight: '600',
-    fontSize: 16
+    fontSize: 16,
   },
   badgeText: {
     color: 'white',
