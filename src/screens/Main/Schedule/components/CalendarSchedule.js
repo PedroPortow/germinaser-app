@@ -1,14 +1,11 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars';
 import { Text, FlatList, ScrollView } from 'native-base';
-import moment from 'moment';
 import { apiGetRoomsAvailableSlots } from '../../../../services/bookings';
 import { Button, Card, CreateBookingModal } from '../../../../components';
 import { useFullScreenModal } from '../../../../context/FullScreenModalContext';
 
-const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading }) => {
-  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
+const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDate }) => {
   const [data, setData] = useState([]);
 
   const { showModal, hideModal } = useFullScreenModal();
@@ -80,34 +77,16 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading }) => {
   ), [handleSelectTimeSlot]);
 
   return (
-    <CalendarProvider date={selectedDate}>
-      {/* <ExpandableCalendar
-        onDayPress={(day) => setSelectedDate(day.dateString)}
-        initialPosition='closed'
-        allowShadow
-        firstDay={1}
-        minDate={new Date()}
-        markedDates={{ [selectedDate]: { selected: true, marked: true } }}
-        theme={calendarTheme}
-      /> */}
-      <ScrollView style={styles.marginScrollView}>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          contentContainerStyle={styles.listContainer}
-          keyExtractor={(item) => item.room.id.toString()}
-        />
-      </ScrollView>
-    </CalendarProvider>
+    <ScrollView style={styles.marginScrollView}>
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        contentContainerStyle={styles.listContainer}
+        keyExtractor={(item) => item.room.id.toString()}
+      />
+    </ScrollView>
   );
 });
-
-const calendarTheme = {
-  selectedDayBackgroundColor: '#479BA7',
-  selectedDayTextColor: '#ffffff',
-  todayTextColor: '#479BA7',
-  arrowColor: '#479BA7',
-};
 
 const styles = StyleSheet.create({
   listContainer: {
