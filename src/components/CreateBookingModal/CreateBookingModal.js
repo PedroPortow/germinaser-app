@@ -10,27 +10,33 @@ import RoomSelect from '../RoomSelect'
 import Button from '../Button'
 import CustomAlert from '../CustomAlert'
 
-function CreateBookingModal({ visible, onClose, onCreate }) {
-  const [clinic, setClinic] = useState()
-  const [room, setRoom] = useState()
+function CreateBookingModal({ visible, onClose, onCreate, selectedClinic, selectedDay, selectedTimeSlot, selectedRoom }) {
+  const [clinic, setClinic] = useState(selectedClinic)
+  const [room, setRoom] = useState(selectedRoom)
   const [name, setName] = useState()
 
   const [dateModalVisible, setDateModalVisible] = useState(false)
 
-  const [selectedDay, setSelectedDay] = useState('20')
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState()
+  const [day, setDay] = useState(selectedDay)
+  const [timeSlot, setTimeSlot] = useState(selectedTimeSlot)
+
   const [isLoading, setIsLoading] = useState(false)
 
   const dateButtonActive = useMemo(() => (name || clinic || room), [name, clinic, room])
-  const submitButtonActive = useMemo(() => (name || clinic || room || selectedTimeSlot || selectedDay), [name, clinic, room, selectedTimeSlot, selectedDay])
+  const submitButtonActive = useMemo(() => (name || clinic || room || timeSlot || day), [name, clinic, room, timeSlot, day])
+
+  console.log({room})
+  console.log({day})
+  console.log({timeSlot})
+  console.log({clinic})
 
   const toast = useToast();
 
   const resetStates = () => {
-    setRoom(null)
-    setClinic(null)
-    setSelectedDay(null)
-    setSelectedTimeSlot(null)
+    setRoom(selectedRoom)
+    setClinic(selectedClinic)
+    setDay(selectedDay)
+    setTimeSlot(selectedTimeSlot)
   }
 
   useEffect(() => {
@@ -40,15 +46,15 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
   }, [visible])
 
   const onChooseDate = (day, timeslot) => {
-    setSelectedDay(day)
-    setSelectedTimeSlot(timeslot)
+    setDay(day)
+    setTimeSlot(timeslot)
     setDateModalVisible(false)
   }
 
   const handleCreateBooking = async () => {
     setIsLoading(true)
     try {
-      const startTime = `${selectedDay}T${selectedTimeSlot}:00Z`
+      const startTime = `${day}T${timeSlot}:00Z`
       await apiCreateBooking({
         name,
         start_time: startTime,
@@ -79,6 +85,8 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
         onClose={() => setDateModalVisible(false)}
         visible={dateModalVisible}
         onConfirm={onChooseDate}
+        timeSlot={timeSlot}
+        day={day}
       />
       <View style={styles.content}>
         <View style={styles.inputLabelWrapper}>
@@ -93,11 +101,11 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Clínica</Text>
-          <ClinicSelect onSelectClinic={(clinic) => setClinic(clinic)} withAllOption={false} />
+          <ClinicSelect onSelectClinic={(clinic) => setClinic(clinic)} withAllOption={false} selectedClinic={clinic} />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Sala</Text>
-          <RoomSelect selectedClinic={clinic} onSelectRoom={(clinic) => setRoom(clinic)} withAllOption={false} />
+          <RoomSelect selectedClinic={clinic} onSelectRoom={(clinic) => setRoom(clinic)} withAllOption={false} selectedRoom={room} />
         </View>
         <View style={styles.inputLabelWrapper}>
           <Text style={styles.label}>Data</Text>
@@ -106,9 +114,9 @@ function CreateBookingModal({ visible, onClose, onCreate }) {
             onPress={() => setDateModalVisible(true)}
             disabled={!room}
           >
-            {selectedTimeSlot ? (
+            {timeSlot ? (
               <Text style={styles.selectedTimeText}>
-                {formatDate(selectedDay)} - {selectedTimeSlot}
+                {formatDate(day)} - {timeSlot}
               </Text>
             ) : (
               <Text style={dateButtonActive ? styles.placeholderActive : styles.placeholderInactive}>Selecione a data</Text>

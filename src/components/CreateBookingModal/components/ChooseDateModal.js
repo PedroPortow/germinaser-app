@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Modal, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Loader, Button } from '@components'
@@ -6,22 +6,22 @@ import { Calendar } from 'react-native-calendars'
 import { Text } from 'native-base'
 import { apiGetDayAvailableBookings } from '../../../services/bookings'
 
-function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
-  const [selectedDay, setSelectedDay] = useState('')
+function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, day }) {
+  const [selectedDay, setSelectedDay] = useState(day)
   const [availableTimeSlots, setAvailableTimeSlots] = useState([])
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState()
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(timeSlot)
   const [isLoading, setIsLoading] = useState(false)
 
   const fetchAvailableTimeSlots = async (day) => {
     setIsLoading(true)
     setAvailableTimeSlots([])
 
-    const date = day.dateString
-
     const params = {
-      date,
+      date: day,
       room_id: selectedRoom,
     }
+
+    console.log({params})
 
     try {
       const response = await apiGetDayAvailableBookings(params)
@@ -36,12 +36,22 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm }) {
   const onSelectDay = (day) => {
     setSelectedTimeSlot(null)
     setSelectedDay(day.dateString)
-    fetchAvailableTimeSlots(day)
+    fetchAvailableTimeSlots(day.dateString)
   }
+
+  useEffect(() => {
+    if(!!visible && !!timeSlot && !!day){
+      fetchAvailableTimeSlots(day)
+    }
+
+    setSelectedTimeSlot(timeSlot)
+  }, [visible, timeSlot, day])
 
   if (!visible) {
     return null
   }
+
+  console.log({selectedTimeSlot})
 
   return (
     <Modal visible={visible} animationType="slide">
