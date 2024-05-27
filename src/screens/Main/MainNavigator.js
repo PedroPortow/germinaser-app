@@ -55,13 +55,21 @@ function MainNavigator() {
         {props => <Home {...props} refetch={refetchTrigger} />}
       </Tab.Screen>
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Horários"
         component={Schedule}
         options={{
           tabBarIcon: ({ size, color }) => <Feather name="calendar" size={size} color={color} />,
         }}
-      />
+      /> */}
+      <Tab.Screen
+        name="Horários"
+        options={{
+          tabBarIcon: ({ size, color }) => <Feather name="calendar" size={size} color={color} />,
+        }}
+      >
+        {props => <Schedule {...props} onCreateBooking={onCreateBooking} />}
+      </Tab.Screen>
 
       <Tab.Screen
         name="ActionButton"

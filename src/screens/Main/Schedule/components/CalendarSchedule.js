@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { Text, FlatList, ScrollView } from 'native-base';
 import { apiGetRoomsAvailableSlots } from '../../../../services/bookings';
 import { Button, Card, CreateBookingModal } from '../../../../components';
 import { useFullScreenModal } from '../../../../context/FullScreenModalContext';
 
-const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDate }) => {
-  const [data, setData] = useState([]);
+const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDate, onCreateBooking }) => {
+  const [roomsTimeSlots, setRoomTimeSlots] = useState([]);
 
   const { showModal, hideModal } = useFullScreenModal();
 
@@ -26,11 +26,11 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
         },
         availableTimeSlots: item.availableTimeSlots,
       }));
-      setData(formattedData);
+      setRoomTimeSlots(formattedData);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.error('Failed to fetch data', error);
+      console.error('Failed to fetch roomsTimeSlots', error);
     }
   }, [selectedDate, selectedClinic, setIsLoading]);
 
@@ -44,7 +44,7 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
       children: (
         <CreateBookingModal
           onClose={hideModal}
-          onCreate={() => console.log("oi")}
+          onCreate={onCreateBooking}
           selectedClinic={selectedClinic}
           selectedDay={selectedDate}
           selectedTimeSlot={selectedTimeSlot}
@@ -77,9 +77,9 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
   ), [handleSelectTimeSlot]);
 
   return (
-    <ScrollView style={styles.marginScrollView}>
+    <ScrollView>
       <FlatList
-        data={data}
+        data={roomsTimeSlots}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
         keyExtractor={(item) => item.room.id.toString()}
@@ -91,6 +91,7 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
 const styles = StyleSheet.create({
   listContainer: {
     margin: 8,
+    paddingBottom: 100, 
   },
   timeSlotButton: {
     width: 78,

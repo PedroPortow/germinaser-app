@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Modal, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
+import { StyleSheet, View, Modal, TouchableOpacity, ScrollView, SafeAreaView, Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Loader, Button } from '@components'
 import { Calendar } from 'react-native-calendars'
 import { Text } from 'native-base'
 import { apiGetDayAvailableBookings } from '../../../services/bookings'
+
+
+const { height } = Dimensions.get('window');
 
 function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, day }) {
   const [selectedDay, setSelectedDay] = useState(day)
@@ -122,14 +125,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     marginTop: 10,
-    height: 350,
+    height: height * 0.4,
     flexDirection: 'column',
     gap: 4
   },
   confirmationButton: {
     alignSelf: 'center',
     width: '93%',
-    marginTop: 14
   },
   closeButton: {
     position: 'absolute',
@@ -140,12 +142,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   calendar: {
-    marginTop: 12,
+    marginTop: 4,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 16
   },
   content: {
     paddingHorizontal: 16,

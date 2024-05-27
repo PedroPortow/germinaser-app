@@ -73,7 +73,7 @@ function Home({ refetch }) {
             icon={<FontAwesome5 name="coins" size={24} color="black" style={styles.icon} />}
           />
           <RoundCard
-            text="Reservas atuais"
+            text="Reservas"
             value={user.active_bookings_count}
             icon={<Ionicons name="calendar-number-outline" size={24} style={styles.icon} />}
           />

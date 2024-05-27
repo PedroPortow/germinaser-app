@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   weekText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 600,
     color: '#333',
   },
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   timeText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 600,
     color: '#333',
   },

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     gap: 4
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 400,
   },
 })

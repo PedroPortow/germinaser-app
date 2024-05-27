@@ -140,9 +140,6 @@ function CreateBookingModal({ visible, onClose, onCreate, selectedClinic, select
 
 const styles = StyleSheet.create({
   bottomButtonPosition: {
-    position: 'relative',
-    bottom: -320,
-    left: 0,
   },
   content: {
     flexDirection: 'column',

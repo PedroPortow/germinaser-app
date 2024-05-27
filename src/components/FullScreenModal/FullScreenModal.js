@@ -80,14 +80,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    marginTop: 16
+    marginTop: 24
   },
   title: {
     fontWeight: 600,
     fontSize: 22
   },
   childrenContent: {
-    flex: 1,
   },
 });
 

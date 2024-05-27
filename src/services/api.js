@@ -7,6 +7,7 @@ const api = axios.create({
   // baseURL: 'http://0.0.0.0:3000/',
   // baseURL: 'http://localhost:3000/',
   baseURL: EXPO_API_URL,
+  
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

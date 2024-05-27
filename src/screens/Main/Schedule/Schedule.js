@@ -1,13 +1,13 @@
+import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars'
+import moment from 'moment'
 import { View } from 'native-base'
 import React, { useState } from 'react'
 import {  StyleSheet } from 'react-native'
 import { ClinicSelect, Loader } from '../../../components'
 import {  CalendarSchedule } from './components'
-import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars'
-import moment from 'moment'
 
 
-function Schedule() {
+function Schedule({ onCreateBooking }) {
   const [selectedClinic, setSelectedClinic] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
@@ -16,7 +16,6 @@ function Schedule() {
   return (
       <CalendarProvider date={selectedDate}>
         <Loader loading={isLoading} />
-
         <View style={styles.topContainer}>
           <ClinicSelect
             variant='unstyled'
@@ -40,6 +39,7 @@ function Schedule() {
           selectedClinic={selectedClinic}
           selectedDate={selectedDate}
           setIsLoading={setIsLoading}
+          onCreateBooking={onCreateBooking}
         />
       </CalendarProvider>
   )
@@ -55,7 +55,6 @@ const calendarTheme = {
 
 const styles = StyleSheet.create({
   select: {
-    width: 50,
     color: 'white',
     fontWeight: '600',
     fontSize: 16
@@ -63,7 +62,6 @@ const styles = StyleSheet.create({
   topContainer: {
     backgroundColor: '#479BA7',
     height: 80,
-    paddingHorizontal: 145,
     paddingTop: 40
   },
 });

@@ -2,7 +2,7 @@
   "expo": {
     "name": "GerminaSer",
     "slug": "client",
-    "version": "1.0.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -37,7 +37,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "germinaser.com"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
@@ -52,7 +53,10 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/2c0548b4-1616-41de-b8fb-79b28719d7a7"
+      "url": "https://u.expo.dev/2c0548b4-1616-41de-b8fb-79b28719d7a7",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
     }
   }
 }
