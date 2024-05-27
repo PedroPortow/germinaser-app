@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import {  Loader, NumberInput, Button, RolesSelect } from '@components'
+import { Loader, NumberInput, Button, RolesSelect } from '@components'
 import { Input, Pressable, Icon, Divider, Text } from 'native-base'
-import { apiCreateUser, apiDeleteUser,  apiUpdateUser } from '../../../../services/user'
+import { apiCreateUser, apiDeleteUser, apiUpdateUser } from '../../../../services/user'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 
 function UserModal({ user = {}, visible, onClose, onConfirm }) {
@@ -100,12 +100,11 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       <ConfirmationModal
         visible={deleteUserModalVisible}
         onClose={() => setDeleteUserModalVisible(false)}
-        title='🚨 Atenção'
+        title="🚨 Atenção"
         onConfirm={handleDeleteUser}
       >
         <Text style={styles.confirmationText}>
-          Ao remover um usuário todas as reservas associadas ao mesmo
-          também serão removidas
+          Ao remover um usuário todas as reservas associadas ao mesmo também serão removidas
         </Text>
       </ConfirmationModal>
       <Loader loading={isLoading} />
@@ -115,7 +114,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
           <Input
             value={name}
             size="lg"
-            placeholder='Digite o nome do usuário'
+            placeholder="Digite o nome do usuário"
             variant="outline"
             onChangeText={(value) => setName(value)}
           />
@@ -164,26 +163,27 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
           <Text style={styles.label}>Cargo</Text>
           <RolesSelect onSelectRole={(role) => setRole(role)} selectedRole={role} />
         </View>
-        <View style={styles.inputLabelWrapper}>
-          <Text style={styles.label}>Créditos</Text>
-          <NumberInput onChange={(value) => setCredits(value)} initialValue={user.credits} />
-        </View>
-        {!creatingUser && (
-          <>
-            <Divider />
+        <View style={styles.rowButtons}>
+          <View style={styles.inputLabelWrapper}>
+            <Text style={styles.label}>Créditos</Text>
+            <NumberInput onChange={(value) => setCredits(value)} initialValue={user.credits} />
+          </View>
+          {creatingUser ? null : (
             <Button
               icon="trash"
               theme="destructive"
-              iconSize={20}
+              iconSize={14}
+              textStyle={styles.textButtonDestructive}
               onPress={() => setDeleteUserModalVisible(true)}
-              style={styles.destructiveButtonWidth}
+              style={styles.destructiveButton}
             >
               Remover usuário
             </Button>
-          </>
-        )}
+          )}
+        </View>
+        <Divider />
         <Button
-          style={creatingUser ? styles.createButtonPosition : styles.editButtonPosition}
+          style={styles.buttonPosition}
           onPress={creatingUser ? handleCreateUser : handleEditUser}
         >
           {creatingUser ? 'Criar usuário' : 'Salvar alterações'}
@@ -199,15 +199,17 @@ const styles = StyleSheet.create({
     gap: 16,
     padding: 20,
   },
-  createButtonPosition: {
-    position: 'relative',
-    bottom: -280,
-    left: 0,
+  textButtonDestructive: {
+    fontSize: 14
   },
-  editButtonPosition: {
-    position: 'relative',
-    bottom: -280,
-    left: 0,
+  rowButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  buttonPosition: {},
+  destructiveButton: {
+    height: 46,
   },
   label: {
     fontSize: 14,

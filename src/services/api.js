@@ -17,8 +17,6 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   const token = await SecureStore.getItemAsync('userToken')
 
-  console.log({token})
-
   if (token) {
     config.headers.Authorization = token
   }

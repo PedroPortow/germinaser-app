@@ -20,6 +20,6 @@ export const BOOKING_STATUS = {
 
 export const BOOKING_STATUS_LABEL = {
   scheduled: 'Agendada',
-  completed: 'Realizada',
+  completed: 'Concluída',
   canceled: 'Cancelada',
 }

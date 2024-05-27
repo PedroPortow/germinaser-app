@@ -24,7 +24,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, 
       room_id: selectedRoom,
     }
 
-    console.log({params})
 
     try {
       const response = await apiGetDayAvailableBookings(params)
@@ -53,8 +52,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, 
   if (!visible) {
     return null
   }
-
-  console.log({selectedTimeSlot})
 
   return (
     <Modal visible={visible} animationType="slide">

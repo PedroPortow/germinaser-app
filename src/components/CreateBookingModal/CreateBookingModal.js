@@ -26,11 +26,6 @@ function CreateBookingModal({ visible, onClose, onCreate, selectedClinic, select
   const dateButtonActive = useMemo(() => (name || clinic || room), [name, clinic, room])
   const submitButtonActive = useMemo(() => (name || clinic || room || timeSlot || day), [name, clinic, room, timeSlot, day])
 
-  console.log({room})
-  console.log({day})
-  console.log({timeSlot})
-  console.log({clinic})
-
   const toast = useToast();
 
   const resetStates = () => {

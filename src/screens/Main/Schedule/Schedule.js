@@ -2,10 +2,11 @@ import { CalendarProvider, ExpandableCalendar } from 'react-native-calendars'
 import moment from 'moment'
 import { View } from 'native-base'
 import React, { useState } from 'react'
-import {  StyleSheet } from 'react-native'
+import {  Dimensions, StyleSheet } from 'react-native'
 import { ClinicSelect, Loader } from '../../../components'
 import {  CalendarSchedule } from './components'
 
+const { width } = Dimensions.get('window');
 
 function Schedule({ onCreateBooking }) {
   const [selectedClinic, setSelectedClinic] = useState(1)
@@ -57,12 +58,12 @@ const styles = StyleSheet.create({
   select: {
     color: 'white',
     fontWeight: '600',
-    fontSize: 16
+    fontSize: 16,
   },
   topContainer: {
     backgroundColor: '#479BA7',
     height: 80,
-    paddingTop: 40
+    paddingTop: 40,
   },
 });
 

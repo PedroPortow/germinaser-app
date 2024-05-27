@@ -29,7 +29,7 @@ function Account({ refetch }) {
           </View>
           <Divider />
           <View style={styles.contentRow}>
-            <Section label="Reservas Ativas">{user.active_bookings_count}</Section>
+            <Section label="Reservas Agendadas">{user.active_bookings_count}</Section>
             <Section label="Total de Reservas">{user.total_bookings_count}</Section>
           </View>
           <Section label="Reservas Canceladas">{user.canceled_bookings_count}</Section>
