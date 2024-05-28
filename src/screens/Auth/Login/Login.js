@@ -7,9 +7,8 @@ import { useUserContext } from '../../../context/UserContext';
 import CustomAlert from '../../../components/CustomAlert';
 
 function Login() {
-  const [email, setEmail] = useState('pedrolportow@gmail.com');
-  // const [email, setEmail] = useState('teste@gmail.com');
-  const [password, setPassword] = useState('132456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useUserContext();
 

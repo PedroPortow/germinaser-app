@@ -27,8 +27,6 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
   }
 
   const handleEditBooking = async () => {
-    setIsLoading(true)
-
     try {
       const params = {
         name: bookingName,
@@ -47,9 +45,7 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
         render: () => <CustomAlert text="Erro ao editar informações" status='error'/>
       })
       console.error(error)
-    } finally {
-      setIsLoading(false)
-    }
+    } 
   }
 
   const handleCancelBooking = async () => {
@@ -69,7 +65,6 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
       console.error(error)
     } finally {
       onClose()
-      setIsLoading(false)
     }
   }
 
