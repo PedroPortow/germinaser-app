@@ -104,8 +104,6 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
 
     setIsLoading(true)
 
-    console.log("passou")
-
     try {
       const params = {
         name,
@@ -160,8 +158,6 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       setIsLoading(false)
     }
   }
-
-  console.log({errors})
 
   return (
     <>
