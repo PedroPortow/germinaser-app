@@ -8,16 +8,10 @@ import { Ionicons } from '@expo/vector-icons'
 import { BOOKING_STATUS_LABEL } from '../../../../constants/constants'
 import RoomSelect from '../../../../components/RoomSelect'
 
-function FilterBookingsModal({ visible, onClose, onFilter }) {
-  const [selectedUser, setSelectedUser] = useState('all')
-  const [selectedClinic, setSelectedClinic] = useState('all')
-  const [selectedRoom, setSelectedRoom] = useState('all')
-
+function FilterBookingsModal({ visible, onClose, onFilter, filters, onChange }) {
   const [isLoading, setIsLoading] = useState(false)
-
-  const [selectedStatus, setSelectedStatus] = useState('all')
-
   const [userOptions, setUserOptions] = useState([])
+
 
   const getUsers = async () => {
     setIsLoading(true)
@@ -37,7 +31,6 @@ function FilterBookingsModal({ visible, onClose, onFilter }) {
       setIsLoading(false)
     }
   }
-
 
   useEffect(() => {
     if (visible) {
@@ -68,9 +61,9 @@ function FilterBookingsModal({ visible, onClose, onFilter }) {
             <View style={styles.inputLabelWrapper}>
               <Text style={styles.label}>Usuário</Text>
               <Select
-                selectedValue={selectedUser}
+                selectedValue={filters.user}
                 placeholder="Selecione um usuário"
-                onValueChange={(itemValue) => setSelectedUser(itemValue)}
+                onValueChange={(itemValue) => onChange('user', itemValue)}
                 size="lg"
               >
                 {userOptions.map((user) => (
@@ -84,7 +77,7 @@ function FilterBookingsModal({ visible, onClose, onFilter }) {
                   size='lg'
                   accessibilityLabel="Selecione um status"
                   placeholder="Selecione um status"
-                  selectedValue={selectedStatus}
+                  selectedValue={filters.status}
                   dropdownIcon={
                     <Ionicons
                       name="chevron-down-outline"
@@ -93,7 +86,7 @@ function FilterBookingsModal({ visible, onClose, onFilter }) {
                       style={{marginRight: 8}}
                     />
                   }
-                  onValueChange={(itemValue) => setSelectedStatus(itemValue)}
+                  onValueChange={(itemValue) => onChange('status', itemValue)}
                 >
                   {STATUS_OPTIONS.map((status) => (
                       <Select.Item key={status.value} label={status.label} value={status.value} />
@@ -103,15 +96,16 @@ function FilterBookingsModal({ visible, onClose, onFilter }) {
             <View style={styles.inputLabelWrapper}>
               <Text style={styles.label}>Clínica</Text>
               <ClinicSelect
-                onSelectClinic={(clinic) => setSelectedClinic(clinic)}
-                selectedClinic={selectedClinic}
+                onSelectClinic={(clinic) => onChange('clinic', clinic)}
+                selectedClinic={filters.clinic}
               />
             </View>
             <View style={styles.inputLabelWrapper}>
               <Text style={styles.label}>Sala</Text>
               <RoomSelect
-                selectedClinic={selectedClinic}
-                onSelectRoom={room => setSelectedRoom(room)}
+                selectedClinic={filters.clinic}
+                selectedRoom={filters.room}
+                onSelectRoom={room => onChange('room', room)}
               />
             </View>
           </View>
@@ -124,12 +118,7 @@ function FilterBookingsModal({ visible, onClose, onFilter }) {
             <Button
               onPress={() => {
                 onClose()
-                onFilter(1, {
-                  status: selectedStatus,
-                  room_id: selectedRoom,
-                  clinic_id: selectedClinic,
-                  user_id: selectedUser
-                })
+                onFilter(1)
               }}
             >
               Filtrar

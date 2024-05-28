@@ -23,8 +23,8 @@ function CreateBookingModal({ visible, onClose, onCreate, selectedClinic, select
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const dateButtonActive = useMemo(() => (name || clinic || room), [name, clinic, room])
-  const submitButtonActive = useMemo(() => (name || clinic || room || timeSlot || day), [name, clinic, room, timeSlot, day])
+  const dateButtonActive = useMemo(() => (clinic && room), [clinic, room])
+  const submitButtonActive = useMemo(() => (name && clinic && room && timeSlot && day), [name, clinic, room, timeSlot, day])
 
   const toast = useToast();
 
@@ -66,9 +66,12 @@ function CreateBookingModal({ visible, onClose, onCreate, selectedClinic, select
         render: () => <CustomAlert text="Reserva realizada com sucesso!" status='success'/>
       })
     } catch (error) {
+      console.log(error.response.data)
+      const errorMessage = error?.response?.data?.errors ? error?.response?.data?.errors[0] : "Erro na criação da reserva, revise os campos preenchidos"
+
       toast.show({
         placement: "top",
-        render: () => <CustomAlert text="Erro na criação da reserva, revise os campos preenchidos" status='error'/>
+        render: () => <CustomAlert text={errorMessage} status='error'/>
       })
     } finally {
       setIsLoading(false)

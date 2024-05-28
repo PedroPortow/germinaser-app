@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Feather } from '@expo/vector-icons'
 import { Text } from 'native-base'
@@ -8,6 +8,8 @@ import { apiGetAllUsers } from '../../../services/user'
 import { useFullScreenModal } from '../../../context/FullScreenModalContext'
 import UserModal from './components/UserModal'
 import CreditsModal from './components/CreditsModal'
+
+const { height } = Dimensions.get('window');
 
 function Users() {
   const [users, setUsers] = useState([])
@@ -101,15 +103,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   cardList: {
-    flexDirection: 'column'
-  },  
+    flexDirection: 'column',
+    maxHeight: height * 0.82,
+  },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 12,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#ccc',
   },
   pressableText: {
     color: 'black',
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   },
   addUserButton: {
     marginTop: 20
-  },  
+  },
   usernameText: {
     fontWeight: 500,
     fontSize: 16,

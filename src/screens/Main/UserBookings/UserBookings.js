@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { FilterButton, BookingFilterModal } from '@components'
+import { FilterButton, BookingFilterModal, Loader } from '@components'
 import { Text } from 'native-base'
 import { apiGetBookings } from '../../../services/bookings'
 import BookingsList from '../../../components/BookingsList/BookingsList'
@@ -15,16 +15,27 @@ function UserBookings({ refetch }) {
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const [metadata, setMetadata] = useState({})
 
+  const [filters, setFilters] = useState({
+    status: 'all',
+    room: 'all',
+    clinic: 'all'
+  })
+
   const handleSelectBooking = (booking) => {
     setSelectedBooking(booking)
     setBookingModalVisible(true)
   }
 
-  const getBookings = async (page=1, filters = {} ) => {
+  const getBookings = async (page=1) => {
     setIsLoading(true)
-    const perPage = 17
-    const params = { page, perPage, ...filters };
-
+    const perPage = 10
+    const params = {
+      page,
+      per_page: perPage,
+      status: filters.status,
+      room_id: filters.room,
+      clinic_id: filters.clinic
+    };
 
     try {
       const response = await apiGetBookings(params)
@@ -55,8 +66,13 @@ function UserBookings({ refetch }) {
     setFilterModalVisible(true)
   }
 
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }))
+  }
+
   return (
     <>
+      <Loader loading={isLoading} />
       <BookingModal
         visible={bookingModalVisible}
         onClose={() => setBookingModalVisible(false)}
@@ -66,6 +82,8 @@ function UserBookings({ refetch }) {
         booking={selectedBooking}
       />
       <BookingFilterModal
+        filters={filters}
+        onChange={handleFilterChange}
         onClose={() => setFilterModalVisible(false)}
         visible={filterModalVisible}
         onConfirm={getBookings}

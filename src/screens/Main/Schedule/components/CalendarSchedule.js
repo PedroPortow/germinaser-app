@@ -44,7 +44,10 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
       children: (
         <CreateBookingModal
           onClose={hideModal}
-          onCreate={onCreateBooking}
+          onCreate={() => {
+            fetchRoomsAvailableSlots()
+            onCreateBooking()
+          }}
           selectedClinic={selectedClinic}
           selectedDay={selectedDate}
           selectedTimeSlot={selectedTimeSlot}
@@ -91,7 +94,7 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
 const styles = StyleSheet.create({
   listContainer: {
     margin: 8,
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   timeSlotButton: {
     width: 78,

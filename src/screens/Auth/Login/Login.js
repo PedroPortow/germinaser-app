@@ -7,8 +7,9 @@ import { useUserContext } from '../../../context/UserContext';
 import CustomAlert from '../../../components/CustomAlert';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('pedrolportow@gmail.com');
+  // const [email, setEmail] = useState('teste@gmail.com');
+  const [password, setPassword] = useState('132456');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useUserContext();
 
@@ -17,7 +18,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       await login(email, password);
-    } catch (error) {
+    } catch (error){
       toast.show({
         placement: "top",
         render: () => <CustomAlert text="Email ou senha incorreta" status='error'/>

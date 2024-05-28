@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Feather } from '@expo/vector-icons'
-import { Loader, Card, Text, Button } from '@components'
+import { Loader, Card, Text } from '@components'
 import { apiGetAllUsersBookings } from '../../../services/bookings'
 import FilterButton from '../../../components/FilterButton/FilterButton'
 import FilterBookingsModal from './components/FilterBookingsModal'
 import BookingModal from './components/BookingModal'
 import BookingStatusBadge from '../../../components/BookingStatusBadge/BookingStatusBadge'
-// import BookingModal from './components/BookingModal'
+
+const { height } = Dimensions.get('window');
 
 function Bookings() {
   const [filterBookingsModalVisible, setFilterBookingsModalVisible] = useState(false)
@@ -20,11 +21,18 @@ function Bookings() {
 
   const [selectedBooking, setSelectedBooking] = useState({})
 
-  const getBookings = async (page=1,  filters = {} ) => {
+  const [filters, setFilters] = useState({
+    user: 'all',
+    clinic: 'all',
+    room: 'all',
+    status: 'all'
+  })
+
+  const getBookings = async (page=1) => {
     setIsLoading(true)
 
-    const perPage = 17
-    const params = { page, perPage, ...filters };
+    const perPage = 13
+    const params = { page, per_page: perPage, room_id: filters.room, user_id: filters.user, clinic_id: filters.clinic, status: filters.status };
 
     try {
       const response = await apiGetAllUsersBookings(params)
@@ -53,6 +61,11 @@ function Bookings() {
     setBookingModalVisible(true)
   }
 
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }))
+  }
+
   useEffect(() => {
     getBookings(1)
   }, [])
@@ -70,6 +83,8 @@ function Bookings() {
           visible={filterBookingsModalVisible}
           onClose={() => setFilterBookingsModalVisible(false)}
           onFilter={getBookings}
+          filters={filters}
+          onChange={handleFilterChange}
         />
         <FilterButton
           style={styles.filterButtonPosition}
@@ -79,6 +94,9 @@ function Bookings() {
           <FlatList
             data={bookings}
             onEndReached={handleLoadMore}
+            initialNumToRender={13}
+            onEndReachedThreshold={0.1}
+            contentContainerStyle={styles.listContainer}
             ListEmptyComponent={<Text>Não há reservas correspondendo a esses filtros</Text>}
             renderItem={({ item }) => (
               <Row
@@ -88,7 +106,7 @@ function Bookings() {
             )}
             keyExtractor={(item) => item.id.toString()}
           />
-        </Card>
+          </Card>
       </SafeAreaView>
   )
 
@@ -117,16 +135,18 @@ const styles = StyleSheet.create({
   filterButtonPosition: {
     alignSelf: 'flex-end'
   },
+  listContainer: {
+    height: 'auto',
+  },
   cardList: {
-    flexDirection: 'column'
+    flexDirection: 'column',
+    maxHeight: height * 0.77,
   },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 12,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#ccc',
   },
   pressableText: {
     color: '#0000EE',

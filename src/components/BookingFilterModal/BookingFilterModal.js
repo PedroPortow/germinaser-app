@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { Loader, ClinicSelect, } from '@components'
+import React from 'react'
+import { Ionicons } from '@expo/vector-icons'
+import { ClinicSelect, } from '@components'
 import { StyleSheet, View, } from 'react-native'
 import { Modal, Button, Select, Text } from 'native-base'
 import RoomSelect from '../RoomSelect'
 import { BOOKING_STATUS_LABEL } from '../../constants/constants'
-import { Ionicons } from '@expo/vector-icons'
 
-function BookingFilterModal({ onClose, onConfirm, visible }) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [selectedClinic, setSelectedClinic] = useState('all')
-
-  const [selectedRoom, setSelectedRoom] = useState('all')
-
-  const [selectedStatus, setSelectedStatus] = useState('all')
+function BookingFilterModal({ onClose, onConfirm, visible, filters, onChange }) {
 
   const STATUS_OPTIONS = [
     { value: 'all', label: "Todas" },
@@ -21,10 +15,8 @@ function BookingFilterModal({ onClose, onConfirm, visible }) {
     { value: 'completed', label: BOOKING_STATUS_LABEL.completed},
   ]
 
-
   return (
     <Modal isOpen={visible} onClose={onClose} size="lg">
-    <Loader loading={isLoading} />
     <Modal.Content>
       <Modal.Header>Filtrar Reservas</Modal.Header>
       <Modal.CloseButton onPress={onClose} />
@@ -36,7 +28,7 @@ function BookingFilterModal({ onClose, onConfirm, visible }) {
               size='lg'
               accessibilityLabel="Selecione um status"
               placeholder="Selecione um status"
-              selectedValue={selectedStatus}
+              selectedValue={filters.status}
               dropdownIcon={
                 <Ionicons
                   name="chevron-down-outline"
@@ -45,7 +37,7 @@ function BookingFilterModal({ onClose, onConfirm, visible }) {
                   style={{marginRight: 8}}
                 />
               }
-              onValueChange={(itemValue) => setSelectedStatus(itemValue)}
+              onValueChange={(itemValue) => onChange('status', itemValue)}
             >
               {STATUS_OPTIONS.map((status) => (
                   <Select.Item key={status.value} label={status.label} value={status.value} />
@@ -55,16 +47,16 @@ function BookingFilterModal({ onClose, onConfirm, visible }) {
           <View style={styles.inputLabelWrapper}>
             <Text style={styles.label}>Clínica</Text>
             <ClinicSelect
-              onSelectClinic={(clinic) => setSelectedClinic(clinic)}
-              selectedClinic={selectedClinic}
+              onSelectClinic={(clinic) => onChange('clinic', clinic)}
+              selectedClinic={filters.clinic}
             />
           </View>
           <View style={styles.inputLabelWrapper}>
             <Text style={styles.label}>Sala</Text>
             <RoomSelect
-              selectedClinic={selectedClinic}
-              selectedRoom={selectedRoom}
-              onSelectRoom={room => setSelectedRoom(room)}
+              selectedClinic={filters.clinic}
+              selectedRoom={filters.room}
+              onSelectRoom={room => onChange('room', room)}
             />
           </View>
         </View>
@@ -77,10 +69,7 @@ function BookingFilterModal({ onClose, onConfirm, visible }) {
           <Button
             onPress={() => {
               onClose()
-              onConfirm(1, {
-                status: selectedStatus,
-                room_id: selectedRoom,
-                clinic_id: selectedClinic })
+              onConfirm(1)
             }}
           >
             Filtrar

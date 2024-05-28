@@ -2,17 +2,19 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Loader, Text } from '@components'
 import { Ionicons } from '@expo/vector-icons'
-import { Modal, Input, Divider, Button } from 'native-base'
+import { Modal, Input, Divider, Button, useToast } from 'native-base'
 import { formatDate, getBookingEndtimeFormatted, getWeekDay } from '@helpers'
 import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../../../constants/constants'
 import { apiCancelBookingAsAdmin, apiUpdateBookingAsAdmin } from '../../../../services/bookings'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
 import BookingStatusBadge from '../../../../components/BookingStatusBadge/BookingStatusBadge'
+import CustomAlert from '../../../../components/CustomAlert'
 
 function BookingModal({ booking, visible, onClose, onConfirm }) {
-  const [isLoading, setIsLoading] = useState(false)
   const [bookingName, setBookingName] = useState()
   const [confirmationModalVisible, setConfirmationModalVisibile] = useState(false)
+
+  const toast = useToast();
 
   useEffect(() => {
     if (visible) {
@@ -29,13 +31,21 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
 
     try {
       const params = {
-        bookingName,
+        name: bookingName,
       }
 
       await apiUpdateBookingAsAdmin(booking.id, params)
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Informações editadas com sucesso" status='success'/>
+      })
       onClose()
       onConfirm()
     } catch (error) {
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Erro ao editar informações" status='error'/>
+      })
       console.error(error)
     } finally {
       setIsLoading(false)
@@ -47,7 +57,15 @@ function BookingModal({ booking, visible, onClose, onConfirm }) {
       await apiCancelBookingAsAdmin(booking.id)
 
       onConfirm()
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Reserva cancelada com sucesso!" status='success'/>
+      })
     } catch (error) {
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text="Erro ao cancelar reserva" status='success'/>
+      })
       console.error(error)
     } finally {
       onClose()

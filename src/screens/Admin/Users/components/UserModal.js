@@ -2,13 +2,22 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Loader, NumberInput, Button, RolesSelect } from '@components'
-import { Input, Pressable, Icon, Divider, Text } from 'native-base'
+import { Input, Pressable, Icon, Divider, Text, useToast, Alert } from 'native-base'
 import { apiCreateUser, apiDeleteUser, apiUpdateUser } from '../../../../services/user'
 import ConfirmationModal from '../../../../components/ConfirmationModal'
+import CustomAlert from '../../../../components/CustomAlert'
+
+const CREATE_USER_ERRORS = {
+  MISSING_NAME: "Nome não pode ficar em branco",
+  MISSING_EMAIL: "Email não pode ficar em branco",
+  PASSWORD: "A senha deve conter pelo menos 6 dígitos",
+  MISSING_ROLE: "Selecione um cargo",
+}
 
 function UserModal({ user = {}, visible, onClose, onConfirm }) {
   const [isLoading, setIsLoading] = useState(false)
   const [deleteUserModalVisible, setDeleteUserModalVisible] = useState(false)
+  const [errors, setErrors] = useState([])
 
   const [name, setName] = useState()
   const [email, setEmail] = useState()
@@ -17,6 +26,8 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
   const [role, setRole] = useState()
 
   const [showPassword, setShowPassword] = useState(false)
+
+  const toast = useToast();
 
   const creatingUser = useMemo(() => !Object.keys(user).length, [user])
 
@@ -51,11 +62,49 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
     setName(user.name)
     setEmail(user.email)
     setRole(user.role)
+    setErrors([])
     setCredits(user.credits)
   }
 
+  const isCreateUserValid = () => {
+    const formErrors = []
+
+    if(!name){
+      formErrors.push(CREATE_USER_ERRORS.MISSING_NAME)
+    }
+
+    if(!email){
+      formErrors.push(CREATE_USER_ERRORS.MISSING_EMAIL)
+    }
+
+    if(password?.length < 6){
+      formErrors.push(CREATE_USER_ERRORS.PASSWORD)
+    }
+
+    if(!role){
+      formErrors.push(CREATE_USER_ERRORS.MISSING_ROLE)
+    }
+
+    if(formErrors.length){
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text={`${formErrors.join(", ")}`} status='error'/>
+      })
+
+      return false
+    }
+
+    return true
+  }
+
   const handleCreateUser = async () => {
+    if(!isCreateUserValid()){
+      return
+    }
+
     setIsLoading(true)
+
+    console.log("passou")
 
     try {
       const params = {
@@ -67,10 +116,19 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       }
 
       await apiCreateUser(params)
+
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text='Usuário criado com sucesso' status='success'/>
+      })
       onConfirm()
       onClose()
     } catch (error) {
-      console.error(error)
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text={error.response.data.errors[0]} status='error'/>
+      })
+      console.error(error.response.data.errors)
     } finally {
       setIsLoading(false)
     }
@@ -86,14 +144,24 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       }
 
       await apiUpdateUser(user.id, params)
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text='Informações atualizadas com sucesso' status='success'/>
+      })
       onConfirm()
       onClose()
     } catch (error) {
+      toast.show({
+        placement: "top",
+        render: () => <CustomAlert text={error.response.data.errors[0]} status='error'/>
+      })
       console.error(error)
     } finally {
       setIsLoading(false)
     }
   }
+
+  console.log({errors})
 
   return (
     <>
@@ -114,6 +182,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
           <Input
             value={name}
             size="lg"
+
             placeholder="Digite o nome do usuário"
             variant="outline"
             onChangeText={(value) => setName(value)}
@@ -137,6 +206,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
               type={showPassword ? 'text' : 'password'}
               size="lg"
               variant="outline"
+
               autoCapitalize={false}
               InputRightElement={
                 <Pressable onPress={() => setShowPassword(!showPassword)}>
