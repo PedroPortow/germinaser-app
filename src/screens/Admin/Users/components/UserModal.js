@@ -10,7 +10,7 @@ import CustomAlert from '../../../../components/CustomAlert'
 const CREATE_USER_ERRORS = {
   MISSING_NAME: "Nome não pode ficar em branco",
   MISSING_EMAIL: "Email não pode ficar em branco",
-  PASSWORD: "A senha deve conter pelo menos 6 dígitos",
+  PASSWORD: "A senha deve conter pelo menos 2 dígitos",
   MISSING_ROLE: "Selecione um cargo",
 }
 
@@ -77,7 +77,7 @@ function UserModal({ user = {}, visible, onClose, onConfirm }) {
       formErrors.push(CREATE_USER_ERRORS.MISSING_EMAIL)
     }
 
-    if(password?.length < 6){
+    if(password?.length < 2){
       formErrors.push(CREATE_USER_ERRORS.PASSWORD)
     }
 
