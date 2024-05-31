@@ -2,6 +2,8 @@
 
 Aplicativo de reserva de salas feito para a clínica GerminaSer. O app permite que os usuários façam reservas, gerenciem seus agendamentos e visualizem de forma mais eficiente os horários disponíveis de cada sala das clínicas.
 
+A API foi construida em Ruby on Rails (https://github.com/PedroPortow/germinaser-backend)
+
 ## Tecnologias Utilizadas
 
 - **React Native (Expo)**
