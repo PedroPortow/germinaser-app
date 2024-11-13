@@ -80,14 +80,12 @@ const CalendarSchedule = React.memo(({ selectedClinic, setIsLoading, selectedDat
   ), [handleSelectTimeSlot]);
 
   return (
-    <ScrollView>
-      <FlatList
-        data={roomsTimeSlots}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-        keyExtractor={(item) => item.room.id.toString()}
-      />
-    </ScrollView>
+     <FlatList
+      data={roomsTimeSlots}
+      renderItem={renderItem}
+      contentContainerStyle={styles.listContainer}
+      keyExtractor={(item) => item.room.id.toString()}
+    />
   );
 });
 

@@ -78,7 +78,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, 
             }}
             onDayPress={onSelectDay}
             firstDay={1}
-            minDate={new Date()}
+            minDate={String(new Date())}
             markedDates={{ [selectedDay]: { selected: true } }}
           />
           {selectedDay && availableTimeSlots.length ? (
