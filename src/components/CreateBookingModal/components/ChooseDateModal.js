@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Modal, TouchableOpacity, ScrollView, SafeAreaView, Dimensions } from 'react-native'
+import { StyleSheet, View, Modal, TouchableOpacity, ScrollView } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { Loader, Button } from '@components'
 import { Calendar } from 'react-native-calendars'
 import { Text } from 'native-base'
 import { apiGetDayAvailableBookings } from '../../../services/bookings'
-
-
-const { height } = Dimensions.get('window');
 
 function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, day }) {
   const [selectedDay, setSelectedDay] = useState(day)
@@ -23,7 +20,6 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, 
       date: day,
       room_id: selectedRoom,
     }
-
 
     try {
       const response = await apiGetDayAvailableBookings(params)
@@ -55,7 +51,7 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, 
 
   return (
     <Modal visible={visible} animationType="slide">
-      <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
         <View style={styles.content}>
           <View style={styles.header}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -99,36 +95,39 @@ function ChooseDateModal({ selectedRoom, onClose, visible, onConfirm, timeSlot, 
               </ScrollView>
             </View>
           ) : null}
-          {selectedTimeSlot && (
-            <Button
-              style={styles.confirmationButton}
-              onPress={() => onConfirm(selectedDay, selectedTimeSlot)}
-            >
-              Confirmar
-            </Button>
-          )}
         </View>
-      </SafeAreaView>
+        {selectedTimeSlot && (
+          <Button
+            style={styles.confirmationButton}
+            onPress={() => onConfirm(selectedDay, selectedTimeSlot)}
+          >
+            Confirmar
+          </Button>
+        )}
+      </View>
     </Modal>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
-    backgroundColor: '#fff',
+    flexDirection: 'column',
+    paddingHorizontal: 16,
+  },
+  content: {
+    flex: 1,
   },
   timeSlotsWrapper: {
     backgroundColor: 'white',
     padding: 10,
     marginTop: 10,
-    height: height * 0.4,
-    flexDirection: 'column',
-    gap: 4
+    flex: 1,
   },
   confirmationButton: {
     alignSelf: 'center',
     width: '93%',
+    marginBottom: 16,
   },
   closeButton: {
     position: 'absolute',
@@ -147,19 +146,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 16
   },
-  content: {
-    paddingHorizontal: 16,
-    flex: 1,
-  },
   timeSlotsText: {
     fontWeight: '500',
     fontSize: 18,
   },
   timeSlotsContainer: {
-    flexDirection: 'column',
-    gap: 4,
     marginTop: 4,
-    maxHeight: 500,
   },
   timeSlotButton: {
     marginBottom: 4,
